@@ -1,0 +1,13 @@
+.footer {
+    width: 100%;
+    background-color: #0f0f0f;
+
+    &__context {
+        display: block;
+        width: max-content;
+        padding: 0.6rem 0;
+        margin: 0 auto;
+
+        color: #6d6d6d;
+    }
+}
