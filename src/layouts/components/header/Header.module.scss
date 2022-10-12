@@ -134,6 +134,8 @@
     padding-bottom: var(--padding-vertical);
     border: none;
 
+    cursor: pointer;
+
     &__icon {
         margin-right: 1rem;
         font-size: 1.6rem;
@@ -169,13 +171,11 @@
 
     &:hover:not(&--head) &__context {
         text-decoration: underline;
-        cursor: pointer;
     }
 
     &--head:hover &__context,
     &--head:hover &__icon {
         opacity: 0.8;
-        cursor: pointer;
     }
 }
 
