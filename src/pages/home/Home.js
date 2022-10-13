@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Product from '~/components/product/Product';
+import { Product, Button } from '~/components';
 import { cx, tabs, products, context } from './constant';
 
 function Home() {
@@ -9,15 +9,18 @@ function Home() {
 
     return (
         <div className={cx('wrapper')}>
+            <div className={cx('grid', 'wide')}>
+                <h1 className={cx('title')}>{context.title}</h1>
+            </div>
             <div className={cx('tabs')}>
                 {tabs.map((item, index) => (
-                    <button
+                    <Button
                         key={index}
                         className={cx('tab', { 'tab--active': tab === index })}
                         onClick={() => handleClickTab(index)}
                     >
                         {item}
-                    </button>
+                    </Button>
                 ))}
             </div>
             <div className={cx('section')}>
@@ -30,9 +33,9 @@ function Home() {
                         ))}
                     </div>
                     <div className={cx('section-btn')}>
-                        <button className={cx('btn-viewmore')}>
+                        <Button to={'/search'} className={cx('btn-viewmore')}>
                             {context.viewMoreButton}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -44,9 +47,9 @@ function Home() {
                         >
                             {context.titleControl}
                         </span>
-                        <span className={cx('cate-link')}>
+                        <Button to={'/search'} className={cx('cate-link')}>
                             {context.viewMoreText}
-                        </span>
+                        </Button>
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (
@@ -63,9 +66,9 @@ function Home() {
                         <span className={cx('cate-title', 'cate-title--black')}>
                             {context.titleTool}
                         </span>
-                        <span className={cx('cate-link')}>
+                        <Button to={'/search'} className={cx('cate-link')}>
                             {context.viewMoreText}
-                        </span>
+                        </Button>
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (

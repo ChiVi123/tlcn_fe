@@ -45,8 +45,8 @@
 .input {
     flex: 1;
     height: 100%;
-    border: none;
     margin-left: 2rem;
+    border: none;
 
     color: #333333;
     font-size: 1.4rem;
@@ -56,7 +56,6 @@
 .btn-search {
     height: 3.6rem;
     width: 4.5rem;
-
     margin-right: 0.1rem;
 
     border: none;
@@ -79,11 +78,9 @@
 }
 
 .action-item {
-    max-width: 17.4rem;
-
     display: flex;
     align-items: center;
-
+    max-width: 17.4rem;
     padding: 0.6rem 1.1rem;
 
     border: 0.1rem solid transparent;
@@ -91,8 +88,7 @@
     background-color: #d75d03;
 
     color: var(--white);
-
-    cursor: pointer;
+    text-decoration: none;
 
     &__icon {
         font-size: 2.2rem;
@@ -114,6 +110,7 @@
 
     &:hover {
         border-color: var(--second-primary);
+        cursor: pointer;
     }
 }
 
@@ -129,10 +126,10 @@
     --padding-vertical: 1.4rem;
 
     display: inline-block;
-
     padding-top: var(--padding-vertical);
     padding-bottom: var(--padding-vertical);
     border: none;
+    text-decoration: none;
 
     cursor: pointer;
 

@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
+import { Button } from '~/components';
+import { imgLogo } from '~/assets/images';
 import { cx, actions, navItems, menuCate } from './constant';
 import Menu from './components/menu/Menu';
-import { imgLogo } from '~/assets/images';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
@@ -16,9 +17,9 @@ function Header() {
         <header className={cx('header')}>
             <div className={cx('grid', 'wide')}>
                 <div className={cx('wrapper')}>
-                    <div className={cx('logo')}>
+                    <Button to={'/'} className={cx('logo')}>
                         <img src={imgLogo} alt='logo' />
-                    </div>
+                    </Button>
 
                     <div className={cx('wrapper-right')}>
                         {/* Search */}
@@ -35,16 +36,17 @@ function Header() {
                         {/* Actions */}
                         <div className={cx('wrapper-actions')}>
                             {actions.map((item, index) => (
-                                <button
+                                <Button
                                     key={index}
                                     className={cx('action-item')}
+                                    to={item.link}
                                 >
                                     <FontAwesomeIcon
                                         className={cx('action-item__icon')}
                                         icon={item.icon}
                                     />
                                     <span>{item.context}</span>
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     </div>
@@ -71,11 +73,15 @@ function Header() {
                     </span>
 
                     {navItems.map((item, index) => (
-                        <span key={index} className={cx('nav-item')}>
+                        <Button
+                            key={index}
+                            className={cx('nav-item')}
+                            to={item.link}
+                        >
                             <span className={cx('nav-item__context')}>
-                                {item}
+                                {item.name}
                             </span>
-                        </span>
+                        </Button>
                     ))}
                 </div>
             </div>

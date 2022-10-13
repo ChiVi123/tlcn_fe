@@ -5,8 +5,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { cx, context } from './constant';
 import { currencyVN } from '~/utils/funcs';
+import { Button } from '~/components';
+import { cx, context } from './constant';
 
 function Product({ product }) {
     const percent = 100;
@@ -17,7 +18,7 @@ function Product({ product }) {
         : product.price;
 
     return (
-        <div className={cx('product')}>
+        <Button to={'/product'} className={cx('product')}>
             {product.sale && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm
@@ -73,7 +74,7 @@ function Product({ product }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </Button>
     );
 }
 

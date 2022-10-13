@@ -85,6 +85,7 @@ const products = [
     },
 ];
 const context = {
+    title: 'Sản phẩm nổi bật',
     titleControl: 'Vi điều khiển - Nhúng',
     titleTool: 'Dụng cụ - phụ kiện',
     viewMoreButton: 'Xem thêm',
