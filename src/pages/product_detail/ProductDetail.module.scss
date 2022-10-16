@@ -1,0 +1,240 @@
+.wrapper {
+    --theme: #efefef;
+    --padding-vertical: 1.6rem;
+
+    padding-bottom: 1.6rem;
+    background-color: var(--theme);
+}
+
+.section {
+    margin-bottom: 1.6rem;
+    border-radius: 0.4rem;
+
+    background-color: var(--white);
+    overflow: hidden;
+
+    &--flex {
+        display: flex;
+    }
+
+    &__wrapper {
+        padding: 1rem;
+    }
+}
+
+.section-left {
+    --left-padding-side: 2.8rem;
+
+    width: calc(46rem + var(--left-padding-side) * 2);
+    padding: var(--padding-vertical) var(--left-padding-side);
+    border-right: 0.1rem solid #f2f2f2;
+}
+
+.section-right {
+    --right-padding-side: 2.8rem;
+
+    padding: var(--padding-vertical) var(--right-padding-side);
+
+    &__group {
+        margin: 0.5rem 0;
+    }
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.section-text {
+    font-size: 1.6rem;
+    letter-spacing: 0.04rem;
+}
+
+.product-name {
+    position: relative;
+    margin-bottom: 1.6rem;
+    font-size: 2rem;
+    font-weight: 400;
+
+    &--line {
+        border-bottom: 0.2rem solid #eee;
+    }
+
+    &--line::before {
+        position: absolute;
+        bottom: -0.2rem;
+        left: 0;
+        content: '';
+        width: 7.6rem;
+        height: 0.2rem;
+
+        background-color: var(--primary);
+    }
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.product-sale {
+    margin-right: 1.5rem;
+    color: var(--primary);
+    font-size: 2.4rem;
+    font-weight: 600;
+}
+
+.product-old-price {
+    color: #bbb;
+    font-size: 1.8rem;
+    text-decoration: line-through;
+}
+
+.summary {
+    margin-left: 1.8rem;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.btn-input {
+    --size-quantity: 4rem;
+    --border-radius: 0.3rem;
+
+    width: var(--size-quantity);
+    height: var(--size-quantity);
+
+    color: var(--text-color);
+    font-size: 2rem;
+    font-weight: 600;
+    border: 0.1rem solid #ebebeb;
+
+    &--decrease {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+    }
+
+    &--increase {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+
+    &:hover {
+        color: var(--white);
+        border-color: var(--primary);
+        background-color: var(--primary);
+        cursor: pointer;
+    }
+}
+
+.input-quantity {
+    height: 4rem;
+    width: 6rem;
+
+    color: #1c1c1c;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 4rem;
+    text-align: center;
+
+    border: none;
+    border-top: 0.1rem solid #ebebeb;
+    border-bottom: 0.1rem solid #ebebeb;
+}
+
+.action-btn {
+    margin-top: 1.8rem;
+    padding: 1rem;
+    background: #fc751133;
+    border: 0.1rem solid var(--primary);
+    border-radius: 0.3rem;
+
+    color: var(--primary);
+    font-size: 1.6rem;
+
+    transition: all 0.42s ease;
+
+    & ~ & {
+        margin-left: 0.8rem;
+    }
+
+    &:hover {
+        background: var(--white);
+        cursor: pointer;
+    }
+}
+
+.description {
+    padding: 1.2rem 0.8rem;
+    text-align: justify;
+}
+
+.relation-wrapper {
+    --padding-side: 1rem;
+    --theme-img-list: #e5e5e5;
+
+    margin-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.relations {
+    list-style: none;
+    display: flex;
+    transition: all 0.45s ease;
+}
+
+.btn-arrow {
+    --width-btn: 3.2rem;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--width-btn);
+    height: 5.6rem;
+
+    border: 0.1rem solid #f1f5f6;
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    box-shadow: 0 7px 10px 0 #488bd833;
+    opacity: 0;
+
+    color: #878fa0;
+
+    transition: all 0.45s ease;
+    cursor: pointer;
+    z-index: 1;
+
+    &--left {
+        left: calc(0px - var(--width-btn));
+    }
+
+    &--right {
+        right: calc(0px - var(--width-btn));
+    }
+}
+
+.relation-wrapper:hover .btn-arrow--left:not(.btn-arrow--disable) {
+    left: 0;
+    opacity: 1;
+}
+
+.relation-wrapper:hover .btn-arrow--right:not(.btn-arrow--disable) {
+    right: 0;
+    opacity: 1;
+}
+
+.relation-wrapper:hover .btn-arrow--left.btn-arrow--disable {
+    left: 0;
+    cursor: default;
+    opacity: 0.2;
+}
+
+.relation-wrapper:hover .btn-arrow--right.btn-arrow--disable {
+    right: 0;
+    cursor: default;
+    opacity: 0.2;
+}

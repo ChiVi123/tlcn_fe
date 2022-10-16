@@ -4,3 +4,13 @@ export function currencyVN(number) {
         currency: 'VND',
     });
 }
+
+export function priceSaleVN(priceCurrent, sale) {
+    const thousand = 1000;
+    if (sale) {
+        return (
+            priceCurrent -
+            Math.round((priceCurrent * sale) / thousand) * thousand
+        );
+    } else return priceCurrent;
+}

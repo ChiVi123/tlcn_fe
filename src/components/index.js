@@ -1,2 +1,2 @@
 export { default as Button } from './button/Button';
-export { default as Product } from './product/Product';
+export { default as ProductCart } from './product_cart/ProductCart';

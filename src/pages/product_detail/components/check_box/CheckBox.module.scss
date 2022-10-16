@@ -1,0 +1,33 @@
+.options {
+    list-style: none;
+    display: flex;
+    margin-top: 0.4rem;
+    margin-bottom: 1.6rem;
+}
+
+.options-item {
+    & ~ & {
+        margin-left: 0.8rem;
+    }
+
+    &__label {
+        display: block;
+        padding: 0.9rem 0.5rem;
+
+        color: var(--text-color);
+        font-size: 1.3rem;
+        font-weight: 400;
+        text-transform: uppercase;
+
+        border: 0.1rem solid #ccc;
+        cursor: pointer;
+    }
+
+    input {
+        display: none;
+    }
+
+    input:checked ~ &__label {
+        border: 0.1rem solid #e6484a;
+    }
+}

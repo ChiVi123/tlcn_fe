@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Product, Button } from '~/components';
+import { ProductCart, Button } from '~/components';
 import { cx, tabs, products, context } from './constant';
 
 function Home() {
@@ -28,7 +28,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <Product key={index} product={item} />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>
@@ -54,7 +54,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <Product key={index} product={item} />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>
@@ -73,7 +73,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <Product key={index} product={item} />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>

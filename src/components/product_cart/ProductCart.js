@@ -5,17 +5,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { currencyVN } from '~/utils/funcs';
+import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { Button } from '~/components';
 import { cx, context } from './constant';
 
-function Product({ product }) {
+function ProductCart({ product }) {
     const percent = 100;
-    const thousand = 1000;
-    const priceSale = product.sale
-        ? product.price -
-          Math.round((product.price * product.sale) / thousand) * thousand
-        : product.price;
+    const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
         <Button to={'/product'} className={cx('product')}>
@@ -78,4 +74,4 @@ function Product({ product }) {
     );
 }
 
-export default Product;
+export default ProductCart;
