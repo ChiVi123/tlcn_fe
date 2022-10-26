@@ -4,7 +4,7 @@ import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images';
-import { cx, actions, navItems, menuCate } from './constant';
+import { cx, actions, navItems, menuCate, topbars } from './constant';
 import Menu from './components/menu/Menu';
 
 function Header() {
@@ -16,6 +16,17 @@ function Header() {
     return (
         <header className={cx('header')}>
             <div className={cx('grid', 'wide')}>
+                <ul className={cx('topbar')}>
+                    {topbars.map((item, index) => (
+                        <li key={index} className={cx('topbar__item')}>
+                            <Button to={item.to}>
+                                <FontAwesomeIcon icon={item.icon} />
+                                <span>{item.context}</span>
+                            </Button>
+                        </li>
+                    ))}
+                </ul>
+
                 <div className={cx('wrapper')}>
                     <Button to={'/'} className={cx('logo')}>
                         <img src={imgLogo} alt='logo' />
@@ -39,13 +50,27 @@ function Header() {
                                 <Button
                                     key={index}
                                     className={cx('action-item')}
-                                    to={item.link}
+                                    to={item.to}
+                                    href={item.href}
                                 >
                                     <FontAwesomeIcon
                                         className={cx('action-item__icon')}
                                         icon={item.icon}
                                     />
-                                    <span>{item.context}</span>
+                                    <div>
+                                        <span
+                                            className={cx(
+                                                'action-item__context',
+                                            )}
+                                        >
+                                            {item.context}
+                                        </span>
+                                        <span
+                                            className={cx('action-item__title')}
+                                        >
+                                            {item.title}
+                                        </span>
+                                    </div>
                                 </Button>
                             ))}
                         </div>
@@ -76,7 +101,7 @@ function Header() {
                         <Button
                             key={index}
                             className={cx('nav-item')}
-                            to={item.link}
+                            to={item.to}
                         >
                             <span className={cx('nav-item__context')}>
                                 {item.name}

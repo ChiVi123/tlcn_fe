@@ -1,5 +1,5 @@
 import { Button } from '~/components';
-import { cx, context } from './constant';
+import { cx, context, placeHolder } from './constant';
 
 function Register() {
     return (
@@ -13,7 +13,7 @@ function Register() {
                     </label>
                     <input
                         className={cx('input')}
-                        placeholder={context.lastName}
+                        placeholder={placeHolder.lastName}
                     />
                 </div>
                 <div className={cx('group')}>
@@ -23,7 +23,7 @@ function Register() {
                     </label>
                     <input
                         className={cx('input')}
-                        placeholder={context.firstName}
+                        placeholder={placeHolder.firstName}
                     />
                 </div>
                 <div className={cx('group')}>
@@ -45,7 +45,7 @@ function Register() {
                     </label>
                     <input
                         className={cx('input')}
-                        placeholder={context.fieldPassword}
+                        placeholder={placeHolder.fieldPassword}
                     />
                 </div>
                 <div className={cx('group')}>
@@ -55,7 +55,7 @@ function Register() {
                     </label>
                     <input
                         className={cx('input')}
-                        placeholder={context.retypePassword}
+                        placeholder={placeHolder.retypePassword}
                     />
                 </div>
             </div>

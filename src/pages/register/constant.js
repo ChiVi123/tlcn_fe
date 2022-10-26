@@ -14,4 +14,13 @@ const context = {
     createAcc: 'Tại đây',
 };
 
-export { cx, context };
+const placeHolder = {
+    firstName: 'Nhập tên',
+    lastName: 'Nhập họ',
+    retypePassword: 'Nhập lại mật khẩu',
+    fieldPassword: 'Nhập mật khẩu',
+    messageSignIn: 'Bạn không có tài khoản. Đăng ký',
+    createAcc: 'Tại đây',
+};
+
+export { cx, context, placeHolder };

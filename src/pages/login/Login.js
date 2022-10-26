@@ -31,6 +31,12 @@ function Login() {
             </div>
             <div className={cx('text-center', 'line')}>
                 <button className={cx('btn-login')}>{context.login}</button>
+                <Button
+                    className={cx('link-forgot-password')}
+                    to={'/forgot-password'}
+                >
+                    {context.forgotPass}
+                </Button>
             </div>
             <div className={cx('text-center')}>
                 <span className={cx('message')}>{context.messageSignIn}</span>

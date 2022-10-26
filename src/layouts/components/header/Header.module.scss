@@ -12,8 +12,46 @@
     padding-bottom: var(--padding-side);
 }
 
+.topbar {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+
+    a {
+        text-decoration: none;
+    }
+
+    svg,
+    span {
+        color: var(--white);
+        font-size: 1.4rem;
+    }
+
+    span {
+        margin-left: 0.4rem;
+    }
+
+    &__item {
+        margin-left: 0.5rem;
+        padding-left: 0.7rem;
+    }
+
+    &__item ~ &__item {
+        border-left: 0.1rem solid rgba(255, 255, 255, 0.2);
+    }
+
+    &__item:hover svg,
+    &__item:hover span {
+        color: #0080bf;
+        cursor: pointer;
+    }
+}
+
 .logo {
-    margin-right: 8.5rem;
+    margin-right: 4rem;
 
     img {
         width: 24rem;
@@ -75,6 +113,7 @@
 .wrapper-actions {
     display: flex;
     flex-wrap: wrap;
+    margin-left: 0.8rem;
 }
 
 .action-item {
@@ -91,20 +130,28 @@
     text-decoration: none;
 
     &__icon {
-        font-size: 2.2rem;
-        margin-right: 0.4rem;
+        font-size: 2rem;
+        margin-right: 0.8rem;
     }
 
     span {
-        max-width: 10.5rem;
-
         display: -webkit-box;
+        max-width: 12rem;
+
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
 
         text-align: left;
+    }
+
+    &__context {
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    &__title {
         font-size: 1.2rem;
     }
 

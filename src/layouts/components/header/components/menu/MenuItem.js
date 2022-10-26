@@ -18,7 +18,7 @@ function MenuItem({ item, side }) {
 
     return (
         <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Button to={item.link} className={classes}>
+            <Button to={item.to} className={classes}>
                 <div className={cx('menu-item__left')}>
                     {item.img && (
                         <img
