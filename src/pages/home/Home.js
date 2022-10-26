@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import { ProductCart, Button } from '~/components';
-import { cx, tabs, products, context } from './constant';
+import { products } from '~/utils/constant';
+import { cx, tabs, context } from './constant';
 
 function Home() {
     const [tab, setTab] = useState(0);

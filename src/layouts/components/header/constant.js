@@ -21,7 +21,7 @@ const cx = classNames.bind(styles);
 const actions = [
     {
         icon: faBasketShopping,
-        context: '(0) Giỏ hàng',
+        context: '(10) Giỏ hàng',
         link: '/cart',
     },
     {
