@@ -4,9 +4,10 @@ import {
     faTurnDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
+import { pathNames } from '~/routes';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { Button } from '~/components';
 import { cx, context } from './constant';
 
 function ProductCart({ product }) {
@@ -14,7 +15,7 @@ function ProductCart({ product }) {
     const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
-        <Button to={'/product'} className={cx('product')}>
+        <Link to={pathNames.home} className={cx('product')}>
             {product.sale && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm
@@ -70,7 +71,7 @@ function ProductCart({ product }) {
                     </div>
                 </div>
             </div>
-        </Button>
+        </Link>
     );
 }
 

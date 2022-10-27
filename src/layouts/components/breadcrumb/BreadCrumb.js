@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router-dom';
 
-import { Button } from '~/components';
+import { pathNames } from '~/routes';
 import { cx } from './constant';
 
 function BreadCrumb() {
@@ -10,25 +11,25 @@ function BreadCrumb() {
             <div className={cx('grid', 'wide')}>
                 <ul className={cx('bread-crumb')}>
                     <li>
-                        <Button
-                            to={'/'}
+                        <NavLink
+                            to={pathNames.home}
                             className={cx('bread-crumb-text', 'url')}
                             title='Trang chủ'
                         >
                             Trang chủ
-                        </Button>
+                        </NavLink>
                         <span className={cx('bread-crumb-icon')}>
                             <FontAwesomeIcon icon={faChevronRight} />
                         </span>
                     </li>
                     <li>
-                        <Button
-                            to={'/search'}
+                        <NavLink
+                            to={pathNames.search}
                             className={cx('bread-crumb-text', 'url')}
                             title='Raspberry'
                         >
                             Raspberry
-                        </Button>
+                        </NavLink>
                         <span className={cx('bread-crumb-icon')}>
                             <FontAwesomeIcon icon={faChevronRight} />
                         </span>

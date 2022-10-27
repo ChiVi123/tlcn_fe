@@ -1,22 +1,43 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
-const cx = classNames.bind();
+import styles from './Button.module.scss';
 
-function Button({ children, onClick, to, href, className, ...passProps }) {
+const cx = classNames.bind(styles);
+
+function Button({
+    children,
+    reset,
+    fullWidth,
+    block,
+    solid,
+    onClick,
+    to,
+    navTo,
+    href,
+    className,
+    ...passProps
+}) {
     let Component = 'button';
     const props = { onClick, ...passProps };
 
     if (to) {
         props.to = to;
         Component = Link;
+    } else if (navTo) {
+        props.to = navTo;
+        Component = NavLink;
     } else if (href) {
         props.href = href;
         Component = 'a';
     }
 
     const classes = cx({
+        btn: !reset,
+        'full-width': fullWidth,
+        block,
+        solid,
         [className]: className,
     });
 
@@ -29,8 +50,13 @@ function Button({ children, onClick, to, href, className, ...passProps }) {
 
 Button.propTypes = {
     children: PropTypes.node.isRequired,
+    reset: PropTypes.bool,
+    fullWidth: PropTypes.bool,
+    block: PropTypes.bool,
+    solid: PropTypes.bool,
     onClick: PropTypes.func,
     to: PropTypes.string,
+    navTo: PropTypes.string,
     href: PropTypes.string,
     className: PropTypes.string,
 };

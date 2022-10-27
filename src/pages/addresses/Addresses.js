@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import { cx, context, addresses } from './constant';
+import { Button } from '~/components';
 
 function Addresses() {
     return (
@@ -29,20 +31,20 @@ function Addresses() {
                         <span className={cx('text')}>{item.phone}</span>
                     </div>
                     <div className={cx('group')}>
-                        <button className={cx('btn', 'btn--solid')}>
+                        <Button solid className={cx('btn')}>
                             <FontAwesomeIcon
                                 className={cx('font-icon')}
                                 icon={faArrowRotateLeft}
                             />
                             {context.editAddressBtn}
-                        </button>
-                        <button className={cx('btn', 'btn--solid')}>
+                        </Button>
+                        <Button solid className={cx('btn')}>
                             <FontAwesomeIcon
                                 className={cx('font-icon')}
                                 icon={faTrash}
                             />
                             {context.deleteAddressBtn}
-                        </button>
+                        </Button>
                     </div>
                 </li>
             ))}

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
+import { NavLink } from 'react-router-dom';
 
-import { Button } from '~/components';
 import Menu from './Menu';
 import styles from './MenuItem.module.scss';
 
@@ -13,12 +13,13 @@ const cx = classNames.bind(styles);
 function MenuItem({ item, side }) {
     const classes = cx('menu-item', { side });
     const [menu, setMenu] = useState(false);
+
     const handleMouseEnter = () => setMenu(true);
     const handleMouseLeave = () => setMenu(false);
 
     return (
         <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Button to={item.to} className={classes}>
+            <NavLink to={item.to} className={classes}>
                 <div className={cx('menu-item__left')}>
                     {item.img && (
                         <img
@@ -37,7 +38,7 @@ function MenuItem({ item, side }) {
                         icon={faCaretRight}
                     />
                 )}
-            </Button>
+            </NavLink>
             {item.subMenu && menu && <Menu items={item.subMenu} side />}
         </li>
     );

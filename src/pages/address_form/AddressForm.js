@@ -1,5 +1,6 @@
 import { faCheck, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '~/components';
 
 import { cx, context, idInput, placeHolder } from './constant';
 
@@ -107,20 +108,20 @@ function AddressForm() {
                     </label>
                 </div>
                 <div className='col l-12 group'>
-                    <button className={cx('btn', 'btn--solid')}>
+                    <Button solid className={cx('btn')}>
                         <FontAwesomeIcon
                             className={cx('font-icon')}
                             icon={faCheck}
                         />
                         {context.addAddressBtn}
-                    </button>
-                    <button className={cx('btn', 'btn--solid')}>
+                    </Button>
+                    <Button solid className={cx('btn')}>
                         <FontAwesomeIcon
                             className={cx('font-icon')}
                             icon={faRectangleXmark}
                         />
                         {context.cancelBtn}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

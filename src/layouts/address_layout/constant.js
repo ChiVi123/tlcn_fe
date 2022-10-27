@@ -8,8 +8,3 @@ export const context = {
     addAddressBtn: '+ Thêm địa chỉ',
     backPageAddresses: 'Trở về trang sổ địa chỉ',
 };
-
-export const pathName = {
-    addresses: '/addresses',
-    addressForm: '/address-form',
-};

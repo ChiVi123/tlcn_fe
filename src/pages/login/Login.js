@@ -1,10 +1,15 @@
-import { Button } from '~/components';
+import { Link } from 'react-router-dom';
+
+import { Title } from '~/components';
+import { pathNames } from '~/routes';
 import { cx, context } from './constant';
 
 function Login() {
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>{context.title}</h1>
+            <Title line center as='h1'>
+                {context.title}
+            </Title>
             <div className={cx('form')}>
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
@@ -31,18 +36,18 @@ function Login() {
             </div>
             <div className={cx('text-center', 'line')}>
                 <button className={cx('btn-login')}>{context.login}</button>
-                <Button
+                <Link
                     className={cx('link-forgot-password')}
-                    to={'/forgot-password'}
+                    to={pathNames.forgotPassword}
                 >
                     {context.forgotPass}
-                </Button>
+                </Link>
             </div>
             <div className={cx('text-center')}>
                 <span className={cx('message')}>{context.messageSignIn}</span>
-                <Button className={cx('link')} to={'/register'}>
+                <Link className={cx('link')} to={pathNames.register}>
                     {context.createAcc}
-                </Button>
+                </Link>
             </div>
         </div>
     );

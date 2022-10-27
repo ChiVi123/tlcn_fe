@@ -4,8 +4,16 @@ import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images';
-import { cx, actions, navItems, menuCate, topbars } from './constant';
+import {
+    cx,
+    actions,
+    navItems,
+    menuCate,
+    topbarsRight,
+    topbarsLeft,
+} from './constant';
 import Menu from './components/menu/Menu';
+import { pathNames } from '~/routes';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
@@ -16,19 +24,45 @@ function Header() {
     return (
         <header className={cx('header')}>
             <div className={cx('grid', 'wide')}>
-                <ul className={cx('topbar')}>
-                    {topbars.map((item, index) => (
-                        <li key={index} className={cx('topbar__item')}>
-                            <Button to={item.to}>
-                                <FontAwesomeIcon icon={item.icon} />
-                                <span>{item.context}</span>
-                            </Button>
-                        </li>
-                    ))}
-                </ul>
+                <div className={cx('topbar')}>
+                    <ul className={cx('topbar-section')}>
+                        {topbarsLeft.map((item, index) => (
+                            <li
+                                key={index}
+                                className={cx(
+                                    'topbar__item',
+                                    'topbar__item--icon-only',
+                                )}
+                            >
+                                <Button
+                                    reset={true}
+                                    to={item.to}
+                                    href={item.href}
+                                >
+                                    <FontAwesomeIcon icon={item.icon} />
+                                </Button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <ul className={cx('topbar-section')}>
+                        {topbarsRight.map((item, index) => (
+                            <li key={index} className={cx('topbar__item')}>
+                                <Button reset={true} to={item.to}>
+                                    <FontAwesomeIcon icon={item.icon} />
+                                    <span>{item.context}</span>
+                                </Button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
                 <div className={cx('wrapper')}>
-                    <Button to={'/'} className={cx('logo')}>
+                    <Button
+                        reset={true}
+                        to={pathNames.home}
+                        className={cx('logo')}
+                    >
                         <img src={imgLogo} alt='logo' />
                     </Button>
 
@@ -48,6 +82,7 @@ function Header() {
                         <div className={cx('wrapper-actions')}>
                             {actions.map((item, index) => (
                                 <Button
+                                    reset={true}
                                     key={index}
                                     className={cx('action-item')}
                                     to={item.to}
@@ -99,6 +134,7 @@ function Header() {
 
                     {navItems.map((item, index) => (
                         <Button
+                            reset={true}
                             key={index}
                             className={cx('nav-item')}
                             to={item.to}

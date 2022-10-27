@@ -1,29 +1,19 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { ProductCart, Button } from '~/components';
+import { ProductCart, Title } from '~/components';
+import { pathNames } from '~/routes';
 import { products } from '~/utils/constant';
-import { cx, tabs, context } from './constant';
+import { cx, context } from './constant';
 
 function Home() {
-    const [tab, setTab] = useState(0);
-    const handleClickTab = (index) => setTab(index);
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'wide')}>
-                <h1 className={cx('title')}>{context.title}</h1>
+                <Title line center as={'h1'}>
+                    {context.title}
+                </Title>
             </div>
-            <div className={cx('tabs')}>
-                {tabs.map((item, index) => (
-                    <Button
-                        key={index}
-                        className={cx('tab', { 'tab--active': tab === index })}
-                        onClick={() => handleClickTab(index)}
-                    >
-                        {item}
-                    </Button>
-                ))}
-            </div>
+
             <div className={cx('section')}>
                 <div className={cx('grid', 'wide')}>
                     <div className={cx('row')}>
@@ -34,9 +24,12 @@ function Home() {
                         ))}
                     </div>
                     <div className={cx('section-btn')}>
-                        <Button to={'/search'} className={cx('btn-viewmore')}>
+                        <Link
+                            to={pathNames.search}
+                            className={cx('btn-viewmore')}
+                        >
                             {context.viewMoreButton}
-                        </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -48,9 +41,9 @@ function Home() {
                         >
                             {context.titleControl}
                         </span>
-                        <Button to={'/search'} className={cx('cate-link')}>
+                        <Link to={pathNames.search} className={cx('cate-link')}>
                             {context.viewMoreText}
-                        </Button>
+                        </Link>
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (
@@ -67,9 +60,9 @@ function Home() {
                         <span className={cx('cate-title', 'cate-title--black')}>
                             {context.titleTool}
                         </span>
-                        <Button to={'/search'} className={cx('cate-link')}>
+                        <Link to={pathNames.search} className={cx('cate-link')}>
                             {context.viewMoreText}
-                        </Button>
+                        </Link>
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (

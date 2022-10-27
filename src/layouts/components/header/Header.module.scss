@@ -13,12 +13,17 @@
 }
 
 .topbar {
-    list-style-type: none;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0.5rem 0;
     border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+
+    &-section {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+    }
 
     a {
         text-decoration: none;
@@ -41,6 +46,11 @@
 
     &__item ~ &__item {
         border-left: 0.1rem solid rgba(255, 255, 255, 0.2);
+
+        &--icon-only {
+            margin-left: 1.4rem;
+            border-left: none;
+        }
     }
 
     &__item:hover svg,

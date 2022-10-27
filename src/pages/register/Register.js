@@ -1,10 +1,15 @@
-import { Button } from '~/components';
+import { Link } from 'react-router-dom';
+
+import { Title } from '~/components';
+import { pathNames } from '~/routes';
 import { cx, context, placeHolder } from './constant';
 
 function Register() {
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>{context.title}</h1>
+            <Title line center as={'h1'}>
+                {context.title}
+            </Title>
             <div className={cx('form')}>
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
@@ -63,9 +68,9 @@ function Register() {
                 <button className={cx('btn-register')}>
                     {context.register}
                 </button>
-                <Button to={'/login'} className={cx('btn-login')}>
+                <Link to={pathNames.login} className={cx('btn-login')}>
                     {context.login}
-                </Button>
+                </Link>
             </div>
         </div>
     );

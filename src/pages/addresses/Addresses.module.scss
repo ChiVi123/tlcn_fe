@@ -1,35 +1,14 @@
 .btn {
-    padding: 1rem;
-
-    color: var(--primary);
-    font-size: 1.4rem;
     letter-spacing: 0.08rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-align: center;
-
-    border-radius: 0.4rem;
-    border: 0.1rem solid var(--primary);
-
-    &--solid {
-        color: var(--white);
-        background-color: var(--primary);
-    }
 
     & ~ & {
-        margin-top: 1rem;
         margin-left: 1rem;
-    }
-
-    &:hover {
-        box-shadow: 1px 0px 6px 2px rgb(237 63 70 / 25%);
-        cursor: pointer;
     }
 }
 
 .addresses {
-    list-style: none;
     margin-top: 1.6rem;
+    padding: 0 0.8rem;
 }
 
 .address {

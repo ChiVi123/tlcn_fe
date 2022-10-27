@@ -1,11 +1,12 @@
 import { useLocation } from 'react-router-dom';
 
-import { Button } from '~/components';
+import { Button, Section, Title, Wrapper } from '~/components';
+import { pathNames } from '~/routes';
 import BreadCrumb from '../components/breadcrumb/BreadCrumb';
 import Footer from '../components/footer/Footer';
 import Header from '../components/header/Header';
 
-import { cx, context, pathName } from './constant';
+import { cx, context } from './constant';
 
 function AddressLayout({ children }) {
     const location = useLocation();
@@ -14,35 +15,33 @@ function AddressLayout({ children }) {
         <>
             <Header />
             <BreadCrumb />
-            <div className={cx('wrapper')}>
-                <div className={cx('grid wide')}>
-                    <div className={cx('section')}>
+            <Wrapper>
+                <div className={cx('grid', 'wide')}>
+                    <Section classNames={cx('containter')}>
                         <div className={cx('row')}>
                             <div className={cx('col', 'l-12')}>
-                                <h1 className={cx('title', 'title--line')}>
-                                    {context.title}
-                                </h1>
+                                <Title line>{context.title}</Title>
                             </div>
                             <div className={cx('col', 'l-12')}>
                                 <Button
-                                    to={
+                                    solid
+                                    navTo={
                                         location.pathname ===
-                                        pathName.addressForm
-                                            ? pathName.addresses
-                                            : pathName.addressForm
+                                        pathNames.addressForm
+                                            ? pathNames.addresses
+                                            : pathNames.addressForm
                                     }
-                                    className={cx('btn', 'btn--solid')}
                                 >
-                                    {location.pathname === pathName.addressForm
+                                    {location.pathname === pathNames.addressForm
                                         ? context.backPageAddresses
                                         : context.addAddressBtn}
                                 </Button>
                             </div>
                         </div>
                         {children}
-                    </div>
+                    </Section>
                 </div>
-            </div>
+            </Wrapper>
             <Footer />
         </>
     );

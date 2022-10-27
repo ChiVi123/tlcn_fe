@@ -3,8 +3,10 @@ import {
     faUser,
     faPhone,
     faArrowRightFromBracket,
+    faTable,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faAddressBook } from '@fortawesome/free-regular-svg-icons';
+import { faFacebookF, faGooglePlusG } from '@fortawesome/free-brands-svg-icons';
 import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
@@ -25,11 +27,27 @@ import {
 
 const cx = classNames.bind(styles);
 
-const topbars = [
+const topbarsLeft = [
+    {
+        icon: faFacebookF,
+        href: 'https://www.facebook.com/sangtran8321',
+    },
+    {
+        icon: faGooglePlusG,
+        href: 'mailto:transang8320001@gmail.com',
+    },
+];
+
+const topbarsRight = [
     {
         icon: faUser,
         context: 'Tài khoản',
         to: '/login',
+    },
+    {
+        icon: faTable,
+        context: 'Trang quản trị',
+        to: '/admin',
     },
     {
         icon: faAddressBook,
@@ -60,7 +78,7 @@ const actions = [
     {
         icon: faClock,
         context: '8:00 AM - 5:00 PM',
-        title: 'Hỗ trợ',
+        title: 'Thời gian làm việc',
         to: '',
         href: '',
     },
@@ -69,7 +87,7 @@ const actions = [
 const navItems = [
     { name: 'Trang chủ', to: '/' },
     { name: 'Mã giảm giá', to: '/sale' },
-    { name: 'Theo dõi đơn hàng', to: '/bill' },
+    { name: 'Theo dõi đơn hàng', to: '/orders' },
 ];
 
 const menuCate = [
@@ -437,4 +455,4 @@ const menuCate = [
     },
 ];
 
-export { cx, actions, navItems, menuCate, topbars };
+export { cx, actions, navItems, menuCate, topbarsRight, topbarsLeft };
