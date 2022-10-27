@@ -20,7 +20,9 @@ function AddressLayout({ children }) {
                     <Section classNames={cx('containter')}>
                         <div className={cx('row')}>
                             <div className={cx('col', 'l-12')}>
-                                <Title line>{context.title}</Title>
+                                <Title as='h1' line>
+                                    {context.title}
+                                </Title>
                             </div>
                             <div className={cx('col', 'l-12')}>
                                 <Button

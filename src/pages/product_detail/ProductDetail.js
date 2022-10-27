@@ -11,7 +11,7 @@ import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { products } from '~/utils/constant';
 import { cx, product, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
-import { ProductCart } from '~/components';
+import { ProductCart, Title } from '~/components';
 
 function ProductDetail() {
     const [translateXRealtion, setTranslateXRealtion] = useState(0);
@@ -49,7 +49,7 @@ function ProductDetail() {
 
                     {/* Infomation */}
                     <div className={cx('section-right')}>
-                        <h1 className={cx('product-name')}>{product.name}</h1>
+                        <Title as='h1'>{product.name}</Title>
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
@@ -168,11 +168,9 @@ function ProductDetail() {
                 {/* Description */}
                 <div className={cx('section')}>
                     <div className={cx('section__wrapper')}>
-                        <h1
-                            className={cx('product-name', 'product-name--line')}
-                        >
+                        <Title as='h2' line>
                             {context.description}
-                        </h1>
+                        </Title>
                         <p className={cx('description')}>
                             Et voluptua sanctus diam lorem sed clita dolores. Et
                             duo sed stet et sed takimata ut duo, ea rebum ea
@@ -196,11 +194,9 @@ function ProductDetail() {
                 {/* Relation */}
                 <div className={cx('section')}>
                     <div className={cx('section__wrapper')}>
-                        <h1
-                            className={cx('product-name', 'product-name--line')}
-                        >
+                        <Title as='h2' line>
                             {context.relation}
-                        </h1>
+                        </Title>
                         <div className={cx('relation-wrapper')}>
                             <button
                                 onClick={handlePrevRelation}

@@ -50,28 +50,6 @@
     letter-spacing: 0.04rem;
 }
 
-.product-name {
-    position: relative;
-    margin-bottom: 1.6rem;
-    font-size: 2rem;
-    font-weight: 400;
-
-    &--line {
-        border-bottom: 0.2rem solid #eee;
-    }
-
-    &--line::before {
-        position: absolute;
-        bottom: -0.2rem;
-        left: 0;
-        content: '';
-        width: 7.6rem;
-        height: 0.2rem;
-
-        background-color: var(--primary);
-    }
-}
-
 .rating {
     display: flex;
     align-items: center;

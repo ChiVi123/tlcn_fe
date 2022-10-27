@@ -15,7 +15,7 @@ function ProductCart({ product }) {
     const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
-        <Link to={pathNames.home} className={cx('product')}>
+        <Link to={pathNames.product} className={cx('product')}>
             {product.sale && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm

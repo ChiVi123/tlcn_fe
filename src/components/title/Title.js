@@ -10,10 +10,12 @@ function Title({ children, line, center, right, as }) {
         line,
         center,
         right,
-        as,
+        [as]: as,
     });
 
-    return <h1 className={classNames}>{children}</h1>;
+    const Component = as;
+
+    return <Component className={classNames}>{children}</Component>;
 }
 
 Title.propTypes = {
