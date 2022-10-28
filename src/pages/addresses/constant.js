@@ -13,19 +13,5 @@ export const context = {
     address2: 'Địa chỉ 2:',
     city: 'Thành phố:',
     phone: 'Số điện thoại:',
+    default: 'Địa chỉ mặc định',
 };
-
-export const addresses = [
-    {
-        name: 'nhat sang',
-        addresses: ['so 1 vvn', 'so 2 vvn', 'tphcm'],
-        phone: '0X261XXXXXX',
-        setDefault: false,
-    },
-    {
-        name: 'sang nhat',
-        addresses: ['so 3 vvn', 'so 4 vvn', 'tphcm'],
-        phone: '0X262XXXXXX',
-        setDefault: true,
-    },
-];

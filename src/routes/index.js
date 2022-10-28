@@ -10,6 +10,7 @@ import {
     Addresses,
     AddressForm,
     Orders,
+    Checkout,
 } from '~/pages';
 
 const pathNames = {
@@ -45,6 +46,7 @@ const publicRoutes = [
         layout: AddressLayout,
     },
     { path: pathNames.orders, component: Orders },
+    { path: pathNames.checkout, component: Checkout, layout: null },
 ];
 
 const privateRoutes = [];

@@ -8,8 +8,8 @@ import {
 import { useState } from 'react';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { products } from '~/utils/constant';
-import { cx, product, context, form } from './constant';
+import { products, product } from '~/utils/constant';
+import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
 import { ProductCart, Title } from '~/components';
 

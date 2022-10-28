@@ -107,7 +107,7 @@ function AddressForm() {
                         <span>{context.setDefault}</span>
                     </label>
                 </div>
-                <div className='col l-12 group'>
+                <div className={cx('col', 'l-12', 'group')}>
                     <Button solid className={cx('btn')}>
                         <FontAwesomeIcon
                             className={cx('font-icon')}

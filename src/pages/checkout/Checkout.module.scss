@@ -1,0 +1,80 @@
+.group {
+    --padding-left: 1.2rem;
+
+    position: relative;
+    margin-bottom: 1.6rem;
+}
+
+.logo {
+    height: 5.4rem;
+    margin: 2.8rem 0 2.1rem;
+}
+
+.logo-img {
+    height: 100%;
+}
+
+.label-input {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: var(--padding-left);
+
+    color: #999;
+    font-size: 1.4rem;
+
+    background-color: var(--white);
+    transition: all 0.3s ease;
+
+    &--text-area {
+        top: 30%;
+        right: 1.8rem;
+    }
+}
+
+.group:focus-within .label-input,
+.focus.label-input {
+    top: 0.4rem;
+    transform: translateY(0);
+    font-size: 1.2rem;
+
+    &--text-area {
+        top: 0.1rem;
+    }
+}
+
+.input {
+    max-width: 100%;
+    width: 100%;
+    padding: 2rem var(--padding-left) 0.4rem;
+
+    color: var(--text-color);
+    line-height: 1.8rem;
+    font-size: 1.6rem;
+
+    border: 0.1rem solid #d9d9d9;
+    border-radius: 0.8rem;
+}
+
+.input:focus {
+    --color: #66afe9;
+
+    outline: none;
+    border-color: var(--color);
+}
+
+.input-select {
+    --height: 4.4rem;
+
+    height: var(--height);
+
+    & > div {
+        min-height: var(--height);
+    }
+}
+
+.disable {
+    cursor: no-drop;
+    background-color: #ddd;
+}

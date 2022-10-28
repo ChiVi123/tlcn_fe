@@ -1,6 +1,7 @@
 import { Section, Title, Wrapper } from '~/components';
 import { currencyVN } from '~/utils/funcs';
-import { cx, context, orders } from './constant';
+import { orders } from '~/utils/constant';
+import { cx, context } from './constant';
 
 function Orders() {
     return (

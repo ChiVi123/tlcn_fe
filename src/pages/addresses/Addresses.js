@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { cx, context, addresses } from './constant';
+import { addresses } from '~/utils/constant';
+import { cx, context } from './constant';
 import { Button } from '~/components';
 
 function Addresses() {
@@ -14,7 +15,7 @@ function Addresses() {
                         <span className={cx('text')}>{item.name}</span>
                         {item.setDefault ? (
                             <span className={cx('default')}>
-                                (Địa chỉ mặc định)
+                                ({context.default})
                             </span>
                         ) : (
                             <></>
