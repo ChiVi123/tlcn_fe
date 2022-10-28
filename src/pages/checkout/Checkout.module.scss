@@ -12,6 +12,9 @@
 
 .logo-img {
     height: 100%;
+    padding: 0.2rem;
+    background-color: var(--primary);
+    border-radius: 0.4rem;
 }
 
 .label-input {
@@ -28,7 +31,7 @@
     transition: all 0.3s ease;
 
     &--text-area {
-        top: 30%;
+        top: 2.6rem;
         right: 1.8rem;
     }
 }
@@ -44,6 +47,14 @@
     }
 }
 
+.select {
+    font-size: 1.6rem;
+}
+
+.option {
+    color: red;
+}
+
 .input {
     max-width: 100%;
     width: 100%;
@@ -54,7 +65,7 @@
     font-size: 1.6rem;
 
     border: 0.1rem solid #d9d9d9;
-    border-radius: 0.8rem;
+    border-radius: 0.6rem;
 }
 
 .input:focus {

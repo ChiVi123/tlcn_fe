@@ -26,3 +26,9 @@ export function formatDate(date) {
         date.getFullYear(),
     ].join('/');
 }
+
+export function getArray(array, code, name) {
+    const resutl = array.filter((item) => item.id === code)[0];
+
+    return resutl ? resutl[name] : [];
+}

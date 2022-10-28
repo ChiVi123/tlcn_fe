@@ -385,8 +385,6 @@ export const product = {
 export const addresses = [
     {
         id: 1,
-        value: 1,
-        label: 'nhat sang so 1 vvn',
         name: 'nhat sang',
         addresses: ['so 1 vvn', 'so 2 vvn', 'tphcm'],
         phone: '0X261XXXXXX',
@@ -394,8 +392,6 @@ export const addresses = [
     },
     {
         id: 2,
-        value: 2,
-        label: 'nhat sang so 3 vvn',
         name: 'sang nhat',
         addresses: ['so 3 vvn', 'so 4 vvn', 'tphcm'],
         phone: '0X262XXXXXX',
