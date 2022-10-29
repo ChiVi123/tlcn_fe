@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
+import { Button, Title } from '~/components';
 import { imgLogo } from '~/assets/images';
-import { addresses } from '~/utils/constant';
+import { pathNames } from '~/routes';
+import { addresses, products } from '~/utils/constant';
 import dataLocal from '~/utils/local.json';
-import { getArray } from '~/utils/funcs';
+import { currencyVN, getArray } from '~/utils/funcs';
 
 import SelectControlAddresses from './component/SelectControlAddresses';
 import SelectControlLocals from './component/SelectControlLocals';
@@ -17,13 +21,15 @@ function Checkout() {
         phone: '',
         address: '',
         note: '',
+        code: '',
     });
-    const [locals, setLocals] = useState({
-        local: '1',
-        district: '1',
-        ward: '1',
+    const [localId, setLocalId] = useState({
+        local: '0',
+        district: '0',
+        ward: '0',
     });
 
+    // Handle event
     const handleAddresses = (value) =>
         setForm((prev) => {
             return {
@@ -34,27 +40,26 @@ function Checkout() {
             };
         });
     const handleLocal = (value) =>
-        setLocals((prev) => {
+        setLocalId((prev) => {
             return {
                 ...prev,
                 local: value.id,
             };
         });
     const handleDistrict = (value) =>
-        setLocals((prev) => {
+        setLocalId((prev) => {
             return {
                 ...prev,
                 district: value.id,
             };
         });
     const handleWard = (value) =>
-        setLocals((prev) => {
+        setLocalId((prev) => {
             return {
                 ...prev,
                 ward: value.id,
             };
         });
-
     const handleName = (event) =>
         setForm((prev) => {
             return { ...prev, name: event.target.value };
@@ -71,18 +76,24 @@ function Checkout() {
         setForm((prev) => {
             return { ...prev, note: event.target.value };
         });
-
+    const handleCode = (event) =>
+        setForm((prev) => {
+            return { ...prev, code: event.target.value };
+        });
     return (
         <div className={cx('grid', 'wide')}>
             <div className={cx('row')}>
                 <div className={cx('col', 'l-7')}>
-                    <div className={cx('logo')}>
+                    {/* Logo */}
+                    <Button to={pathNames.home} className={cx('logo')} reset>
                         <img
                             src={imgLogo}
                             alt='logo'
                             className={cx('logo-img')}
                         />
-                    </div>
+                    </Button>
+
+                    {/* Info address */}
                     <div className={cx('row')}>
                         <div className={cx('col', 'l-6')}>
                             <div className={cx('group')}>
@@ -204,13 +215,14 @@ function Checkout() {
                                 <Select
                                     options={getArray(
                                         dataLocal,
-                                        locals.local,
+                                        localId.local,
                                         'districts',
                                     )}
                                     className={cx('input-select')}
                                     components={{ Option: SelectControlLocals }}
                                     getOptionLabel={(option) => option.name}
                                     onChange={handleDistrict}
+                                    isDisabled={localId.local === '0'}
                                 />
                             </div>
                         </div>
@@ -222,19 +234,22 @@ function Checkout() {
                                     options={getArray(
                                         getArray(
                                             dataLocal,
-                                            locals.local,
+                                            localId.local,
                                             'districts',
                                         ),
-                                        locals.district,
+                                        localId.district,
                                         'wards',
                                     )}
                                     className={cx('input-select')}
                                     components={{ Option: SelectControlLocals }}
                                     getOptionLabel={(option) => option.name}
                                     onChange={handleWard}
+                                    isDisabled={localId.district === '0'}
                                 />
                             </div>
                         </div>
+
+                        {/* Note */}
                         <div className={cx('col', 'l-12')}>
                             <div className={cx('group')}>
                                 <label
@@ -262,7 +277,145 @@ function Checkout() {
                         </div>
                     </div>
                 </div>
-                <div className={cx('col', 'l-5')}></div>
+
+                <div className={cx('col', 'l-5')}>
+                    <div className={cx('container')}>
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-12')}>
+                                <Title as='h1' classNames={cx('title')}>
+                                    {context.title}
+                                </Title>
+                            </div>
+                        </div>
+
+                        {/* Products */}
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-12')}>
+                                <ul className={cx('products')}>
+                                    {products.map((item, index) => (
+                                        <li
+                                            key={index}
+                                            className={cx('product')}
+                                        >
+                                            <span className={cx('quantity')}>
+                                                1
+                                            </span>
+                                            <div className={cx('info')}>
+                                                <img
+                                                    src={item.src}
+                                                    alt={item.name}
+                                                    className={cx('img')}
+                                                />
+                                                <Title as='h3'>
+                                                    {item.name}
+                                                </Title>
+                                            </div>
+                                            <span className={cx('text')}>
+                                                {currencyVN(item.price)}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Code */}
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-6')}>
+                                <div className={cx('group')}>
+                                    <label
+                                        htmlFor={inputId.code}
+                                        className={cx('label-input', {
+                                            focus: !!form.code,
+                                        })}
+                                    >
+                                        {context.code}
+                                    </label>
+                                    <input
+                                        id={inputId.code}
+                                        type='text'
+                                        value={form.code}
+                                        onChange={handleCode}
+                                        className={cx('input')}
+                                    />
+                                </div>
+                            </div>
+                            <div className={cx('col', 'l-6')}>
+                                <button
+                                    className={cx('btn', {
+                                        'btn--disable': !form.code,
+                                    })}
+                                >
+                                    {context.applyCode}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Bill */}
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-12')}>
+                                <div className={cx('section-text')}>
+                                    <span className={cx('text')}>
+                                        {context.tempCalc}
+                                    </span>
+                                    <span className={cx('text')}>
+                                        {currencyVN(99000)}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={cx('col', 'l-12')}>
+                                <div className={cx('section-text')}>
+                                    <span className={cx('text')}>
+                                        {context.feeShip}
+                                    </span>
+                                    <span className={cx('text')}>-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-12')}>
+                                <div className={cx('section-text')}>
+                                    <span className={cx('large-text')}>
+                                        {context.priceTotal}
+                                    </span>
+                                    <span
+                                        className={cx(
+                                            'large-text',
+                                            'large-text--blue',
+                                        )}
+                                    >
+                                        {currencyVN(99000)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Button */}
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-6')}>
+                                <Button
+                                    to={pathNames.cart}
+                                    reset
+                                    className={cx('link')}
+                                >
+                                    <>
+                                        <FontAwesomeIcon icon={faAngleLeft} />
+                                        {context.backToCart}
+                                    </>
+                                </Button>
+                            </div>
+                            <div className={cx('col', 'l-6')}>
+                                <button
+                                    to={pathNames.cart}
+                                    className={cx('btn')}
+                                >
+                                    {context.order}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

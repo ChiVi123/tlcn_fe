@@ -5,8 +5,9 @@ import styles from './Title.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Title({ children, line, center, right, as }) {
-    const classNames = cx('title', {
+function Title({ children, classNames, line, center, right, as }) {
+    const classes = cx('title', {
+        [classNames]: classNames,
         line,
         center,
         right,
@@ -15,11 +16,12 @@ function Title({ children, line, center, right, as }) {
 
     const Component = as;
 
-    return <Component className={classNames}>{children}</Component>;
+    return <Component className={classes}>{children}</Component>;
 }
 
 Title.propTypes = {
     children: PropTypes.node.isRequired,
+    classNames: PropTypes.string,
     line: PropTypes.bool,
     center: PropTypes.bool,
     right: PropTypes.bool,
