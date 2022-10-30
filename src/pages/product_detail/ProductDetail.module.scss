@@ -69,6 +69,7 @@
 }
 
 .summary {
+    list-style: disc;
     margin-left: 1.8rem;
 }
 
@@ -214,4 +215,36 @@
     right: 0;
     cursor: default;
     opacity: 0.2;
+}
+
+.comments {
+    padding: 1rem 2rem;
+}
+
+.comment {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.user-name {
+    display: block;
+    color: var(--primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.avatar {
+    height: 6rem;
+    margin-right: 1.2rem;
+}
+
+.created-at {
+    color: #acacac;
+    font-size: 1.4rem;
+}
+
+.comment-content {
+    max-width: 94%;
+    color: var(--text-color);
+    font-size: 1.6rem;
 }

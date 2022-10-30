@@ -398,3 +398,59 @@ export const addresses = [
         setDefault: true,
     },
 ];
+
+export const comments = [
+    {
+        userName: 'học phan',
+        img: 'https://www.gravatar.com/avatar/d60537067c787a1ee47b1d1ac8f02803?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content:
+            'Shop cần kiểm tra kỹ số lượng trước khi gửi vì.thiếu 1 vài linh kiện người mua lại không làm được gây khó chịu.và cửa hàng nên để chế độ cho xem trước khi đưa tiền thì người mua sẽ dễ kiểm tra chất lượng và số lượng linh kiện.cũng như tránh trường hợp thất lạc trong lúc vận chuyển.và có khi không thiếu nhưng khách lại báo thiếu gây thiệt hại cho cửa hàng.mong shop ngày càng đa dạng sản phẩm hơn.để mua 1 lần có thể đủ không đến shop khác cũng như đỡ tiền ship cho khách sẽ có nhiều khách tới với s',
+    },
+    {
+        userName: 'Lý Ngọc Huỳnh',
+        img: 'https://www.gravatar.com/avatar/1c8d1b49f0eef57b0cb73c1e7ea8e510?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content: 'Cần gói hàng cẩn thận hơn',
+    },
+    {
+        userName: 'Văn Minh',
+        img: 'https://www.gravatar.com/avatar/b34dda057a3109d27343d39e7091a2cc?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content:
+            'mình đã mua linh kiện ở đây rất nhiều lần vì shop này làm ăn uy tín, sản phẩm chất lượng tốt',
+    },
+    {
+        userName: 'Nguyễn Quang Thiên',
+        img: 'https://www.gravatar.com/avatar/1d1bead9851345aef95f34d392e992d0?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content:
+            'shop phục vụ tốt giao hàn nhanh, thích nhất là bộ phận Thông tin kỹ thuật trao đổi nhiệt tình',
+    },
+    {
+        userName: 'Vu nguyen the anh',
+        img: 'https://www.gravatar.com/avatar/3b7d054fbc35ce085cf387347a212a9b?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content: 'shop phục vụ tốt sản phẩm chất lượng ít sai số',
+    },
+    {
+        userName: 'Huỳnh Quang Duy',
+        img: 'https://www.gravatar.com/avatar/e650173e498f97c32fc24d5aa7d3ece7?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content:
+            'Hàng đúng như quảng cáo, giống với hình trên trang web. Sẽ ủng hộ lâu dài.',
+    },
+    {
+        userName: 'Huynh huu thien an',
+        img: 'https://www.gravatar.com/avatar/8da39c91d3c3e144138f0801eb4c81a7?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content: 'Giao hàng đúng như quảng cáo. Thanks',
+    },
+    {
+        userName: 'Chu Văn Hưng',
+        img: 'https://www.gravatar.com/avatar/069e2b00c815d028e75c8cc3e2eda2dc?s=55&d=identicon',
+        createdAt: formatDate(new Date()),
+        content:
+            'Mình đang dùng hàng shop chế đồ. Thấy 1 số linh kiện ngon. Tuy nhiên cần check kỹ hơn nữa trước khi giao hàng là Ok',
+    },
+];

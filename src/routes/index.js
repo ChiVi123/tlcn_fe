@@ -11,6 +11,7 @@ import {
     AddressForm,
     Orders,
     Checkout,
+    Profile,
 } from '~/pages';
 
 const pathNames = {
@@ -21,6 +22,7 @@ const pathNames = {
     search: '/search',
     checkout: '/checkout',
     forgotPassword: '/forgot-password',
+    sales: '/sales',
     any: '/*',
 
     // private
@@ -28,6 +30,11 @@ const pathNames = {
     addresses: '/addresses',
     addressForm: '/address-form',
     orders: '/orders',
+    profile: '/profile',
+    logout: '/logout',
+
+    //admin
+    admin: '/admin',
 };
 
 const publicRoutes = [
@@ -47,6 +54,7 @@ const publicRoutes = [
     },
     { path: pathNames.orders, component: Orders },
     { path: pathNames.checkout, component: Checkout, layout: null },
+    { path: pathNames.profile, component: Profile },
 ];
 
 const privateRoutes = [];

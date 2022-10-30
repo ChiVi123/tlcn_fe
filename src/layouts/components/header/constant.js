@@ -4,6 +4,7 @@ import {
     faPhone,
     faArrowRightFromBracket,
     faTable,
+    faInfo,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faAddressBook } from '@fortawesome/free-regular-svg-icons';
 import { faFacebookF, faGooglePlusG } from '@fortawesome/free-brands-svg-icons';
@@ -24,6 +25,7 @@ import {
     imgCate12,
     imgCate13,
 } from '~/assets/images';
+import { pathNames } from '~/routes';
 
 const cx = classNames.bind(styles);
 
@@ -42,22 +44,27 @@ const topbarsRight = [
     {
         icon: faUser,
         context: 'Tài khoản',
-        to: '/login',
+        to: pathNames.login,
+    },
+    {
+        icon: faInfo,
+        context: 'Thông tin tài khoản',
+        to: pathNames.profile,
     },
     {
         icon: faTable,
         context: 'Trang quản trị',
-        to: '/admin',
+        to: pathNames.admin,
     },
     {
         icon: faAddressBook,
         context: 'Sổ địa chỉ',
-        to: '/addresses',
+        to: pathNames.addresses,
     },
     {
         icon: faArrowRightFromBracket,
         context: 'Đăng xuất',
-        to: '/logout',
+        to: pathNames.logout,
     },
 ];
 
@@ -66,7 +73,7 @@ const actions = [
         icon: faBasketShopping,
         context: '(10) Sẩn phẩm',
         title: 'Giỏ hàng',
-        to: '/cart',
+        to: pathNames.cart,
     },
     {
         icon: faPhone,
@@ -85,9 +92,9 @@ const actions = [
 ];
 
 const navItems = [
-    { name: 'Trang chủ', to: '/' },
-    { name: 'Mã giảm giá', to: '/sale' },
-    { name: 'Theo dõi đơn hàng', to: '/orders' },
+    { name: 'Trang chủ', to: pathNames.home },
+    { name: 'Mã giảm giá', to: pathNames.sales },
+    { name: 'Theo dõi đơn hàng', to: pathNames.orders },
 ];
 
 const menuCate = [

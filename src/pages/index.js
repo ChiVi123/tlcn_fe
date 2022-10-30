@@ -11,3 +11,4 @@ export { default as Addresses } from './addresses/Addresses';
 export { default as AddressForm } from './address_form/AddressForm';
 export { default as Orders } from './orders/Orders';
 export { default as Checkout } from './checkout/Checkout';
+export { default as Profile } from './profile/Profile';

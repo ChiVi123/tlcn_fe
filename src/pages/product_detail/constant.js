@@ -11,6 +11,7 @@ const context = {
     tags: 'Tags:',
     description: 'Mô tả sản phẩm',
     relation: 'Sản phẩm cùng loại',
+    comment: 'Bình luận (780 bình luận)',
 };
 
 const form = {

@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { products, product } from '~/utils/constant';
+import { products, product, comments } from '~/utils/constant';
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
 import { ProductCart, Title } from '~/components';
@@ -85,15 +85,9 @@ function ProductDetail() {
                                 />
                                 {context.tags}
                             </span>
-                            {product.tags.map((item, index, items) => (
-                                <span
-                                    key={index}
-                                    className={cx('section-text')}
-                                >
-                                    {item}
-                                    {index === items.length - 1 ? '' : ', '}
-                                </span>
-                            ))}
+                            <span className={cx('section-text')}>
+                                {product.tags.join(', ')}
+                            </span>
                         </div>
 
                         {/* Summary */}
@@ -189,6 +183,38 @@ function ProductDetail() {
                             voluptua.
                         </p>
                     </div>
+                </div>
+
+                {/* Comment */}
+                <div className={cx('section')}>
+                    <div className={cx('section__wrapper')}>
+                        <Title as='h2' line>
+                            {context.comment}
+                        </Title>
+                    </div>
+
+                    <ul className={cx('comments')}>
+                        {comments.map((item, index) => (
+                            <li key={index} className={cx('comment')}>
+                                <img
+                                    src={item.img}
+                                    alt={item.userName}
+                                    className={cx('avatar')}
+                                />
+                                <div className={cx('right-side')}>
+                                    <span className={cx('user-name')}>
+                                        {item.userName}
+                                    </span>
+                                    <span className={cx('created-at')}>
+                                        {item.createdAt}
+                                    </span>
+                                    <p className={cx('comment-content')}>
+                                        {item.content}
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
                 {/* Relation */}
