@@ -43,7 +43,9 @@ const publicRoutes = [
     { path: pathNames.login, component: Login },
     { path: pathNames.register, component: Register },
     { path: pathNames.any, component: PageNotFound, layout: null },
+];
 
+const privateRoutes = [
     // private
     { path: pathNames.cart, component: Cart },
     { path: pathNames.addresses, component: Addresses, layout: AddressLayout },
@@ -56,7 +58,5 @@ const publicRoutes = [
     { path: pathNames.checkout, component: Checkout, layout: null },
     { path: pathNames.profile, component: Profile },
 ];
-
-const privateRoutes = [];
 
 export { publicRoutes, privateRoutes, pathNames };

@@ -454,3 +454,11 @@ export const comments = [
             'Mình đang dùng hàng shop chế đồ. Thấy 1 số linh kiện ngon. Tuy nhiên cần check kỹ hơn nữa trước khi giao hàng là Ok',
     },
 ];
+
+export const user = {
+    lastName: 'sang',
+    firstName: 'nhat',
+    email: 'nhatsangtv123@gmail.com',
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjiDaOkbNZij3ZYaLI24Vanv7s8TlhVrpNJQ&usqp=CAU',
+    password: '1234567890',
+};

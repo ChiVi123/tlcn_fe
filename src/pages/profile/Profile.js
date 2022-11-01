@@ -1,4 +1,8 @@
+import Avatar from 'react-avatar';
+
 import { Button, Section, Title, Wrapper } from '~/components';
+import { pathNames } from '~/routes';
+import { user } from '~/utils/constant';
 import { context, cx } from './constant';
 
 function Profile() {
@@ -14,55 +18,85 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div className='row'>
-                        <div className='col l-6'>
-                            <img src='' alt='anh dai dien' />
-                            <br />
-                            <Button>{context.avataButton}</Button>
+                    <div className={cx('row')}>
+                        <div className={cx('col', 'l-6')}>
+                            <div className={cx('avatar')}>
+                                <Avatar
+                                    src={user.avatar}
+                                    size='200'
+                                    alt='anh dai dien'
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Button className={cx('btn')}>
+                                    {context.avataButton}
+                                </Button>
+                            </div>
                         </div>
-                        <div className='col l-6'>
-                            <div className='row'>
-                                <div className='col l-12'>
-                                    <div className='group'>
+                        <div className={cx('col', 'l-6')}>
+                            <div className={cx('row')}>
+                                <div className={cx('col', 'l-12')}>
+                                    <div className={cx('group')}>
                                         <label
                                             htmlFor=''
-                                            className='label-input'
-                                        ></label>
+                                            className={cx('label-input')}
+                                        >
+                                            {context.lastName}
+                                        </label>
                                         <input
                                             placeholder={context.lastName}
                                             type='text'
-                                            className='input'
+                                            className={cx('input')}
+                                            value={user.lastName}
                                         />
                                     </div>
-                                    <div className='group'>
+                                    <div className={cx('group')}>
                                         <label
                                             htmlFor=''
-                                            className='label-input'
-                                        ></label>
+                                            className={cx('label-input')}
+                                        >
+                                            {context.firstName}
+                                        </label>
                                         <input
                                             placeholder={context.firstName}
                                             type='text'
-                                            className='input'
+                                            className={cx('input')}
+                                            value={user.firstName}
                                         />
                                     </div>
-                                    <div className='group'>
+                                    <div className={cx('group')}>
                                         <label
                                             htmlFor=''
-                                            className='label-input'
-                                        ></label>
+                                            className={cx('label-input')}
+                                        >
+                                            {context.email}
+                                        </label>
                                         <input
-                                            placeholder={context.mail}
+                                            placeholder={context.email}
                                             type='text'
-                                            className='input'
+                                            className={cx('input', 'disable')}
+                                            value={user.email}
                                         />
                                     </div>
-                                    <div className='group'>
-                                        <Button solid={true}>
+                                    <div className={cx('group')}>
+                                        <Button
+                                            to={pathNames.addresses}
+                                            solid={true}
+                                            className={cx('btn')}
+                                        >
                                             {context.addressesButton}
                                         </Button>
                                     </div>
-                                    <div className='group'>
-                                        <Button solid={true}>
+                                    <div className={cx('group')}>
+                                        <Button
+                                            solid={true}
+                                            className={cx('btn')}
+                                        >
                                             {context.editButton}
                                         </Button>
                                     </div>

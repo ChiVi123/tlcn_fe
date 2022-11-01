@@ -9,6 +9,7 @@ const context = {
     titleTool: 'Dụng cụ - phụ kiện',
     viewMoreButton: 'Xem thêm',
     viewMoreText: 'Xem tất cả',
+    loginSuccess: 'Đăng nhập thành công',
 };
 
 export { cx, context };

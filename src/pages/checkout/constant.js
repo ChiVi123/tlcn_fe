@@ -5,7 +5,7 @@ export const cx = classNames.bind(styles);
 
 export const context = {
     title: 'Đơn hàng (10) sản phẩm',
-    mail: 'Mail',
+    email: 'Email',
     name: 'Họ và tên',
     phone: 'Số điện thoại',
     address: 'Địa chỉ',
@@ -20,7 +20,7 @@ export const context = {
 };
 
 export const inputId = {
-    mail: 'mail',
+    email: 'email',
     name: 'name',
     phone: 'phone',
     address: 'address',

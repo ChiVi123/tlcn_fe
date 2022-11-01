@@ -16,7 +16,7 @@ import { context, cx, inputId } from './constant';
 
 function Checkout() {
     const [form, setForm] = useState({
-        mail: '1234@gmail.com',
+        email: '1234@gmail.com',
         name: '',
         phone: '',
         address: '',
@@ -115,18 +115,18 @@ function Checkout() {
                         <div className={cx('col', 'l-6')}>
                             <div className={cx('group')}>
                                 <label
-                                    htmlFor={inputId.mail}
+                                    htmlFor={inputId.email}
                                     className={cx('label-input', 'disable', {
-                                        focus: !!form.mail,
+                                        focus: !!form.email,
                                     })}
                                 >
-                                    {context.mail}
+                                    {context.email}
                                 </label>
                                 <input
-                                    id={inputId.mail}
+                                    id={inputId.email}
                                     type='text'
                                     className={cx('input', 'disable')}
-                                    value={form.mail}
+                                    value={form.email}
                                     onChange={() => {}}
                                     disabled={true}
                                 />

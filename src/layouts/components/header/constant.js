@@ -25,7 +25,6 @@ import {
     imgCate12,
     imgCate13,
 } from '~/assets/images';
-import { pathNames } from '~/routes';
 
 const cx = classNames.bind(styles);
 
@@ -44,27 +43,27 @@ const topbarsRight = [
     {
         icon: faUser,
         context: 'Tài khoản',
-        to: pathNames.login,
+        to: '/login',
     },
     {
         icon: faInfo,
         context: 'Thông tin tài khoản',
-        to: pathNames.profile,
+        to: '/profile',
     },
     {
         icon: faTable,
         context: 'Trang quản trị',
-        to: pathNames.admin,
+        to: '/admin',
     },
     {
         icon: faAddressBook,
         context: 'Sổ địa chỉ',
-        to: pathNames.addresses,
+        to: '/addresses',
     },
     {
         icon: faArrowRightFromBracket,
         context: 'Đăng xuất',
-        to: pathNames.logout,
+        to: '/logout',
     },
 ];
 
@@ -73,7 +72,7 @@ const actions = [
         icon: faBasketShopping,
         context: '(10) Sẩn phẩm',
         title: 'Giỏ hàng',
-        to: pathNames.cart,
+        to: '/cart',
     },
     {
         icon: faPhone,
@@ -92,9 +91,9 @@ const actions = [
 ];
 
 const navItems = [
-    { name: 'Trang chủ', to: pathNames.home },
-    { name: 'Mã giảm giá', to: pathNames.sales },
-    { name: 'Theo dõi đơn hàng', to: pathNames.orders },
+    { name: 'Trang chủ', to: '/' },
+    { name: 'Mã giảm giá', to: '/sales' },
+    { name: 'Theo dõi đơn hàng', to: '/orders' },
 ];
 
 const menuCate = [

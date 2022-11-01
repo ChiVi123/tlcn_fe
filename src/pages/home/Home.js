@@ -1,11 +1,28 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ProductCart, Title } from '~/components';
 import { pathNames } from '~/routes';
 import { products } from '~/utils/constant';
+import { userAction, userSelector } from '~/redux';
+
 import { cx, context } from './constant';
 
 function Home() {
+    const dispatch = useDispatch();
+    const user = useSelector(userSelector.getUser);
+
+    useEffect(() => {
+        if (user.email && !user.isToast) {
+            dispatch(userAction.showedToast());
+            toast.success(context.loginSuccess);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'wide')}>

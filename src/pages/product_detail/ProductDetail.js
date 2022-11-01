@@ -201,7 +201,7 @@ function ProductDetail() {
                                     alt={item.userName}
                                     className={cx('avatar')}
                                 />
-                                <div className={cx('right-side')}>
+                                <div className={cx('comment-right-side')}>
                                     <span className={cx('user-name')}>
                                         {item.userName}
                                     </span>

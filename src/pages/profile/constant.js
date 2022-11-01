@@ -4,11 +4,11 @@ import styles from './Profile.module.scss';
 export const cx = classNames.bind(styles);
 
 export const context = {
-    title: 'Thong tin tai khoan',
-    lastName: 'Ho',
-    firstName: 'Ten',
-    avataButton: 'Thay doi anh dai dien',
-    mail: 'Email',
-    addressesButton: 'So dia chi',
-    editButton: 'Luu thay doi',
+    title: 'Thông tin tài khoản',
+    lastName: 'Họ',
+    firstName: 'Tên',
+    avataButton: 'Thay đôi ảnh đại diện',
+    email: 'Email',
+    addressesButton: 'Sổ địa chỉ',
+    editButton: 'Lưu thay đổi',
 };

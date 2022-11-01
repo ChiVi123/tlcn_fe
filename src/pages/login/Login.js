@@ -1,41 +1,82 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
-import { cx, context } from './constant';
+import { user } from '~/utils/constant';
+import { userAction } from '~/redux';
+
+import { cx, context, form, schema } from './constant';
 
 function Login() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleSubmitData = (data) => {
+        if (data.email === user.email && data.password === user.password) {
+            dispatch(userAction.addUser(user));
+            navigate(pathNames.home);
+        }
+    };
+
     return (
-        <div className={cx('wrapper')}>
+        <form
+            onSubmit={handleSubmit(handleSubmitData)}
+            className={cx('wrapper')}
+        >
             <Title line center as='h1'>
                 {context.title}
             </Title>
             <div className={cx('form')}>
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
-                        Email<span>*</span>
+                        {context.emailLabel}
+                        <span>*</span>
                     </label>
                     <input
-                        className={cx('input', 'invalid-input')}
-                        placeholder='Email'
+                        type={'text'}
+                        className={cx('input', {
+                            'invalid-input': !!errors.email?.message,
+                        })}
+                        placeholder={context.emailPlaceholder}
+                        {...register(form.email)}
                     />
                     <span className={cx('invalid-message')}>
-                        Email sai định dạng
+                        {errors.email?.message}
                     </span>
                 </div>
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
-                        {context.fieldPassword}
+                        {context.passwordLabel}
                         <span>*</span>
                     </label>
                     <input
-                        className={cx('input')}
-                        placeholder={context.fieldPassword}
+                        type={'password'}
+                        className={cx('input', {
+                            'invalid-input': !!errors.password?.message,
+                        })}
+                        placeholder={context.passwordPlaceholder}
+                        {...register(form.password)}
                     />
+                    <span className={cx('invalid-message')}>
+                        {errors.password?.message}
+                    </span>
                 </div>
             </div>
             <div className={cx('text-center', 'line')}>
-                <button className={cx('btn-login')}>{context.login}</button>
+                <button type='submit' className={cx('btn-login')}>
+                    {context.login}
+                </button>
                 <Link
                     className={cx('link-forgot-password')}
                     to={pathNames.forgotPassword}
@@ -49,7 +90,7 @@ function Login() {
                     {context.createAcc}
                 </Link>
             </div>
-        </div>
+        </form>
     );
 }
 
