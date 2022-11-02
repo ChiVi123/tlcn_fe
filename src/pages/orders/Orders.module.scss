@@ -2,36 +2,6 @@
     padding: 0.8rem;
 }
 
-table {
-    width: 100%;
-}
-
-table,
-td,
-th {
-    border: 1px solid #dddddd;
-    border-collapse: collapse;
-    text-align: left;
-    padding: 8px;
-}
-
-th {
-    color: var(--white);
-    background-color: #43bac0;
-}
-
-td {
-    color: var(--text-color);
-}
-
-tr:nth-child(even) {
-    background-color: #f2e9e9;
-}
-
-td:first-child {
-    color: var(--second-primary);
-}
-
 .done {
     color: var(--second-primary);
 }

@@ -53,7 +53,7 @@ const topbarsRight = [
     {
         icon: faTable,
         context: 'Trang quản trị',
-        to: '/admin',
+        to: '/admin/dashboard',
     },
     {
         icon: faAddressBook,

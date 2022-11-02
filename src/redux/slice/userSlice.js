@@ -6,6 +6,7 @@ const initialState = {
     avatar: '',
     email: '',
     isToast: false,
+    role: '',
 };
 
 const userSlice = createSlice({
@@ -17,6 +18,7 @@ const userSlice = createSlice({
             state.lastName = payload.lastName;
             state.email = payload.email;
             state.avatar = payload.avatar;
+            state.role = payload.role;
         },
         showedToast(state) {
             state.isToast = true;

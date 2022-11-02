@@ -1,5 +1,4 @@
-import { NotBreadCrumb, AddressLayout } from '~/layouts';
-
+import { NotBreadCrumb, AddressLayout, AdminLayout } from '~/layouts';
 import {
     Home,
     PageNotFound,
@@ -13,6 +12,7 @@ import {
     Checkout,
     Profile,
 } from '~/pages';
+import { Dashboard, Products } from '~/admin/pages';
 
 const pathNames = {
     home: '/',
@@ -20,9 +20,9 @@ const pathNames = {
     login: '/login',
     register: '/register',
     search: '/search',
-    checkout: '/checkout',
     forgotPassword: '/forgot-password',
     sales: '/sales',
+    logout: '/logout',
     any: '/*',
 
     // private
@@ -30,11 +30,22 @@ const pathNames = {
     addresses: '/addresses',
     addressForm: '/address-form',
     orders: '/orders',
+    checkout: '/checkout',
     profile: '/profile',
-    logout: '/logout',
 
     //admin
-    admin: '/admin',
+    admin: 'admin/*',
+    dasboard: 'dashboard',
+    products: 'products',
+    productForm: 'product-form',
+    categories: 'categories',
+    categoryForm: 'category-form',
+    users: 'users',
+    userForm: 'user-form',
+    adminOrders: 'orders',
+    orderForm: 'order-form',
+    adminSales: 'sales',
+    saleForm: 'sale-form',
 };
 
 const publicRoutes = [
@@ -59,4 +70,23 @@ const privateRoutes = [
     { path: pathNames.profile, component: Profile },
 ];
 
-export { publicRoutes, privateRoutes, pathNames };
+const adminRoutes = [
+    // admin
+    {
+        path: pathNames.admin,
+        component: PageNotFound,
+        layout: null,
+    },
+    {
+        path: pathNames.dasboard,
+        component: Dashboard,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.products,
+        component: Products,
+        layout: AdminLayout,
+    },
+];
+
+export { publicRoutes, privateRoutes, adminRoutes, pathNames };

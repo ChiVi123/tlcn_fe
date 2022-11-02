@@ -4,6 +4,7 @@
 :root {
     // width height
     --height-header: 5.6rem;
+    --height-footer: 3.6rem;
     --width-sidebar: 7.2rem;
 
     // text color
@@ -47,4 +48,34 @@ input,
 
 ul {
     list-style: none;
+}
+
+table {
+    width: 100%;
+}
+
+table,
+td,
+th {
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    color: var(--white);
+    background-color: #43bac0;
+}
+
+td {
+    color: var(--text-color);
+}
+
+tr:nth-child(even) {
+    background-color: #f2e9e9;
+}
+
+td:first-child {
+    color: var(--second-primary);
 }

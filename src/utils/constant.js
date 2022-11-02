@@ -461,4 +461,5 @@ export const user = {
     email: 'nhatsangtv123@gmail.com',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjiDaOkbNZij3ZYaLI24Vanv7s8TlhVrpNJQ&usqp=CAU',
     password: '1234567890',
+    role: 'admin',
 };
