@@ -52,13 +52,13 @@ ul {
 
 table {
     width: 100%;
+    border-spacing: 0;
+    border-collapse: separate;
 }
 
-table,
 td,
 th {
     border: 1px solid #dddddd;
-    border-collapse: collapse;
     text-align: left;
     padding: 8px;
 }

@@ -8,17 +8,19 @@ import {
 import { useState } from 'react';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { products, product, comments } from '~/utils/constant';
+import { products, comments } from '~/utils/constant';
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
 import { ProductCart, Title } from '~/components';
+import { useParams } from 'react-router-dom';
 
 function ProductDetail() {
     const [translateXRealtion, setTranslateXRealtion] = useState(0);
     const { register, watch, setValue, handleSubmit } = useForm();
+    const { id } = useParams();
 
     const quantityInput = watch(form.quantity, 1);
-    const priceSale = priceSaleVN(product.price, product.sale);
+    const priceSale = priceSaleVN(products[id].price, products[id].sale);
 
     // Handle event
     const handlePrevRelation = () =>
@@ -44,16 +46,16 @@ function ProductDetail() {
                 <div className={cx('section', 'section--flex')}>
                     {/* Image */}
                     <div className={cx('section-left')}>
-                        <Images images={product.imgs} />
+                        <Images images={products[id].imgs} />
                     </div>
 
                     {/* Infomation */}
                     <div className={cx('section-right')}>
-                        <Title as='h1'>{product.name}</Title>
+                        <Title as='h1'>{products[id].name}</Title>
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
-                            <Rating rating={product.rating} />
+                            <Rating rating={products[id].rating} />
                         </div>
 
                         {/* Price */}
@@ -62,7 +64,7 @@ function ProductDetail() {
                                 {currencyVN(priceSale)}
                             </span>
                             <span className={cx('product-old-price')}>
-                                {currencyVN(product.price)}
+                                {currencyVN(products[id].price)}
                             </span>
                         </div>
 
@@ -72,7 +74,7 @@ function ProductDetail() {
                                 {context.idProduct}
                             </span>
                             <span className={cx('section-text')}>
-                                {product.id}
+                                {products[id].id}
                             </span>
                         </div>
 
@@ -83,16 +85,16 @@ function ProductDetail() {
                                     className={cx('section-icon')}
                                     icon={faTag}
                                 />
-                                {context.tags}
+                                {context.tags}{' '}
                             </span>
                             <span className={cx('section-text')}>
-                                {product.tags.join(', ')}
+                                {products[id].tags.join(', ')}
                             </span>
                         </div>
 
                         {/* Summary */}
                         <ul className={cx('section-right__group', 'summary')}>
-                            {product.summary.map((item, index) => (
+                            {products[id].summary.map((item, index) => (
                                 <li key={index} className={cx('section-text')}>
                                     {item}
                                 </li>
@@ -104,7 +106,7 @@ function ProductDetail() {
                             {/* Options */}
                             <div className={cx('section-right__group')}>
                                 <CheckBox
-                                    options={product.options}
+                                    options={products[id].options}
                                     register={register}
                                 />
                             </div>

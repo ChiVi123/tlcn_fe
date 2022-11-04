@@ -15,6 +15,19 @@ bằng tổng số cột cơ sở mà ta cần.
 
 .grid {
     --grid-wide: 1200px;
+
+    display: block;
+    width: 100%;
+    padding: 0;
+}
+
+.grid.wide {
+    max-width: var(--grid-wide);
+    margin: 0 auto;
+}
+
+.row {
+    --margin-side: -4px;
     // base column
     --one-twelfth: calc((1 / 12) * 100%);
     --two-twelfths: calc((2 / 12) * 100%);
@@ -29,19 +42,6 @@ bằng tổng số cột cơ sở mà ta cần.
     --ten-twelfths: calc((10 / 12) * 100%);
     --eleven-twelfths: calc((11 / 12) * 100%);
     --twelve-twelfths: 100%;
-
-    display: block;
-    width: 100%;
-    padding: 0;
-}
-
-.grid.wide {
-    max-width: var(--grid-wide);
-    margin: 0 auto;
-}
-
-.row {
-    --margin-side: -4px;
 
     display: flex;
     flex-wrap: wrap;

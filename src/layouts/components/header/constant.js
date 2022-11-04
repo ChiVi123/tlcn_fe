@@ -24,7 +24,7 @@ import {
     imgCate11,
     imgCate12,
     imgCate13,
-} from '~/assets/images';
+} from '~/assets/images/categories';
 
 const cx = classNames.bind(styles);
 

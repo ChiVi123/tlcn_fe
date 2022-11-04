@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, NavLink } from 'react-router-dom';
 
-import { imgLogo } from '~/assets/images';
+import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import { cx, sidebarItems } from './constant';
 

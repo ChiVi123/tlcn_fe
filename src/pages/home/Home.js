@@ -36,7 +36,11 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart key={index} product={item} />
+                                <ProductCart
+                                    key={index}
+                                    product={item}
+                                    index={index}
+                                />
                             </div>
                         ))}
                     </div>
@@ -65,7 +69,11 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart key={index} product={item} />
+                                <ProductCart
+                                    key={index}
+                                    product={item}
+                                    index={index}
+                                />
                             </div>
                         ))}
                     </div>
@@ -84,7 +92,11 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart key={index} product={item} />
+                                <ProductCart
+                                    key={index}
+                                    product={item}
+                                    index={index}
+                                />
                             </div>
                         ))}
                     </div>

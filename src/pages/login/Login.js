@@ -17,6 +17,10 @@ function Login() {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            email: 'nhatsangtv123@gmail.com',
+            password: '1234567890',
+        },
     });
 
     const navigate = useNavigate();

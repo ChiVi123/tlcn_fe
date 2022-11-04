@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Button, Title } from '~/components';
-import { imgLogo } from '~/assets/images';
+import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import { addresses, products } from '~/utils/constant';
 import dataLocal from '~/utils/local.json';
@@ -80,6 +80,7 @@ function Checkout() {
         setForm((prev) => {
             return { ...prev, code: event.target.value };
         });
+
     return (
         <div className={cx('grid', 'wide')}>
             <div className={cx('row')}>
@@ -302,7 +303,7 @@ function Checkout() {
                                             </span>
                                             <div className={cx('info')}>
                                                 <img
-                                                    src={item.src}
+                                                    src={item.imgs[0]}
                                                     alt={item.name}
                                                     className={cx('img')}
                                                 />

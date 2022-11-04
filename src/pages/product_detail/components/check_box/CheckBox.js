@@ -8,7 +8,7 @@ function CheckBox({ options, register }) {
         <Fragment>
             {options.map((item, index) => (
                 <Fragment key={index}>
-                    <span className={cx('section-title')}>{item.context}</span>
+                    <span className={cx('section-title')}>{item.label}</span>
                     <ul className={cx('options')}>
                         {item.selects.map((option, index) => (
                             <li key={index} className={cx('options-item')}>
@@ -23,7 +23,7 @@ function CheckBox({ options, register }) {
                                     htmlFor={option.value}
                                     className={cx('options-item__label')}
                                 >
-                                    {option.context}
+                                    {option.label}
                                 </label>
                             </li>
                         ))}

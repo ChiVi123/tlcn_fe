@@ -12,11 +12,11 @@ import {
     Checkout,
     Profile,
 } from '~/pages';
-import { Dashboard, Products } from '~/admin/pages';
+import { Dashboard, ProductForm, Products } from '~/admin/pages';
 
 const pathNames = {
     home: '/',
-    product: '/product',
+    product: '/product/:id',
     login: '/login',
     register: '/register',
     search: '/search',
@@ -37,7 +37,8 @@ const pathNames = {
     admin: 'admin/*',
     dasboard: 'dashboard',
     products: 'products',
-    productForm: 'product-form',
+    productFormAdd: 'product-form',
+    productFormEdit: 'product-form/:id',
     categories: 'categories',
     categoryForm: 'category-form',
     users: 'users',
@@ -85,6 +86,16 @@ const adminRoutes = [
     {
         path: pathNames.products,
         component: Products,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.productFormAdd,
+        component: ProductForm,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.productFormEdit,
+        component: ProductForm,
         layout: AdminLayout,
     },
 ];

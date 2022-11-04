@@ -6,16 +6,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
-import { pathNames } from '~/routes';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { cx, context } from './constant';
 
-function ProductCart({ product }) {
+function ProductCart({ product, index = 0 }) {
     const percent = 100;
     const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
-        <Link to={pathNames.product} className={cx('product')}>
+        <Link to={`/product/${index}`} className={cx('product')}>
             {product.sale && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm
@@ -23,7 +22,7 @@ function ProductCart({ product }) {
             )}
             <img
                 className={cx('product-img')}
-                src={product.src}
+                src={product.imgs[0]}
                 alt={product.name}
             />
             <div className={cx('product-wrapper')}>

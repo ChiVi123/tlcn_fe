@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from '~/components';
-import { imgLogo } from '~/assets/images';
+import { imgLogo } from '~/assets/images/logo';
 import {
     cx,
     actions,

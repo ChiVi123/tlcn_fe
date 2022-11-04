@@ -1,52 +1,87 @@
-import { Section, Wrapper } from '~/admin/components';
+import classNames from 'classnames/bind';
+
 import { Button, Title } from '~/components';
-import { product } from '~/utils/constant';
+import { products } from '~/utils/constant';
+
+import styles from './Products.module.scss';
+import { context } from './constant';
+import { currencyVN } from '~/utils/funcs';
+
+const cx = classNames.bind(styles);
 
 function Products() {
     return (
-        <Wrapper>
-            <Section>
-                <Title as='h1'>All product</Title>
-                <Button>+ Add product</Button>
+        <>
+            <Title as='h1'>{context.title}</Title>
+            <Button to={'/admin/product-form'}>{context.addButton}</Button>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product name</th>
-                            <th>Price</th>
-                            <th>Sale</th>
-                            <th>Summary</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{product.imgs[0]}</td>
-                            <td>{product.name}</td>
-                            <td>{product.price}</td>
-                            <td>{product.sale}</td>
-                            <td>{product.summary}</td>
-                            <td>
-                                <button>edit</button>
-                                <button>delete</button>
+            <table className={cx('table')}>
+                <thead>
+                    <tr>
+                        <th className={cx('t-h')}>{context.imageCol}</th>
+                        <th className={cx('t-h')}>{context.productNameCol}</th>
+                        <th className={cx('t-h')}>{context.priceCol}</th>
+                        <th className={cx('t-h')}>{context.saleCol}</th>
+                        <th className={cx('t-h')}>{context.summaryCol}</th>
+                        <th className={cx('t-h')}>{context.actionCol}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {products.map((item, index) => (
+                        <tr key={index}>
+                            <td className={cx('col-img')}>
+                                <img
+                                    className={cx('img')}
+                                    src={item.imgs[0]}
+                                    alt={item.name}
+                                />
+                            </td>
+                            <td className={cx('td', 'td-name')}>
+                                <span className={cx('product-name')}>
+                                    {item.name}
+                                </span>
+                            </td>
+                            <td className={cx('td')}>
+                                {currencyVN(item.price)}
+                            </td>
+                            <td className={cx('td')}>
+                                {item.sale && item.sale * 100 + '%'}
+                            </td>
+                            <td className={cx('td', 'td-summary')}>
+                                <ul className={cx('summary')}>
+                                    {item.summary.map((item, index) => (
+                                        <li key={index}>
+                                            <span
+                                                className={cx(
+                                                    'summary__context',
+                                                )}
+                                            >
+                                                {item}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </td>
+                            <td className={cx('td')}>
+                                <Button
+                                    to={`/admin/product-form/${index}`}
+                                    solid={true}
+                                    className={cx('btn', 'btn--edit')}
+                                >
+                                    {context.editButton}
+                                </Button>
+                                <Button
+                                    solid={true}
+                                    className={cx('btn', 'btn--delete')}
+                                >
+                                    {context.deleteButton}
+                                </Button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>{product.imgs[0]}</td>
-                            <td>{product.name}</td>
-                            <td>{product.price}</td>
-                            <td>{product.sale}</td>
-                            <td>{product.summary}</td>
-                            <td>
-                                <button>edit</button>
-                                <button>delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </Section>
-        </Wrapper>
+                    ))}
+                </tbody>
+            </table>
+        </>
     );
 }
 

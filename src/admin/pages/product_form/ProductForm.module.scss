@@ -1,0 +1,37 @@
+.form {
+    margin-top: 4rem;
+}
+
+.group {
+    margin-top: 1.6rem;
+}
+
+.label-input {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--text-color);
+    font-size: 1.6rem;
+
+    span {
+        color: red;
+    }
+}
+
+.input-text {
+    width: 100%;
+    padding: 1rem 0.8rem;
+
+    color: var(--text-color);
+    border: 0.1rem solid #dddd;
+    border-radius: 0.6rem;
+}
+
+.invalid-input {
+    border-color: #a94442;
+}
+
+.invalid-message {
+    display: block;
+    margin: 1rem 0;
+    color: #a94442;
+}
