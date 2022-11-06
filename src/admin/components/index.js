@@ -1,6 +1,9 @@
 export { default as Wrapper } from './wrapper/Wrapper';
 export { default as Section } from './section/Section';
-export { default as InputText } from './input_text/InputText';
-export { default as InputNumber } from './input_number/InputNumber';
 export { default as ButtonCustomize } from './button_customize/ButtonCustomize';
 export { default as UploadImage } from './upload_image/UploadImage';
+export { default as FormQuill } from './form_quill/FormQuill';
+export { default as FormSelect } from './form_select/FormSelect';
+export { default as Input } from './input/Input';
+export { default as Form } from './form/Form';
+export { default as FormGroup } from './form_group/FormGroup';

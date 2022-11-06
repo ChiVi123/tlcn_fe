@@ -1,9 +1,8 @@
 import classNames from 'classnames/bind';
 import * as yup from 'yup';
 
-import styles from './ProductForm.module.scss';
-
-export const cx = classNames.bind(styles);
+// Export
+export const cx = classNames.bind();
 
 export const context = {
     titleAdd: 'Add product',
@@ -32,3 +31,46 @@ export const schema = yup.object({
     price: yup.number().positive().required(),
     sale: yup.number().positive(),
 });
+
+export const defaultValues = {
+    name: '',
+    price: 0,
+    sale: 0,
+    summary: '',
+    description: '',
+    category: '',
+    imgs: [],
+};
+
+export const formatsDescription = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'color',
+    'imageBlot', // #5 Optinal if using custom formats
+];
+
+export const modulesDescription = {
+    toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote'],
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ['link', 'image', { color: [] }],
+    ],
+};
+
+export const formatsSummary = ['list', 'imageBlot'];
+
+export const modulesSummary = {
+    toolbar: [[{ list: 'orderd' }, { list: 'bullet' }]],
+};
