@@ -1,5 +1,10 @@
+// import
 import classNames from 'classnames/bind';
+import { Quill } from 'react-quill';
+import ImageResize from 'quill-image-resize-module-react';
 import * as yup from 'yup';
+
+Quill.register('modules/imageResize', ImageResize);
 
 // Export
 export const cx = classNames.bind();
@@ -56,6 +61,7 @@ export const formatsDescription = [
     'image',
     'color',
     'imageBlot', // #5 Optinal if using custom formats
+    'align',
 ];
 
 export const modulesDescription = {
@@ -65,8 +71,18 @@ export const modulesDescription = {
         [{ header: 1 }, { header: 2 }], // custom button values
         [{ list: 'ordered' }, { list: 'bullet' }],
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [
+            { align: '' },
+            { align: 'center' },
+            { align: 'right' },
+            { align: 'justify' },
+        ],
         ['link', 'image', { color: [] }],
     ],
+    imageResize: {
+        parchment: Quill.import('parchment'),
+        modules: ['Resize', 'DisplaySize'],
+    },
 };
 
 export const formatsSummary = ['list', 'imageBlot'];

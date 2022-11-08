@@ -7,6 +7,4 @@ export const context = {
     summaryCol: 'Summary',
     actionCol: 'Actions',
     addButton: '+ Add product',
-    editButton: 'Edit',
-    deleteButton: 'Delete',
 };

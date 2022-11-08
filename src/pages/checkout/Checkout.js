@@ -36,7 +36,7 @@ function Checkout() {
                 ...prev,
                 name: value.name,
                 phone: value.phone,
-                address: value.addresses[0],
+                address: value.address,
             };
         });
     const handleLocal = (value) =>
@@ -76,10 +76,6 @@ function Checkout() {
         setForm((prev) => {
             return { ...prev, note: event.target.value };
         });
-    const handleCode = (event) =>
-        setForm((prev) => {
-            return { ...prev, code: event.target.value };
-        });
 
     return (
         <div className={cx('grid', 'wide')}>
@@ -106,7 +102,7 @@ function Checkout() {
                                         Option: SelectControlAddresses,
                                     }}
                                     getOptionLabel={(option) =>
-                                        `${option.name} ${option.addresses[0]}`
+                                        `${option.name} ${option.address}`
                                     }
                                 />
                             </div>
@@ -317,38 +313,6 @@ function Checkout() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
-                        </div>
-
-                        {/* Code */}
-                        <div className={cx('row', 'section')}>
-                            <div className={cx('col', 'l-6')}>
-                                <div className={cx('group')}>
-                                    <label
-                                        htmlFor={inputId.code}
-                                        className={cx('label-input', {
-                                            focus: !!form.code,
-                                        })}
-                                    >
-                                        {context.code}
-                                    </label>
-                                    <input
-                                        id={inputId.code}
-                                        type='text'
-                                        value={form.code}
-                                        onChange={handleCode}
-                                        className={cx('input')}
-                                    />
-                                </div>
-                            </div>
-                            <div className={cx('col', 'l-6')}>
-                                <button
-                                    className={cx('btn', {
-                                        'btn--disable': !form.code,
-                                    })}
-                                >
-                                    {context.applyCode}
-                                </button>
                             </div>
                         </div>
 

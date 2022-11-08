@@ -1,5 +1,5 @@
 .table {
-    margin-top: 2rem;
+    margin-top: 4rem;
     border-radius: 0.8rem;
     overflow: hidden;
 }
@@ -55,6 +55,7 @@
 }
 
 .btn {
+    display: inline;
     padding: 0.8rem;
     font-size: 1.2rem;
     text-transform: none;

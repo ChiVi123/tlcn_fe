@@ -1,17 +1,19 @@
-import { faX } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faX } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { filesize } from 'filesize';
 
 import { imgCloudUpload } from '~/assets/images/statics';
 import { cx, context } from './constant';
 
-function UploadImage({ onChange, value = [] }) {
+function UploadImage({ onChange, value = [], isMultiple }) {
     // Hooks
-    //  useState
+    // - useState
     const [dragover, setDragOver] = useState(false);
     const [files, setFiles] = useState(value);
-    //  useEffect
+    // const [objectFiles, setObjectFiles] = useState({});
+
+    // - useEffect
     useEffect(() => {
         return () => files.map((item) => URL.revokeObjectURL(item.preview));
 
@@ -24,23 +26,30 @@ function UploadImage({ onChange, value = [] }) {
     const handleDrop = () => setDragOver(false);
     const handleOnChange = (event) => {
         const multipleFile = [...event.target.files];
+
         // files.map((item) => URL.revokeObjectURL(item.preview));
         multipleFile.map((item) => (item.preview = URL.createObjectURL(item)));
 
         setFiles(multipleFile);
+        // setObjectFiles(event.target.files);
 
         if (onChange) {
             onChange(multipleFile);
         }
     };
-    const handleDelete = (index) =>
-        setFiles((prev) => {
-            const newFiles = [...prev];
-            // URL.revokeObjectURL(newFiles[index].preview);
-            newFiles.splice(index, 1);
+    // const handleDelete = (index) => {
+    //     delete objectFiles[index];
 
-            return newFiles;
-        });
+    //     setObjectFiles(objectFiles);
+    //     setFiles((prev) => {
+    //         const newFiles = [...prev];
+
+    //         URL.revokeObjectURL(newFiles[index].preview);
+    //         newFiles.splice(index, 1);
+
+    //         return newFiles;
+    //     });
+    // };
 
     return (
         <div className={cx('wrapper')}>
@@ -60,7 +69,7 @@ function UploadImage({ onChange, value = [] }) {
                 <input
                     type='file'
                     title=''
-                    multiple
+                    multiple={isMultiple}
                     className={cx('input-img')}
                     onChange={handleOnChange}
                 />
@@ -75,20 +84,20 @@ function UploadImage({ onChange, value = [] }) {
                 {files.map((item, index) => (
                     <li key={index} className={cx('image-preview')}>
                         <div className={cx('file')}>
-                            <div className={cx('file-appearance')}>
+                            <div className={cx('file__appearance')}>
                                 <img
-                                    className={cx('file-image')}
+                                    className={cx('file__image')}
                                     src={item.preview}
                                     alt={item.name}
                                 />
-                                <div className={cx('file-info')}>
-                                    <span className={cx('file-name')}>
+                                <div className={cx('file__info')}>
+                                    <span className={cx('file__name')}>
                                         {item.name}
                                     </span>
-                                    <span className={cx('file-extension')}>
+                                    <span className={cx('file__extension')}>
                                         file: {item.name.split('.').pop()}
                                     </span>
-                                    <span className={cx('file-size')}>
+                                    <span className={cx('file__size')}>
                                         {filesize(item.size, {
                                             base: 2,
                                             standard: 'jedec',
@@ -96,12 +105,12 @@ function UploadImage({ onChange, value = [] }) {
                                     </span>
                                 </div>
                             </div>
-                            <span
+                            {/* <span
                                 className={cx('delete')}
                                 onClick={() => handleDelete(index)}
                             >
                                 <FontAwesomeIcon icon={faX} />
-                            </span>
+                            </span> */}
                         </div>
                     </li>
                 ))}

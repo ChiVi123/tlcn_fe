@@ -1,4 +1,18 @@
 import { formatDate } from './funcs';
+import {
+    imgCate2,
+    imgCate3,
+    imgCate4,
+    imgCate5,
+    imgCate6,
+    imgCate7,
+    imgCate8,
+    imgCate9,
+    imgCate10,
+    imgCate11,
+    imgCate12,
+    imgCate13,
+} from '~/assets/images/categories';
 
 export const products = [
     {
@@ -622,14 +636,14 @@ export const addresses = [
     {
         id: 1,
         name: 'nhat sang',
-        addresses: ['so 1 vvn', 'so 2 vvn', 'tphcm'],
+        address: 'so 1 vvn, so 2 vvn, tphcm',
         phone: '0X261XXXXXX',
         setDefault: false,
     },
     {
         id: 2,
         name: 'sang nhat',
-        addresses: ['so 3 vvn', 'so 4 vvn', 'tphcm'],
+        address: 'so 3 vvn, so 4 vvn, tphcm',
         phone: '0X262XXXXXX',
         setDefault: true,
     },
@@ -703,6 +717,7 @@ export const user = {
 export const categories = [
     {
         name: 'Vi điều khiển - Nhúng',
+        image: imgCate2,
         subCategories: [
             {
                 name: 'Kit phát triển',
@@ -742,6 +757,7 @@ export const categories = [
     },
     {
         name: 'Module ứng dụng',
+        image: imgCate3,
         subCategories: [
             { name: 'Module RF' },
             { name: 'Module RFID' },
@@ -774,6 +790,7 @@ export const categories = [
     },
     {
         name: 'Cảm biến',
+        image: imgCate4,
         subCategories: [
             { name: 'Cảm biến nhiệt độ' },
             { name: 'Cảm biến độ ẩm' },
@@ -798,6 +815,7 @@ export const categories = [
     },
     {
         name: 'Linh kiện điện tử',
+        image: imgCate5,
         subCategories: [
             {
                 name: 'Linh kiện cơ bản',
@@ -845,6 +863,7 @@ export const categories = [
     },
     {
         name: 'IC chức năng',
+        image: imgCate6,
         subCategories: [
             { name: 'IC nguồn' },
             { name: 'Ic real time' },
@@ -865,6 +884,7 @@ export const categories = [
     },
     {
         name: 'Thiết bị chế tạo',
+        image: imgCate7,
         subCategories: [
             {
                 name: 'Robot mô hình',
@@ -899,6 +919,7 @@ export const categories = [
     },
     {
         name: 'Dụng cụ - phụ kiện',
+        image: imgCate8,
         subCategories: [
             {
                 name: 'Dụng cụ cầm tay',
@@ -961,6 +982,7 @@ export const categories = [
     },
     {
         name: 'Connector',
+        image: imgCate9,
         subCategories: [
             {
                 name: 'Dây kết nối',
@@ -997,6 +1019,7 @@ export const categories = [
     },
     {
         name: 'Sản phẩm combo',
+        image: imgCate10,
         subCategories: [
             { name: 'Combo máy hàn' },
             { name: 'Combo máy khoan' },
@@ -1006,9 +1029,11 @@ export const categories = [
     },
     {
         name: 'Nam châm đất hiếm',
+        image: imgCate11,
     },
     {
         name: 'Phụ kiện điện thoại',
+        image: imgCate12,
         subCategories: [
             { name: 'Pin Sạc' },
             { name: 'Cáp Sạc' },
@@ -1021,6 +1046,7 @@ export const categories = [
     },
     {
         name: 'Phụ kiện máy tính',
+        image: imgCate13,
         subCategories: [{ name: 'Dây Nguồn' }],
     },
 ];

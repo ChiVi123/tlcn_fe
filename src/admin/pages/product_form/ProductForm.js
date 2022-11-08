@@ -179,6 +179,7 @@ function ProductForm() {
                             <UploadImage
                                 value={value}
                                 onChange={(files) => onChange(files)}
+                                isMultiple
                             />
                         )}
                     />

@@ -12,7 +12,16 @@ import {
     Checkout,
     Profile,
 } from '~/pages';
-import { Dashboard, ProductForm, Products } from '~/admin/pages';
+import {
+    AdminOrder,
+    AdminOrders,
+    Categories,
+    CategoryForm,
+    Dashboard,
+    ProductForm,
+    Products,
+    Users,
+} from '~/admin/pages';
 
 const pathNames = {
     home: '/',
@@ -40,13 +49,11 @@ const pathNames = {
     productFormAdd: 'product-form',
     productFormEdit: 'product-form/:id',
     categories: 'categories',
-    categoryForm: 'category-form',
+    categoryFormAdd: 'category-form',
+    categoryFormEdit: 'category-form/:id',
     users: 'users',
-    userForm: 'user-form',
     adminOrders: 'orders',
-    orderForm: 'order-form',
-    adminSales: 'sales',
-    saleForm: 'sale-form',
+    orderDetail: 'order/:id',
 };
 
 const publicRoutes = [
@@ -57,8 +64,8 @@ const publicRoutes = [
     { path: pathNames.any, component: PageNotFound, layout: null },
 ];
 
+// private
 const privateRoutes = [
-    // private
     { path: pathNames.cart, component: Cart },
     { path: pathNames.addresses, component: Addresses, layout: AddressLayout },
     {
@@ -71,8 +78,8 @@ const privateRoutes = [
     { path: pathNames.profile, component: Profile },
 ];
 
+// admin
 const adminRoutes = [
-    // admin
     {
         path: pathNames.admin,
         component: PageNotFound,
@@ -96,6 +103,36 @@ const adminRoutes = [
     {
         path: pathNames.productFormEdit,
         component: ProductForm,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.categories,
+        component: Categories,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.categoryFormAdd,
+        component: CategoryForm,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.categoryFormEdit,
+        component: CategoryForm,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.adminOrders,
+        component: AdminOrders,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.orderDetail,
+        component: AdminOrder,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.users,
+        component: Users,
         layout: AdminLayout,
     },
 ];

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
@@ -9,17 +10,37 @@ import {
     actions,
     navItems,
     menuCate,
-    topbarsRight,
+    topbarsRightLogin,
+    topbarsRightLogout,
+    topbarsRightAdmin,
     topbarsLeft,
 } from './constant';
-import Menu from './components/menu/Menu';
 import { pathNames } from '~/routes';
+import { userSelector } from '~/redux';
+import Menu from './components/menu/Menu';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
+    const [topBarRight, setTopBarRight] = useState([]);
+
+    const user = useSelector(userSelector.getUser);
 
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
+
+    useEffect(() => {
+        if (user.email) {
+            if (user?.role === 'admin') {
+                setTopBarRight((prev) => topbarsRightAdmin);
+            } else {
+                setTopBarRight((prev) => topbarsRightLogin);
+            }
+        } else {
+            setTopBarRight((prev) => topbarsRightLogout);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <header className={cx('header')}>
@@ -46,9 +67,13 @@ function Header() {
                     </ul>
 
                     <ul className={cx('topbar-section')}>
-                        {topbarsRight.map((item, index) => (
+                        {topBarRight.map((item, index) => (
                             <li key={index} className={cx('topbar__item')}>
-                                <Button reset={true} to={item.to}>
+                                <Button
+                                    reset={true}
+                                    to={item.to}
+                                    className={cx('btn')}
+                                >
                                     <FontAwesomeIcon icon={item.icon} />
                                     <span>{item.context}</span>
                                 </Button>

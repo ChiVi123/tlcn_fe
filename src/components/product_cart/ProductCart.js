@@ -1,13 +1,7 @@
-import {
-    faBasketShopping,
-    faMagnifyingGlass,
-    faTurnDown,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { cx, context } from './constant';
+import { cx } from './constant';
 
 function ProductCart({ product, index = 0 }) {
     const percent = 100;
@@ -26,47 +20,21 @@ function ProductCart({ product, index = 0 }) {
                 alt={product.name}
             />
             <div className={cx('product-wrapper')}>
-                <div className={cx('product-caption')}>
-                    <div className={cx('product-right')}>
-                        <div>
-                            <span className={cx('product-name')}>
-                                {product.name}
-                            </span>
-                        </div>
-                        <div>
-                            {product.sale && (
-                                <span className={cx('product-price')}>
-                                    {currencyVN(product.price)}
-                                </span>
-                            )}
-                            <span className={cx('product-price-sale')}>
-                                {currencyVN(priceSale)}
-                            </span>
-                        </div>
+                <div className={cx('product-right')}>
+                    <div>
+                        <span className={cx('product-name')}>
+                            {product.name}
+                        </span>
                     </div>
-                    <div className={cx('product-left')}>
-                        <button
-                            className={cx('btn-buy', {
-                                'btn-buy--unavailable': product.status,
-                            })}
-                        >
-                            <FontAwesomeIcon
-                                className={cx('btn-buy__icon')}
-                                icon={
-                                    product.status
-                                        ? faTurnDown
-                                        : faBasketShopping
-                                }
-                            />
-                            {product.status
-                                ? context.unavailable
-                                : product.options
-                                ? context.option
-                                : context.buyNow}
-                        </button>
-                        <button className={cx('btn-quickreview')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
+                    <div>
+                        {product.sale && (
+                            <span className={cx('product-price')}>
+                                {currencyVN(product.price)}
+                            </span>
+                        )}
+                        <span className={cx('product-price-sale')}>
+                            {currencyVN(priceSale)}
+                        </span>
                     </div>
                 </div>
             </div>

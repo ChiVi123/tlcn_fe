@@ -1,4 +1,6 @@
 import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { Button, Title } from '~/components';
 import { products } from '~/utils/constant';
@@ -6,6 +8,7 @@ import { products } from '~/utils/constant';
 import styles from './Products.module.scss';
 import { context } from './constant';
 import { currencyVN } from '~/utils/funcs';
+import { ButtonCustomize } from '~/admin/components';
 
 const cx = classNames.bind(styles);
 
@@ -63,19 +66,15 @@ function Products() {
                                 </ul>
                             </td>
                             <td className={cx('td')}>
-                                <Button
+                                <ButtonCustomize
                                     to={`/admin/product-form/${index}`}
-                                    solid={true}
-                                    className={cx('btn', 'btn--edit')}
+                                    isEdit={true}
                                 >
-                                    {context.editButton}
-                                </Button>
-                                <Button
-                                    solid={true}
-                                    className={cx('btn', 'btn--delete')}
-                                >
-                                    {context.deleteButton}
-                                </Button>
+                                    <FontAwesomeIcon icon={faPen} />
+                                </ButtonCustomize>
+                                <ButtonCustomize isDelete={true}>
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </ButtonCustomize>
                             </td>
                         </tr>
                     ))}

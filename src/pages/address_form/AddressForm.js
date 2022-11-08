@@ -55,32 +55,6 @@ function AddressForm() {
                 </div>
                 <div className={cx('col', 'l-12', 'group')}>
                     <label
-                        htmlFor={idInput.address2}
-                        className={cx('label-input')}
-                    >
-                        {context.address2}
-                    </label>
-                    <input
-                        id={idInput.address2}
-                        type='text'
-                        className={cx('input')}
-                        placeholder={placeHolder.address}
-                    />
-                </div>
-                <div className={cx('col', 'l-12', 'group')}>
-                    <label htmlFor={idInput.city} className={cx('label-input')}>
-                        {context.city}
-                        <strong>*</strong>
-                    </label>
-                    <input
-                        id={idInput.city}
-                        type='text'
-                        className={cx('input')}
-                        placeholder={placeHolder.city}
-                    />
-                </div>
-                <div className={cx('col', 'l-12', 'group')}>
-                    <label
                         htmlFor={idInput.phone}
                         className={cx('label-input')}
                     >

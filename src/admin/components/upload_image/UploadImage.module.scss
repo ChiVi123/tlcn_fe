@@ -38,6 +38,7 @@
     cursor: pointer;
     overflow: hidden;
     opacity: 0;
+    z-index: 1;
 }
 
 .topic {
@@ -78,19 +79,19 @@
 
     background-color: #f2f7ff;
 
-    &-appearance {
+    &__appearance {
         display: flex;
         align-items: center;
     }
 
-    &-image {
+    &__image {
         max-width: 8rem;
         height: 6rem;
         border: 0.1rem solid #c7cacd;
         border-radius: 0.4rem;
     }
 
-    &-info {
+    &__info {
         display: flex;
         flex-direction: column;
         margin-top: 0.6rem;
@@ -98,7 +99,7 @@
         margin-right: 0.6rem;
     }
 
-    &-name {
+    &__name {
         max-width: 62rem;
         color: var(--text-color);
         font-size: 1.8rem;
@@ -108,8 +109,8 @@
         text-overflow: ellipsis;
     }
 
-    &-extension,
-    &-size {
+    &__extension,
+    &__size {
         color: #95a2a9;
         font-size: 1.6rem;
     }

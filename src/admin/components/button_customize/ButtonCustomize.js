@@ -4,10 +4,10 @@ import styles from './ButtonCustomize.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ButtonCustomize({ children, isEdit, idDelete, ...props }) {
+function ButtonCustomize({ children, isEdit, isDelete, ...props }) {
     const classes = cx('btn', {
         'btn--edit': isEdit,
-        'btn--delete': idDelete,
+        'btn--delete': isDelete,
     });
 
     return (

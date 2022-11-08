@@ -23,9 +23,7 @@ function Addresses() {
                     </div>
                     <div className={cx('group')}>
                         <span className={cx('field')}>{context.address}</span>
-                        <span className={cx('text')}>
-                            {item.addresses.join(', ')}
-                        </span>
+                        <span className={cx('text')}>{item.address}</span>
                     </div>
                     <div className={cx('group')}>
                         <span className={cx('field')}>{context.phone}</span>
