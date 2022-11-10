@@ -1,5 +1,4 @@
 import {
-    faBorderAll,
     faBox,
     faRectangleList,
     faAddressCard,
@@ -11,11 +10,6 @@ import styles from './Sidebar.module.scss';
 export const cx = classNames.bind(styles);
 
 export const sidebarItems = [
-    {
-        context: 'Dashboard',
-        navTo: '/admin/dashboard',
-        icon: faBorderAll,
-    },
     {
         context: 'Products',
         navTo: '/admin/products',

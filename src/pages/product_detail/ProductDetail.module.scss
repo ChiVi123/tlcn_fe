@@ -121,6 +121,18 @@
     border: none;
     border-top: 0.1rem solid #ebebeb;
     border-bottom: 0.1rem solid #ebebeb;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
+
+    &[type='number'] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
 }
 
 .action-btn {

@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
 
 import userReducer from './slice/userSlice';
+import cartReducer from './slice/cartSlice';
 
 const persistConfig = {
     key: 'tlcnFE2022',
@@ -12,6 +13,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     user: userReducer,
+    cart: cartReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -6,39 +6,81 @@ import {
     faTag,
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { products, comments } from '~/utils/constant';
-import { cx, context, form } from './constant';
-import { Images, Rating, CheckBox } from './components';
 import { ProductCart, Title } from '~/components';
-import { useParams } from 'react-router-dom';
+import { cx, context, form } from './constant';
+import { cartAction, cartSelector } from '~/redux';
+
+import { Images, Rating, CheckBox } from './components';
 
 function ProductDetail() {
     const [translateXRealtion, setTranslateXRealtion] = useState(0);
-    const { register, watch, setValue, handleSubmit } = useForm();
+    const { register, watch, setValue, handleSubmit } = useForm({
+        defaultValues: {
+            quantity: 1,
+        },
+    });
     const { id } = useParams();
-
+    const dispatch = useDispatch();
     const quantityInput = watch(form.quantity, 1);
     const priceSale = priceSaleVN(products[id].price, products[id].sale);
+    const cart = useSelector(cartSelector.getCart);
 
     // Handle event
-    const handlePrevRelation = () =>
+    const handlePrevRelation = () => {
         setTranslateXRealtion(translateXRealtion + 240);
-    const handleNextRelation = () =>
+    };
+    const handleNextRelation = () => {
         setTranslateXRealtion(translateXRealtion - 240);
-    const handleQuantity = (event) => {
-        setValue(form.quantity, event.target.value);
+    };
+    const handleQuantity = ({ target: { value } }) => {
+        if (Number.isInteger(value)) {
+            setValue(form.quantity, value);
+            return;
+        }
+
+        const text = value.trim();
+
+        if (!text) {
+            setValue(form.quantity, '');
+            return;
+        }
+
+        setValue(form.quantity, parseInt(text, 10));
     };
     const handleDecreaseQuantity = (event) => {
         event.preventDefault();
-        setValue(form.quantity, quantityInput - 1);
+        if (quantityInput > 1) {
+            setValue(form.quantity, quantityInput - 1);
+        }
     };
     const handleIncreaseQuantity = (event) => {
         event.preventDefault();
         setValue('quantity', quantityInput + 1);
     };
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => {
+        const existProduct = cart.items.find((item) => item.productId === id);
+
+        if (data.quantity > 0 && !existProduct) {
+            dispatch(
+                cartAction.addProduct({
+                    ...data,
+                    productId: id,
+                    name: products[id].name,
+                    image: products[id].imgs[0],
+                    price: priceSale,
+                }),
+            );
+            toast.success('Đã thêm vào vỏ hàng');
+        } else {
+            toast.error('Không thể thêm vào vỏ hàng');
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -127,7 +169,8 @@ function ProductDetail() {
                                         –
                                     </button>
                                     <input
-                                        type={'text'}
+                                        type={'number'}
+                                        inputMode={'numberic'}
                                         value={quantityInput}
                                         onChange={handleQuantity}
                                         className={cx('input-quantity')}
@@ -152,9 +195,6 @@ function ProductDetail() {
                                     className={cx('action-btn')}
                                 >
                                     {context.addToCart}
-                                </button>
-                                <button className={cx('action-btn')}>
-                                    {context.buyNow}
                                 </button>
                             </div>
                         </form>

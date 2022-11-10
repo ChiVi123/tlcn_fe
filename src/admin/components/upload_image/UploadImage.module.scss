@@ -58,6 +58,7 @@
     background-color: var(--white);
     border: 0.1rem solid #c7cacd;
     border-radius: 0.8rem;
+    overflow: hidden;
 
     &--empty {
         padding: 0;
@@ -71,49 +72,10 @@
     background-color: #fff;
 }
 
-.file {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4rem;
-
-    background-color: #f2f7ff;
-
-    &__appearance {
-        display: flex;
-        align-items: center;
-    }
-
-    &__image {
-        max-width: 8rem;
-        height: 6rem;
-        border: 0.1rem solid #c7cacd;
-        border-radius: 0.4rem;
-    }
-
-    &__info {
-        display: flex;
-        flex-direction: column;
-        margin-top: 0.6rem;
-        margin-left: 0.8rem;
-        margin-right: 0.6rem;
-    }
-
-    &__name {
-        max-width: 62rem;
-        color: var(--text-color);
-        font-size: 1.8rem;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    &__extension,
-    &__size {
-        color: #95a2a9;
-        font-size: 1.6rem;
-    }
+.image {
+    max-width: 100%;
+    border: 0.1rem solid #c7cacd;
+    border-radius: 0.4rem;
 }
 
 .delete {

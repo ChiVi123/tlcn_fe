@@ -10,23 +10,25 @@ Quill.register('modules/imageResize', ImageResize);
 export const cx = classNames.bind();
 
 export const context = {
-    titleAdd: 'Add product',
-    titleEdit: 'Edit product',
-    backToProductsPage: 'Back to products page',
-    nameLabel: 'Name ',
-    priceLabel: 'Price ',
-    saleLabel: 'Sale ',
-    categoryLabel: 'Category ',
-    optionsLabel: 'Options ',
+    titleAdd: 'Thêm sản phẩm',
+    titleEdit: 'Chỉnh sửa sản phẩm',
+    backToProductsPage: 'Quay về trang danh sách sản phẩm',
+    nameLabel: 'Tên ',
+    priceLabel: 'Giá ',
+    saleLabel: 'Giảm giá ',
+    categoryLabel: 'Danh mục ',
+    optionsLabel: 'Mục lụa chọn ',
     tagsLabel: 'Tags ',
     summaryLabel: 'Summary ',
-    descriptionLabel: 'Description ',
-    imagesLabel: 'Images ',
-    addBtn: '+ Add product',
+    descriptionLabel: 'Mô tả ',
+    imagesLabel: 'Chọn ảnh ',
+    addBtn: '+ Thêm sản phẩm',
+    addOptionBtn: '+ Thêm mục lụa chọn',
+    deleteOptionBtn: 'Xóa mục lựa chọn',
 };
 
-export const placeHolder = {
-    namePlaceHolder: 'Product name',
+export const placeholder = {
+    namePlaceHolder: 'Nhập tên sản phẩm',
     pricePlaceHolder: '0',
     salePlaceHolder: '0',
 };

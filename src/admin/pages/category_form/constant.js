@@ -12,7 +12,7 @@ export const context = {
     addBtn: '+ Add category',
 };
 
-export const placeHolder = {
+export const placeholder = {
     namePlaceHolder: 'Category name',
 };
 

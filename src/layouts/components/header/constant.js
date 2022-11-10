@@ -94,7 +94,7 @@ const topbarsRightAdmin = [
 const actions = [
     {
         icon: faBasketShopping,
-        context: '(10) Sẩn phẩm',
+        context: 'Sẩn phẩm',
         title: 'Giỏ hàng',
         to: '/cart',
     },

@@ -1,38 +1,12 @@
-.wrapper {
-    margin-top: 2.6rem;
-}
-
-.group {
-    padding-bottom: 0.8rem;
-}
-
-.label-input {
-    display: block;
-    margin-bottom: 0.2rem;
-
-    font-size: 1.6rem;
-    font-weight: 700;
-
-    user-select: none;
-
-    strong {
-        color: red;
-    }
-}
+// .group {
+//     padding-bottom: 0.8rem;
+// }
 
 .input {
-    width: 96%;
-    padding: 0.35rem 0.75rem;
-
-    color: #55595c;
-    font-size: 1.6rem;
-    line-height: 2.1rem;
-
-    border: 0.1rem solid #d0d0d0;
-    border-radius: 0.3rem;
+    width: 76%;
 
     &-checkbox {
-        width: auto;
+        width: 2rem;
         margin-right: 0.8rem;
     }
 }

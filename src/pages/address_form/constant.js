@@ -1,4 +1,6 @@
 import classNames from 'classnames/bind';
+import * as yup from 'yup';
+
 import styles from './AddressForm.module.scss';
 
 export const cx = classNames.bind(styles);
@@ -15,20 +17,18 @@ export const context = {
     cancelBtn: 'Hủy',
 };
 
-export const placeHolder = {
-    lastName: 'Nhập họ của bạn',
-    firstName: 'Nhập  tên của bạn',
+export const placeholder = {
     address: 'Nhập địa chỉ của bạn',
-    city: 'Nhập thành phố của bạn',
     phone: 'Nhập số điện thoại của bạn',
 };
 
-export const idInput = {
-    lastName: 'lastname',
-    firstName: 'firstname',
-    address: 'address',
-    address2: 'address2',
-    city: 'city',
-    phone: 'phone',
-    setDefault: 'setDefault',
-};
+const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+export const schema = yup.object({
+    address: yup.string().trim().required(),
+    phone: yup
+        .string()
+        .matches(phoneRegExp, 'Phone number is not valid')
+        .required(),
+});

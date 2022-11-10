@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button, Title } from '~/components';
@@ -21,6 +21,7 @@ import {
     Input,
     Form,
     FormGroup,
+    FormCreatable,
 } from '~/admin/components';
 import { categories } from '~/utils/constant';
 
@@ -36,6 +37,10 @@ function ProductForm() {
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues,
+    });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'options',
     });
 
     // Hanlde event
@@ -111,18 +116,67 @@ function ProductForm() {
                 </FormGroup>
 
                 {/* Options */}
-                <FormGroup
-                    classes={cx('col', 'l-4')}
-                    name={'options'}
-                    label={context.optionsLabel}
-                >
-                    <Input
-                        type={'text'}
-                        name='options'
-                        register={register}
-                        errors={errors}
-                    />
-                </FormGroup>
+                <div className={cx('col', 'l-8')}>
+                    {fields.map((item, index) => (
+                        <div key={item.id} className={cx('row')}>
+                            <div className={cx('col', 'l-6')}>
+                                <div className={cx('row')}>
+                                    <FormGroup
+                                        classes={cx('col', 'l-12')}
+                                        name={`options.${index}.name`}
+                                        label={`Mục ${index}`}
+                                    >
+                                        <Input
+                                            type={'text'}
+                                            name={`options.${index}.name`}
+                                            register={register}
+                                            errors={errors}
+                                            placeholder={
+                                                'Nhập tên mục lụa chọn'
+                                            }
+                                        />
+                                    </FormGroup>
+                                    <FormGroup
+                                        classes={cx('col', 'l-12')}
+                                        name={`options.${index}.selects`}
+                                    >
+                                        <FormCreatable
+                                            name={`options.${index}.selects`}
+                                            control={control}
+                                            placeholder={'Nhập mục lựa chọn'}
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div>
+                            <div
+                                className={cx('col', 'l-6')}
+                                style={{
+                                    alignSelf: 'flex-end',
+                                    marginBottom: '1.2rem',
+                                }}
+                            >
+                                <ButtonCustomize
+                                    isDelete={true}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        remove(index);
+                                    }}
+                                >
+                                    {context.deleteOptionBtn}
+                                </ButtonCustomize>
+                            </div>
+                        </div>
+                    ))}
+                    <ButtonCustomize
+                        isEdit={true}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            append({});
+                        }}
+                    >
+                        {context.addOptionBtn}
+                    </ButtonCustomize>
+                </div>
 
                 {/* Tags */}
                 <FormGroup
@@ -130,11 +184,10 @@ function ProductForm() {
                     name={'tags'}
                     label={context.tagsLabel}
                 >
-                    <Input
-                        type={'text'}
-                        name='tags'
-                        register={register}
-                        errors={errors}
+                    <FormCreatable
+                        name={`tags`}
+                        control={control}
+                        placeholder={'Nhập các tag'}
                     />
                 </FormGroup>
 

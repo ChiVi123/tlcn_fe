@@ -1,17 +1,69 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { cartAction } from '~/redux';
 import { currencyVN } from '~/utils/funcs';
+
 import { cxCartItem, context } from './constant';
 
 function CartItem({ product }) {
+    const [quantity, setQuantity] = useState(product.quantity);
+    const dispatch = useDispatch();
+
     // Handle event
-    const handleQuantity = (event) => {};
-    const handleDecreaseQuantity = (event) => {};
-    const handleIncreaseQuantity = (event) => {};
+    const handleQuantity = ({ target: { value } }) => {
+        if (Number.isInteger(value)) {
+            setQuantity(value);
+            return;
+        }
+
+        const text = value.trim();
+
+        if (!text) {
+            setQuantity('');
+            return;
+        }
+
+        setQuantity(parseInt(text, 10));
+    };
+    const handleKeyUp = (event, id) => {
+        switch (event.key) {
+            case 'Enter':
+                if (!quantity) {
+                    toast.error('Lượng sản phẩm không hợp lệ');
+                } else {
+                    dispatch(
+                        cartAction.changeQuantityProduct({
+                            id,
+                            quantity,
+                        }),
+                    );
+                }
+                break;
+            default:
+                break;
+        }
+    };
+    const handleDecreaseQuantity = (id) => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+            dispatch(cartAction.subtractQuantityProduct(id));
+        }
+    };
+    const handleIncreaseQuantity = (id) => {
+        setQuantity(quantity + 1);
+        dispatch(cartAction.plusQuantityProduct(id));
+    };
+    const handleDelete = (id) => {
+        dispatch(cartAction.removeProduct(id));
+    };
 
     return (
         <li className={cxCartItem('cart-item')}>
             <div className={cxCartItem('col', 'l-3')}>
                 <img
-                    src={product.imgs[0]}
+                    src={product.image}
                     alt={product.name}
                     className={cxCartItem('cart-item__image')}
                 />
@@ -22,7 +74,10 @@ function CartItem({ product }) {
                         <h3 className={cxCartItem('cart-item__name')}>
                             {product.name}
                         </h3>
-                        <span className={cxCartItem('delete-text')}>
+                        <span
+                            className={cxCartItem('delete-text')}
+                            onClick={() => handleDelete(product.productId)}
+                        >
                             {context.delete}
                         </span>
                     </div>
@@ -40,21 +95,32 @@ function CartItem({ product }) {
                             'btn-input',
                             'btn-input--decrease',
                         )}
-                        onClick={handleDecreaseQuantity}
+                        onClick={() =>
+                            handleDecreaseQuantity(product.productId)
+                        }
                     >
                         –
                     </button>
+
                     <input
-                        type={'text'}
+                        type={'number'}
+                        inputMode={'numberic'}
                         onChange={handleQuantity}
+                        onKeyUp={(event) =>
+                            handleKeyUp(event, product.productId)
+                        }
+                        value={quantity}
                         className={cxCartItem('input-quantity')}
                     />
+
                     <button
                         className={cxCartItem(
                             'btn-input',
                             'btn-input--increase',
                         )}
-                        onClick={handleIncreaseQuantity}
+                        onClick={() =>
+                            handleIncreaseQuantity(product.productId)
+                        }
                     >
                         +
                     </button>

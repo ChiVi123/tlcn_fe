@@ -4,6 +4,7 @@
 }
 
 .btn {
+    position: relative;
     margin-top: 1.2rem;
 }
 
@@ -42,6 +43,16 @@
     background-color: var(--white);
     border: 0.1rem solid #d9d9d9;
     border-radius: 0.6rem;
+
+    &-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        opacity: 0;
+    }
 
     &:focus {
         outline: none;

@@ -5,7 +5,7 @@ import styles from './Input.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Input({ errors, register, name, type, placeHolder }) {
+function Input({ errors, register, name, type, placeholder }) {
     return (
         <input
             type={type}
@@ -14,7 +14,7 @@ function Input({ errors, register, name, type, placeHolder }) {
                 'invalid-input': !!errors[name]?.message,
                 'input-number': type === 'number',
             })}
-            placeholder={placeHolder}
+            placeholder={placeholder}
             {...register(name)}
         />
     );

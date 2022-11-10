@@ -1,85 +1,116 @@
-import { useState } from 'react';
+// Library
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button, Title } from '~/components';
+// Common
+import {
+    Button,
+    Title,
+    Form,
+    FormGroup,
+    Input,
+    FormSelect,
+} from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
-import { addresses, products } from '~/utils/constant';
-import dataLocal from '~/utils/local.json';
-import { currencyVN, getArray } from '~/utils/funcs';
+import { addresses } from '~/utils/constant';
+import { currencyVN } from '~/utils/funcs';
+import * as servicesGHN from '~/services/servicesGHN';
 
+// Local
 import SelectControlAddresses from './component/SelectControlAddresses';
-import SelectControlLocals from './component/SelectControlLocals';
-import { context, cx, inputId } from './constant';
+import { context, cx, schema, defaultValues } from './constant';
+import { useSelector } from 'react-redux';
+import { cartSelector } from '~/redux';
 
 function Checkout() {
-    const [form, setForm] = useState({
-        email: '1234@gmail.com',
-        name: '',
-        phone: '',
-        address: '',
-        note: '',
-        code: '',
+    // Hooks
+    const cart = useSelector(cartSelector.getCart);
+    // - useState
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [wards, setWards] = useState([]);
+    // - useForm
+    const {
+        register,
+        control,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues,
     });
-    const [localId, setLocalId] = useState({
-        local: '0',
-        district: '0',
-        ward: '0',
-    });
+    // - useEffect
+    useEffect(() => {
+        const fetchApi = async () => {
+            const resultProvinces = await servicesGHN.getProvince();
+            const resultDistricts = await servicesGHN.getDistrict(214);
+            const resultWards = await servicesGHN.getWard(1560);
+
+            setProvinces(resultProvinces);
+            setDistricts(resultDistricts);
+            setWards(resultWards);
+        };
+
+        fetchApi();
+    }, []);
+    useEffect(() => {
+        const fetchApi = async (value, name, type) => {
+            if (type === 'change') {
+                let result;
+
+                switch (name) {
+                    case 'province':
+                        result = await servicesGHN.getDistrict(
+                            value[name].value,
+                        );
+                        setDistricts(result);
+                        break;
+                    case 'district':
+                        result = await servicesGHN.getWard(value[name].value);
+                        setWards(result);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        const subscription = watch((value, { name, type }) => {
+            fetchApi(value, name, type);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     // Handle event
-    const handleAddresses = (value) =>
-        setForm((prev) => {
-            return {
-                ...prev,
-                name: value.name,
-                phone: value.phone,
-                address: value.address,
-            };
+    const handleAddresses = (value) => {
+        setValue('name', value.name);
+        setValue('phone', value.phone);
+        setValue('address', value.address);
+    };
+    const handleOnSubmit = (data) => {
+        const { name, email, phone, note, address, province, district, ward } =
+            data;
+        console.log({
+            name,
+            email,
+            phone,
+            note,
+            address: `${address}, ${ward.label}, ${district.label}, ${province.label}`,
+            cart,
         });
-    const handleLocal = (value) =>
-        setLocalId((prev) => {
-            return {
-                ...prev,
-                local: value.id,
-            };
-        });
-    const handleDistrict = (value) =>
-        setLocalId((prev) => {
-            return {
-                ...prev,
-                district: value.id,
-            };
-        });
-    const handleWard = (value) =>
-        setLocalId((prev) => {
-            return {
-                ...prev,
-                ward: value.id,
-            };
-        });
-    const handleName = (event) =>
-        setForm((prev) => {
-            return { ...prev, name: event.target.value };
-        });
-    const handlePhone = (event) =>
-        setForm((prev) => {
-            return { ...prev, phone: event.target.value };
-        });
-    const handleAddress = (event) =>
-        setForm((prev) => {
-            return { ...prev, address: event.target.value };
-        });
-    const handleNote = (event) =>
-        setForm((prev) => {
-            return { ...prev, note: event.target.value };
-        });
+    };
 
     return (
         <div className={cx('grid', 'wide')}>
-            <div className={cx('row')}>
+            <Form onSubmit={handleSubmit(handleOnSubmit)}>
                 <div className={cx('col', 'l-7')}>
                     {/* Logo */}
                     <Button to={pathNames.home} className={cx('logo')} reset>
@@ -92,186 +123,127 @@ function Checkout() {
 
                     {/* Info address */}
                     <div className={cx('row')}>
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <Select
-                                    options={addresses}
-                                    className={cx('input-select')}
-                                    onChange={handleAddresses}
-                                    components={{
-                                        Option: SelectControlAddresses,
-                                    }}
-                                    getOptionLabel={(option) =>
-                                        `${option.name} ${option.address}`
-                                    }
-                                />
-                            </div>
-                        </div>
+                        <FormGroup classes={cx('col', 'l-6')}>
+                            <Select
+                                options={addresses}
+                                className={cx('input-select')}
+                                onChange={handleAddresses}
+                                components={{
+                                    Option: SelectControlAddresses,
+                                }}
+                                getOptionLabel={(option) =>
+                                    `${option.name} ${option.address}`
+                                }
+                            />
+                        </FormGroup>
 
-                        {/* Mail */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <label
-                                    htmlFor={inputId.email}
-                                    className={cx('label-input', 'disable', {
-                                        focus: !!form.email,
-                                    })}
-                                >
-                                    {context.email}
-                                </label>
-                                <input
-                                    id={inputId.email}
-                                    type='text'
-                                    className={cx('input', 'disable')}
-                                    value={form.email}
-                                    onChange={() => {}}
-                                    disabled={true}
-                                />
-                            </div>
-                        </div>
+                        {/* Email */}
+                        <FormGroup
+                            classes={cx('col', 'l-6')}
+                            name={'email'}
+                            errors={errors}
+                        >
+                            <Input
+                                classes={cx('disable')}
+                                name={'email'}
+                                type={'text'}
+                                isDisable
+                                register={register}
+                                errors={errors}
+                            />
+                        </FormGroup>
 
                         {/* Name */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <label
-                                    htmlFor={inputId.name}
-                                    className={cx('label-input', {
-                                        focus: !!form.name,
-                                    })}
-                                >
-                                    {context.name}
-                                </label>
-                                <input
-                                    id={inputId.name}
-                                    type='text'
-                                    value={form.name}
-                                    onChange={handleName}
-                                    className={cx('input')}
-                                />
-                            </div>
-                        </div>
+                        <FormGroup
+                            classes={cx('col', 'l-6')}
+                            name={'name'}
+                            errors={errors}
+                        >
+                            <Input
+                                name={'name'}
+                                type={'text'}
+                                register={register}
+                                errors={errors}
+                                placeholder={'Nhập họ tên'}
+                            />
+                        </FormGroup>
 
                         {/* Phone */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <label
-                                    htmlFor={inputId.phone}
-                                    className={cx('label-input', {
-                                        focus: !!form.phone,
-                                    })}
-                                >
-                                    {context.phone}
-                                </label>
-                                <input
-                                    id={inputId.phone}
-                                    type='text'
-                                    value={form.phone}
-                                    onChange={handlePhone}
-                                    className={cx('input')}
-                                />
-                            </div>
-                        </div>
+                        <FormGroup
+                            classes={cx('col', 'l-6')}
+                            name={'phone'}
+                            errors={errors}
+                        >
+                            <Input
+                                name={'phone'}
+                                type={'text'}
+                                register={register}
+                                errors={errors}
+                                placeholder={'Nhập số điện thoại'}
+                            />
+                        </FormGroup>
 
                         {/* Address */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <label
-                                    htmlFor={inputId.address}
-                                    className={cx('label-input', {
-                                        focus: !!form.address,
-                                    })}
-                                >
-                                    {context.address}
-                                </label>
-                                <input
-                                    id={inputId.address}
-                                    type='text'
-                                    value={form.address}
-                                    onChange={handleAddress}
-                                    className={cx('input')}
-                                />
-                            </div>
-                        </div>
+                        <FormGroup
+                            classes={cx('col', 'l-6')}
+                            name={'address'}
+                            errors={errors}
+                        >
+                            <Input
+                                name={'address'}
+                                type={'text'}
+                                register={register}
+                                errors={errors}
+                                placeholder={'Nhập địa chỉ'}
+                            />
+                        </FormGroup>
 
-                        {/* Local */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <Select
-                                    options={dataLocal}
-                                    className={cx('input-select')}
-                                    components={{ Option: SelectControlLocals }}
-                                    getOptionLabel={(option) => option.name}
-                                    onChange={handleLocal}
-                                />
-                            </div>
-                        </div>
+                        {/* Provinces */}
+                        <FormGroup classes={cx('col', 'l-6')}>
+                            <FormSelect
+                                name='province'
+                                control={control}
+                                options={provinces}
+                                label={'ProvinceName'}
+                                value={'ProvinceID'}
+                            />
+                        </FormGroup>
 
                         {/* Districts */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <Select
-                                    options={getArray(
-                                        dataLocal,
-                                        localId.local,
-                                        'districts',
-                                    )}
-                                    className={cx('input-select')}
-                                    components={{ Option: SelectControlLocals }}
-                                    getOptionLabel={(option) => option.name}
-                                    onChange={handleDistrict}
-                                    isDisabled={localId.local === '0'}
-                                />
-                            </div>
-                        </div>
+                        <FormGroup classes={cx('col', 'l-6')}>
+                            <FormSelect
+                                name='district'
+                                control={control}
+                                options={districts}
+                                label={'DistrictName'}
+                                value={'DistrictID'}
+                            />
+                        </FormGroup>
 
                         {/* Wards */}
-                        <div className={cx('col', 'l-6')}>
-                            <div className={cx('group')}>
-                                <Select
-                                    options={getArray(
-                                        getArray(
-                                            dataLocal,
-                                            localId.local,
-                                            'districts',
-                                        ),
-                                        localId.district,
-                                        'wards',
-                                    )}
-                                    className={cx('input-select')}
-                                    components={{ Option: SelectControlLocals }}
-                                    getOptionLabel={(option) => option.name}
-                                    onChange={handleWard}
-                                    isDisabled={localId.district === '0'}
-                                />
-                            </div>
-                        </div>
+                        <FormGroup classes={cx('col', 'l-6')}>
+                            <FormSelect
+                                name='ward'
+                                control={control}
+                                options={wards}
+                                label={'WardName'}
+                                value={'WardID'}
+                            />
+                        </FormGroup>
 
                         {/* Note */}
-                        <div className={cx('col', 'l-12')}>
-                            <div className={cx('group')}>
-                                <label
-                                    htmlFor={inputId.note}
-                                    className={cx(
-                                        'label-input',
-                                        'label-input--text-area',
-                                        {
-                                            focus: !!form.note,
-                                        },
-                                    )}
-                                >
-                                    {context.note}
-                                </label>
-                                <textarea
-                                    id={inputId.note}
-                                    type='text'
-                                    rows={3}
-                                    cols={20}
-                                    className={cx('input')}
-                                    value={form.note}
-                                    onChange={handleNote}
-                                ></textarea>
-                            </div>
-                        </div>
+                        <FormGroup classes={cx('col', 'l-12')}>
+                            <Input
+                                name={'note'}
+                                type={'text'}
+                                textarea
+                                rows={3}
+                                cols={20}
+                                register={register}
+                                errors={errors}
+                                placeholder={'Ghi chú'}
+                            />
+                        </FormGroup>
                     </div>
                 </div>
 
@@ -281,6 +253,8 @@ function Checkout() {
                             <div className={cx('col', 'l-12')}>
                                 <Title as='h1' classNames={cx('title')}>
                                     {context.title}
+                                    {cart.items.length}
+                                    {context.titleCounter}
                                 </Title>
                             </div>
                         </div>
@@ -289,17 +263,17 @@ function Checkout() {
                         <div className={cx('row', 'section')}>
                             <div className={cx('col', 'l-12')}>
                                 <ul className={cx('products')}>
-                                    {products.map((item, index) => (
+                                    {cart.items.map((item, index) => (
                                         <li
                                             key={index}
                                             className={cx('product')}
                                         >
                                             <span className={cx('quantity')}>
-                                                1
+                                                {item.quantity}
                                             </span>
                                             <div className={cx('info')}>
                                                 <img
-                                                    src={item.imgs[0]}
+                                                    src={item.image}
                                                     alt={item.name}
                                                     className={cx('img')}
                                                 />
@@ -324,7 +298,7 @@ function Checkout() {
                                         {context.tempCalc}
                                     </span>
                                     <span className={cx('text')}>
-                                        {currencyVN(99000)}
+                                        {currencyVN(cart.total)}
                                     </span>
                                 </div>
                             </div>
@@ -350,7 +324,7 @@ function Checkout() {
                                             'large-text--blue',
                                         )}
                                     >
-                                        {currencyVN(99000)}
+                                        {currencyVN(cart.total)}
                                     </span>
                                 </div>
                             </div>
@@ -360,14 +334,12 @@ function Checkout() {
                         <div className={cx('row', 'section')}>
                             <div className={cx('col', 'l-6')}>
                                 <Button
+                                    className={cx('link')}
                                     to={pathNames.cart}
                                     reset
-                                    className={cx('link')}
                                 >
-                                    <>
-                                        <FontAwesomeIcon icon={faAngleLeft} />
-                                        {context.backToCart}
-                                    </>
+                                    <FontAwesomeIcon icon={faAngleLeft} />
+                                    {context.backToCart}
                                 </Button>
                             </div>
                             <div className={cx('col', 'l-6')}>
@@ -381,7 +353,7 @@ function Checkout() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Form>
         </div>
     );
 }

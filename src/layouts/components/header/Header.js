@@ -16,7 +16,8 @@ import {
     topbarsLeft,
 } from './constant';
 import { pathNames } from '~/routes';
-import { userSelector } from '~/redux';
+import { cartSelector, userSelector } from '~/redux';
+
 import Menu from './components/menu/Menu';
 
 function Header() {
@@ -24,6 +25,7 @@ function Header() {
     const [topBarRight, setTopBarRight] = useState([]);
 
     const user = useSelector(userSelector.getUser);
+    const productQuantity = useSelector(cartSelector.getProductQuantity);
 
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
@@ -123,7 +125,9 @@ function Header() {
                                                 'action-item__context',
                                             )}
                                         >
-                                            {item.context}
+                                            {item.context === 'Sẩn phẩm'
+                                                ? `(${productQuantity}) ${item.context}`
+                                                : item.context}
                                         </span>
                                         <span
                                             className={cx('action-item__title')}

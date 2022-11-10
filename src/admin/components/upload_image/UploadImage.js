@@ -1,7 +1,4 @@
-// import { faX } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { filesize } from 'filesize';
 
 import { imgCloudUpload } from '~/assets/images/statics';
 import { cx, context } from './constant';
@@ -11,7 +8,6 @@ function UploadImage({ onChange, value = [], isMultiple }) {
     // - useState
     const [dragover, setDragOver] = useState(false);
     const [files, setFiles] = useState(value);
-    // const [objectFiles, setObjectFiles] = useState({});
 
     // - useEffect
     useEffect(() => {
@@ -27,29 +23,14 @@ function UploadImage({ onChange, value = [], isMultiple }) {
     const handleOnChange = (event) => {
         const multipleFile = [...event.target.files];
 
-        // files.map((item) => URL.revokeObjectURL(item.preview));
         multipleFile.map((item) => (item.preview = URL.createObjectURL(item)));
 
         setFiles(multipleFile);
-        // setObjectFiles(event.target.files);
 
         if (onChange) {
             onChange(multipleFile);
         }
     };
-    // const handleDelete = (index) => {
-    //     delete objectFiles[index];
-
-    //     setObjectFiles(objectFiles);
-    //     setFiles((prev) => {
-    //         const newFiles = [...prev];
-
-    //         URL.revokeObjectURL(newFiles[index].preview);
-    //         newFiles.splice(index, 1);
-
-    //         return newFiles;
-    //     });
-    // };
 
     return (
         <div className={cx('wrapper')}>
@@ -81,39 +62,20 @@ function UploadImage({ onChange, value = [], isMultiple }) {
                     'images-preview--empty': !(files.length > 0),
                 })}
             >
-                {files.map((item, index) => (
-                    <li key={index} className={cx('image-preview')}>
-                        <div className={cx('file')}>
-                            <div className={cx('file__appearance')}>
-                                <img
-                                    className={cx('file__image')}
-                                    src={item.preview}
-                                    alt={item.name}
-                                />
-                                <div className={cx('file__info')}>
-                                    <span className={cx('file__name')}>
-                                        {item.name}
-                                    </span>
-                                    <span className={cx('file__extension')}>
-                                        file: {item.name.split('.').pop()}
-                                    </span>
-                                    <span className={cx('file__size')}>
-                                        {filesize(item.size, {
-                                            base: 2,
-                                            standard: 'jedec',
-                                        })}
-                                    </span>
-                                </div>
-                            </div>
-                            {/* <span
-                                className={cx('delete')}
-                                onClick={() => handleDelete(index)}
-                            >
-                                <FontAwesomeIcon icon={faX} />
-                            </span> */}
-                        </div>
-                    </li>
-                ))}
+                <div className={cx('row')}>
+                    {files.map((item, index) => (
+                        <li
+                            key={index}
+                            className={cx('image-preview', 'col', 'l-3')}
+                        >
+                            <img
+                                className={cx('image')}
+                                src={item.preview}
+                                alt={item.name}
+                            />
+                        </li>
+                    ))}
+                </div>
             </ul>
         </div>
     );

@@ -42,4 +42,9 @@ const schema = yup.object({
         .min(minField, errorMessage.passwordLengtEight),
 });
 
-export { cx, context, form, schema };
+const defaultValues = {
+    email: 'nhatsangtv123@gmail.com',
+    password: '1234567890',
+};
+
+export { cx, context, form, schema, defaultValues };

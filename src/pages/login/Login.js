@@ -8,7 +8,7 @@ import { pathNames } from '~/routes';
 import { user } from '~/utils/constant';
 import { userAction } from '~/redux';
 
-import { cx, context, form, schema } from './constant';
+import { cx, context, form, schema, defaultValues } from './constant';
 
 function Login() {
     const {
@@ -17,10 +17,7 @@ function Login() {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            email: 'nhatsangtv123@gmail.com',
-            password: '1234567890',
-        },
+        defaultValues,
     });
 
     const navigate = useNavigate();
