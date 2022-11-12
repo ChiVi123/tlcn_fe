@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
-import { user } from '~/utils/constant';
+import * as services from '~/services/services';
 import { userAction } from '~/redux';
 
 import { cx, context, form, schema, defaultValues } from './constant';
+import { toast } from 'react-toastify';
 
 function Login() {
     const {
@@ -23,10 +24,14 @@ function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleSubmitData = (data) => {
-        if (data.email === user.email && data.password === user.password) {
+    const handleSubmitData = async (data) => {
+        const user = await services.login(data);
+
+        if (user) {
             dispatch(userAction.addUser(user));
             navigate(pathNames.home);
+        } else {
+            toast.error('Something wrong, email or password incorrect');
         }
     };
 

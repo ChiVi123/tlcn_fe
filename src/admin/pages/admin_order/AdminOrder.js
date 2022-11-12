@@ -1,12 +1,17 @@
 import Avatar from 'react-avatar';
+import { useSelector } from 'react-redux';
+import { avatarDefault } from '~/assets/images/statics';
 
 import { Button, Title } from '~/components';
-import { addresses, orders, products, user } from '~/utils/constant';
+import { userSelector } from '~/redux';
+import { addresses, orders, products } from '~/utils/constant';
 import { currencyVN } from '~/utils/funcs';
 
 import { cx, context } from './constant';
 
 function AdminOrder() {
+    const user = useSelector(userSelector.getUser);
+
     return (
         <>
             <Title as='h1'>{context.title}</Title>
@@ -15,7 +20,7 @@ function AdminOrder() {
             <div className={cx('row')} style={{ marginTop: '20px' }}>
                 <div className={cx('col', 'l-6')}>
                     <Avatar
-                        src={user.avatar}
+                        src={user?.avatar || avatarDefault}
                         size='200'
                         alt='avatar'
                         round='50px'
@@ -23,7 +28,7 @@ function AdminOrder() {
 
                     <Title as='h2' classNames={cx('user-name')}>
                         {context.userName}
-                        {user.firstName} {user.lastName}
+                        {user.name}
                     </Title>
                 </div>
 

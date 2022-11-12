@@ -3,7 +3,7 @@ export const context = {
     imageCol: 'Image',
     productNameCol: 'Product name',
     priceCol: 'Price',
-    saleCol: 'Sale',
+    stateCol: 'State',
     summaryCol: 'Summary',
     actionCol: 'Actions',
     addButton: '+ Add product',

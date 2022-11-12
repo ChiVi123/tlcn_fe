@@ -11,6 +11,7 @@ import {
     Orders,
     Checkout,
     Profile,
+    Search,
 } from '~/pages';
 import {
     AdminOrder,
@@ -28,10 +29,9 @@ const pathNames = {
     product: '/product/:id',
     login: '/login',
     register: '/register',
-    search: '/search',
+    search: '/search/:id',
     forgotPassword: '/forgot-password',
     sales: '/sales',
-    logout: '/logout',
     any: '/*',
 
     // private
@@ -76,6 +76,7 @@ const privateRoutes = [
     { path: pathNames.orders, component: Orders },
     { path: pathNames.checkout, component: Checkout, layout: null },
     { path: pathNames.profile, component: Profile },
+    { path: pathNames.search, component: Search },
 ];
 
 // admin

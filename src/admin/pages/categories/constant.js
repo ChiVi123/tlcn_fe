@@ -8,5 +8,6 @@ export const context = {
     addButton: '+ Add category',
     imageCol: 'Image',
     nameCol: 'Category name',
+    stateCol: 'State',
     actionsCol: 'Actions',
 };

@@ -1,12 +1,5 @@
-import {
-    faBasketShopping,
-    faUser,
-    faPhone,
-    faArrowRightFromBracket,
-    faTable,
-    faInfo,
-} from '@fortawesome/free-solid-svg-icons';
-import { faClock, faAddressBook } from '@fortawesome/free-regular-svg-icons';
+import { faBasketShopping, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faFacebookF, faGooglePlusG } from '@fortawesome/free-brands-svg-icons';
 import classNames from 'classnames/bind';
 
@@ -36,58 +29,6 @@ const topbarsLeft = [
     {
         icon: faGooglePlusG,
         href: 'mailto:transang8320001@gmail.com',
-    },
-];
-
-const topbarsRightLogout = [
-    {
-        icon: faUser,
-        context: 'Tài khoản',
-        to: '/login',
-    },
-    {
-        icon: faArrowRightFromBracket,
-        context: 'Đăng xuất',
-        to: '/logout',
-    },
-];
-
-const topbarsRightLogin = [
-    {
-        icon: faInfo,
-        context: 'Thông tin tài khoản',
-        to: '/profile',
-    },
-    {
-        icon: faAddressBook,
-        context: 'Sổ địa chỉ',
-        to: '/addresses',
-    },
-    {
-        icon: faArrowRightFromBracket,
-        context: 'Đăng xuất',
-    },
-];
-
-const topbarsRightAdmin = [
-    {
-        icon: faInfo,
-        context: 'Thông tin tài khoản',
-        to: '/profile',
-    },
-    {
-        icon: faTable,
-        context: 'Trang quản trị',
-        to: '/admin/dashboard',
-    },
-    {
-        icon: faAddressBook,
-        context: 'Sổ địa chỉ',
-        to: '/addresses',
-    },
-    {
-        icon: faArrowRightFromBracket,
-        context: 'Đăng xuất',
     },
 ];
 
@@ -182,13 +123,4 @@ const menuCate = [
     },
 ];
 
-export {
-    cx,
-    actions,
-    navItems,
-    menuCate,
-    topbarsRightLogout,
-    topbarsRightLogin,
-    topbarsRightAdmin,
-    topbarsLeft,
-};
+export { cx, actions, navItems, menuCate, topbarsLeft };

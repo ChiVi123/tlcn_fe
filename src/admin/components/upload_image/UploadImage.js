@@ -63,18 +63,21 @@ function UploadImage({ onChange, value = [], isMultiple }) {
                 })}
             >
                 <div className={cx('row')}>
-                    {files.map((item, index) => (
-                        <li
-                            key={index}
-                            className={cx('image-preview', 'col', 'l-3')}
-                        >
-                            <img
-                                className={cx('image')}
-                                src={item.preview}
-                                alt={item.name}
-                            />
-                        </li>
-                    ))}
+                    {files.length > 0 &&
+                        files.map((item, index) => (
+                            <li
+                                key={index}
+                                className={cx('image-preview', 'col', 'l-3')}
+                            >
+                                <div className={cx('wrapper-image')}>
+                                    <img
+                                        className={cx('image')}
+                                        src={item?.preview || item.url}
+                                        alt={item?.name || `image ${index}`}
+                                    />
+                                </div>
+                            </li>
+                        ))}
                 </div>
             </ul>
         </div>

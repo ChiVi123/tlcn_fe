@@ -1,6 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
+import slugify from 'slugify';
+import Swal from 'sweetalert2';
 
 import { Button, Title } from '~/components';
 import {
@@ -11,7 +14,6 @@ import {
     modulesDescription,
     modulesSummary,
     schema,
-    defaultValues,
 } from './constant';
 import {
     ButtonCustomize,
@@ -23,28 +25,145 @@ import {
     FormGroup,
     FormCreatable,
 } from '~/admin/components';
-import { categories } from '~/utils/constant';
+import * as services from '~/services/services';
+import { toast } from 'react-toastify';
 
 // Component
 function ProductForm() {
     // Hooks
+    const [product, setProduct] = useState({});
+    const [categories, setCategories] = useState([]);
     const { id } = useParams();
+
     const {
         register,
         control,
+        setValue,
         handleSubmit,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues,
+        defaultValues: {
+            name: '',
+            price: 0,
+            sale: 0,
+            summary: '',
+            description: '',
+            category: '',
+        },
     });
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, insert } = useFieldArray({
         control,
-        name: 'options',
+        name: 'options.selects',
     });
 
+    useEffect(() => {
+        const fetchApi = async (id) => {
+            let resultProduct;
+
+            if (id) {
+                resultProduct = await services.getProduct(id);
+            }
+            const resultCategories = await services.getCategories();
+
+            if (resultProduct) {
+                setValue('name', resultProduct.name || '');
+                setValue('price', resultProduct.price || 0);
+                setValue('sale', resultProduct.sale || 0);
+                setValue('category', resultProduct.category || '');
+                setValue('options.name', resultProduct.options[0]?.name || '');
+
+                resultProduct.options[0]?.selects.map((item, index) => {
+                    insert(index, { value: item.value, stock: item.stock });
+                    setValue(`options.selects.${index}.value`, item.value);
+                    setValue(`options.selects.${index}.stock`, item.stock);
+
+                    return 0;
+                });
+
+                setValue('tags', resultProduct.tags || []);
+                setValue('summary', resultProduct.summary || []);
+                setValue('description', resultProduct.description || '');
+                setValue('images', resultProduct.images || []);
+            }
+            setProduct(resultProduct);
+            setCategories(resultCategories);
+        };
+
+        fetchApi(id);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // Hanlde event
-    const handleOnSubmit = (data) => console.log(data);
+    const handleOnSubmit = async (data) => {
+        const {
+            options: { selects },
+        } = data;
+        const newSale = parseFloat(data.sale);
+        const newTags = data.tags.map((item) => item.value);
+        const newSlugify = slugify(data.name);
+        const formData = new FormData();
+        const formDataOption = new FormData();
+
+        formData.append('name', data.name);
+        formData.append('slugify', newSlugify);
+        formData.append('price', data.price);
+        formData.append('sale', newSale);
+        formData.append('category', data.category);
+        formData.append('tags', newTags);
+        formData.append('summary', data.summary);
+        formData.append('description', data.description);
+        formDataOption.append('name', data.options);
+
+        data.images.forEach((image) => {
+            formData.append('images', image);
+        });
+
+        Swal.fire({
+            title: 'Wating process add product',
+            didOpen: async () => {
+                Swal.showLoading();
+                const result = await services.addProduct(formData);
+                // selects.forEach(async (item) => {
+                //     formDataOption.append('value', item.value);
+                //     formDataOption.append('stock', parseInt(item.stock));
+
+                //     const resultOption = await services.addOptionsProduct(
+                //         formDataOption,
+                //         result.data.id,
+                //     );
+
+                //     if(resultOption.isSuccess === 'true') {
+                //         formDataOption.delete('value');
+                //         formDataOption.delete('stock');
+                //     } else {
+
+                //     };
+
+                // });
+
+                formDataOption.append('value', selects[0].value);
+                formDataOption.append('stock', parseInt(selects[0].stock));
+
+                const resultOption = await services.addOptionsProduct(
+                    formDataOption,
+                    result.data.id,
+                );
+
+                if (
+                    result.isSuccess === 'true' &&
+                    resultOption.isSuccess === 'true'
+                ) {
+                    toast.success('Thêm sản phẩm thành công');
+                } else {
+                    toast.error('Thêm sản phẩm thất bại');
+                }
+
+                Swal.close();
+            },
+        });
+    };
 
     return (
         <>
@@ -97,6 +216,9 @@ function ProductForm() {
                         name='sale'
                         register={register}
                         errors={errors}
+                        step={0.01}
+                        min={0}
+                        max={1}
                     />
                 </FormGroup>
 
@@ -106,44 +228,72 @@ function ProductForm() {
                     name={'category'}
                     label={context.categoryLabel}
                 >
-                    <FormSelect
-                        name='category'
-                        control={control}
-                        options={categories}
-                        label={'name'}
-                        value={'name'}
-                    />
+                    {id ? (
+                        product?.category && (
+                            <FormSelect
+                                name='category'
+                                control={control}
+                                options={categories}
+                                label={'name'}
+                                value={'id'}
+                                defaultValue={product.category}
+                            />
+                        )
+                    ) : (
+                        <FormSelect
+                            name='category'
+                            control={control}
+                            options={categories}
+                            label={'name'}
+                            value={'id'}
+                        />
+                    )}
                 </FormGroup>
 
                 {/* Options */}
                 <div className={cx('col', 'l-8')}>
+                    <div className={cx('row')}>
+                        <FormGroup
+                            classes={cx('col', 'l-8')}
+                            name={`options.name`}
+                            label={'Option'}
+                        >
+                            <Input
+                                type={'text'}
+                                name={`options.name`}
+                                register={register}
+                                errors={errors}
+                                placeholder={'Type option name'}
+                            />
+                        </FormGroup>
+                    </div>
                     {fields.map((item, index) => (
                         <div key={item.id} className={cx('row')}>
                             <div className={cx('col', 'l-6')}>
                                 <div className={cx('row')}>
                                     <FormGroup
                                         classes={cx('col', 'l-12')}
-                                        name={`options.${index}.name`}
-                                        label={`Mục ${index}`}
+                                        name={`options.selects.${index}.value`}
+                                        label={`Select ${index}`}
                                     >
                                         <Input
                                             type={'text'}
-                                            name={`options.${index}.name`}
+                                            name={`options.selects.${index}.value`}
                                             register={register}
                                             errors={errors}
-                                            placeholder={
-                                                'Nhập tên mục lụa chọn'
-                                            }
+                                            placeholder={'Type label'}
                                         />
                                     </FormGroup>
                                     <FormGroup
                                         classes={cx('col', 'l-12')}
-                                        name={`options.${index}.selects`}
+                                        name={`options.selects.${index}.stock`}
                                     >
-                                        <FormCreatable
-                                            name={`options.${index}.selects`}
-                                            control={control}
-                                            placeholder={'Nhập mục lựa chọn'}
+                                        <Input
+                                            type={'number'}
+                                            name={`options.selects.${index}.stock`}
+                                            register={register}
+                                            errors={errors}
+                                            placeholder={'Type stock'}
                                         />
                                     </FormGroup>
                                 </div>
@@ -171,7 +321,7 @@ function ProductForm() {
                         isEdit={true}
                         onClick={(event) => {
                             event.preventDefault();
-                            append({});
+                            append({ value: 'name', stock: 1 });
                         }}
                     >
                         {context.addOptionBtn}
@@ -184,11 +334,22 @@ function ProductForm() {
                     name={'tags'}
                     label={context.tagsLabel}
                 >
-                    <FormCreatable
-                        name={`tags`}
-                        control={control}
-                        placeholder={'Nhập các tag'}
-                    />
+                    {id ? (
+                        product?.tags && (
+                            <FormCreatable
+                                name={'tags'}
+                                control={control}
+                                placeholder={'Nhập các tag'}
+                                defaultValue={product.tags}
+                            />
+                        )
+                    ) : (
+                        <FormCreatable
+                            name={'tags'}
+                            control={control}
+                            placeholder={'Nhập các tag'}
+                        />
+                    )}
                 </FormGroup>
 
                 {/* Summary */}
@@ -222,20 +383,36 @@ function ProductForm() {
                 {/* Images */}
                 <FormGroup
                     classes={cx('col', 'l-12')}
-                    name={'imgs'}
+                    name={'images'}
                     label={context.imagesLabel}
                 >
-                    <Controller
-                        name='imgs'
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <UploadImage
-                                value={value}
-                                onChange={(files) => onChange(files)}
-                                isMultiple
+                    {id ? (
+                        product.images && (
+                            <Controller
+                                name='images'
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                    <UploadImage
+                                        value={product.images}
+                                        onChange={(files) => onChange(files)}
+                                        isMultiple
+                                    />
+                                )}
                             />
-                        )}
-                    />
+                        )
+                    ) : (
+                        <Controller
+                            name='images'
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <UploadImage
+                                    value={value}
+                                    onChange={(files) => onChange(files)}
+                                    isMultiple
+                                />
+                            )}
+                        />
+                    )}
                 </FormGroup>
 
                 <div

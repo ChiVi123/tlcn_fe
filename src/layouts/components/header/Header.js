@@ -5,43 +5,45 @@ import { useSelector } from 'react-redux';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
-import {
-    cx,
-    actions,
-    navItems,
-    menuCate,
-    topbarsRightLogin,
-    topbarsRightLogout,
-    topbarsRightAdmin,
-    topbarsLeft,
-} from './constant';
 import { pathNames } from '~/routes';
 import { cartSelector, userSelector } from '~/redux';
+import * as services from '~/services/services';
+
+import { cx, actions, navItems, topbarsLeft } from './constant';
 
 import Menu from './components/menu/Menu';
+import {
+    TopbarRightAdmin,
+    TopbarRightLogin,
+    TopbarRightLogout,
+} from './components/topbar_right';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
-    const [topBarRight, setTopBarRight] = useState([]);
+    const [categories, setCategories] = useState([]);
 
+    let TopbarRight = TopbarRightLogout;
     const user = useSelector(userSelector.getUser);
     const productQuantity = useSelector(cartSelector.getProductQuantity);
 
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
 
-    useEffect(() => {
-        if (user.email) {
-            if (user?.role === 'admin') {
-                setTopBarRight((prev) => topbarsRightAdmin);
-            } else {
-                setTopBarRight((prev) => topbarsRightLogin);
-            }
+    if (user.email) {
+        if (user?.role === 'role_admin') {
+            TopbarRight = TopbarRightAdmin;
         } else {
-            setTopBarRight((prev) => topbarsRightLogout);
+            TopbarRight = TopbarRightLogin;
         }
+    }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await services.getCategories();
+            setCategories(result);
+        };
+
+        fetchApi();
     }, []);
 
     return (
@@ -68,20 +70,11 @@ function Header() {
                         ))}
                     </ul>
 
-                    <ul className={cx('topbar-section')}>
-                        {topBarRight.map((item, index) => (
-                            <li key={index} className={cx('topbar__item')}>
-                                <Button
-                                    reset={true}
-                                    to={item.to}
-                                    className={cx('btn')}
-                                >
-                                    <FontAwesomeIcon icon={item.icon} />
-                                    <span>{item.context}</span>
-                                </Button>
-                            </li>
-                        ))}
-                    </ul>
+                    <TopbarRight
+                        topbarSection={cx('topbar-section')}
+                        topbarItem={cx('topbar__item')}
+                        btn={cx('btn')}
+                    />
                 </div>
 
                 <div className={cx('wrapper')}>
@@ -158,7 +151,7 @@ function Header() {
                             Danh mục sản phẩm
                         </span>
 
-                        {dropDown && <Menu items={menuCate} top />}
+                        {dropDown && <Menu items={categories} top />}
                     </span>
 
                     {navItems.map((item, index) => (

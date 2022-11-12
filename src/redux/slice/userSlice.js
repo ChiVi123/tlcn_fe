@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    firstName: '',
-    lastName: '',
-    avatar: '',
+    id: '',
     email: '',
-    isToast: false,
+    name: '',
+    avatar: '',
+    address: '',
+    phone: '',
     role: '',
+    accessToken: '',
+    isToast: false,
 };
 
 const userSlice = createSlice({
@@ -14,14 +17,28 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         addUser(state, { payload }) {
-            state.firstName = payload.firstName;
-            state.lastName = payload.lastName;
+            state.id = payload.id;
             state.email = payload.email;
+            state.name = payload.name;
             state.avatar = payload.avatar;
+            state.address = payload.address;
+            state.phone = payload.phone;
             state.role = payload.role;
+            state.accessToken = payload.accessToken;
         },
         showedToast(state) {
             state.isToast = true;
+        },
+        resetUser(state) {
+            state.id = '';
+            state.email = '';
+            state.name = '';
+            state.avatar = '';
+            state.address = '';
+            state.phone = '';
+            state.role = '';
+            state.accessToken = '';
+            state.isToast = false;
         },
     },
 });

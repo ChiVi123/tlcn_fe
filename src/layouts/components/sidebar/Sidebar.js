@@ -1,13 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
 import { imgLogo } from '~/assets/images/logo';
 import { Title } from '~/components';
+import { userSelector } from '~/redux';
 import { pathNames } from '~/routes';
-import { user } from '~/utils/constant';
+
 import { cx, sidebarItems } from './constant';
 
 function Sidebar() {
+    const user = useSelector(userSelector.getUser);
+
     return (
         <div className={cx('wrapper')}>
             <Link to={pathNames.home} className={cx('logo')}>
@@ -16,7 +20,7 @@ function Sidebar() {
 
             <Title as={'h2'}>
                 {'Xin chào '}
-                {user.lastName}
+                {user.name}
             </Title>
 
             <ul className={cx('sidebar')}>

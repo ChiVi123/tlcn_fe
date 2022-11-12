@@ -1,18 +1,19 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ProductCart, Title } from '~/components';
 import { pathNames } from '~/routes';
-import { products } from '~/utils/constant';
 import { userAction, userSelector } from '~/redux';
+import * as services from '~/services/services';
 
 import { cx, context } from './constant';
 
 function Home() {
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         if (user.email && !user.isToast) {
@@ -21,6 +22,14 @@ function Home() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useEffect(() => {
+        const fetchApi = async (page, size) => {
+            const result = await services.getProducts(page, size);
+            setProducts(result.list);
+        };
+
+        fetchApi(1, 3);
     }, []);
 
     return (
@@ -36,11 +45,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart
-                                    key={index}
-                                    product={item}
-                                    index={index}
-                                />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>
@@ -69,11 +74,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart
-                                    key={index}
-                                    product={item}
-                                    index={index}
-                                />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>
@@ -92,11 +93,7 @@ function Home() {
                     <div className={cx('row')}>
                         {products.map((item, index) => (
                             <div key={index} className={cx('col', 'l-2-4')}>
-                                <ProductCart
-                                    key={index}
-                                    product={item}
-                                    index={index}
-                                />
+                                <ProductCart key={index} product={item} />
                             </div>
                         ))}
                     </div>

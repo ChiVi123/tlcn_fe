@@ -3,22 +3,24 @@ import { Link } from 'react-router-dom';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { cx } from './constant';
 
-function ProductCart({ product, index = 0 }) {
+function ProductCart({ product }) {
     const percent = 100;
     const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
-        <Link to={`/product/${index}`} className={cx('product')}>
+        <Link to={`/product/${product.id}`} className={cx('product')}>
             {product.sale && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm
                 </span>
             )}
-            <img
-                className={cx('product-img')}
-                src={product.imgs[0]}
-                alt={product.name}
-            />
+            <div className={cx('wrapper-img')}>
+                <img
+                    className={cx('product-img')}
+                    src={product.images[0].url}
+                    alt={product.name}
+                />
+            </div>
             <div className={cx('product-wrapper')}>
                 <div className={cx('product-right')}>
                     <div>

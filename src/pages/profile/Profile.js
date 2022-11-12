@@ -2,30 +2,57 @@ import { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from 'react-redux';
 
 import { Button, Form, Section, Title, Wrapper } from '~/components';
 import { pathNames } from '~/routes';
-import { user } from '~/utils/constant';
-import { context, cx, schema, defaultValues } from './constant';
+import { userSelector } from '~/redux';
+import { avatarDefault } from '~/assets/images/statics';
+
+import { context, cx, schema } from './constant';
 
 function Profile() {
+    const user = useSelector(userSelector.getUser);
+
     const {
         register,
         handleSubmit,
+        watch,
         // formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues,
+        defaultValues: {
+            name: user.name,
+            email: user.email,
+        },
     });
-    const [file, setFile] = useState({ preview: user.avatar });
+
+    const [file, setFile] = useState({
+        preview: user?.avatar || avatarDefault,
+    });
+
     useEffect(() => {
         return () => {
             URL.revokeObjectURL(file.preview);
         };
     }, [file]);
+    useEffect(() => {
+        const subscription = watch((value, { name, type }) => {
+            if (name === 'avatar' && type === 'change') {
+                setFile((prev) => {
+                    prev = value.avatar[0];
+                    prev.preview = URL.createObjectURL(prev);
+                    return prev;
+                });
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     const handleImage = (event) => {
         setFile((prev) => {
+            console.log(prev);
             prev = event.target.files[0];
             prev.preview = URL.createObjectURL(prev);
 
@@ -76,26 +103,16 @@ function Profile() {
                         <div className={cx('col', 'l-6')}>
                             <div className={cx('group')}>
                                 <label htmlFor='' className={cx('label-input')}>
-                                    {context.lastName}
+                                    {context.name}
                                 </label>
                                 <input
-                                    placeholder={context.lastName}
+                                    placeholder={context.name}
                                     type='text'
                                     className={cx('input')}
-                                    {...register('lastName')}
+                                    {...register('name')}
                                 />
                             </div>
-                            <div className={cx('group')}>
-                                <label htmlFor='' className={cx('label-input')}>
-                                    {context.firstName}
-                                </label>
-                                <input
-                                    placeholder={context.firstName}
-                                    type='text'
-                                    className={cx('input')}
-                                    {...register('firstName')}
-                                />
-                            </div>
+
                             <div className={cx('group')}>
                                 <label htmlFor='' className={cx('label-input')}>
                                     {context.email}

@@ -1,5 +1,11 @@
 .header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: var(--total-height-header);
     background-color: var(--primary);
+    z-index: 1;
 }
 
 .wrapper {

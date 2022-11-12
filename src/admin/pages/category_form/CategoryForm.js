@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 import { Button, Title } from '~/components';
 import {
@@ -10,6 +12,8 @@ import {
     Input,
     UploadImage,
 } from '~/admin/components';
+import * as services from '~/services/services';
+
 import { context, schema, defaultValues, cx } from './constant';
 
 function CategoryForm() {
@@ -26,7 +30,26 @@ function CategoryForm() {
     });
 
     // Hanlde event
-    const handleOnSubmit = (data) => console.log(data);
+    const handleOnSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append('name', data.name);
+
+        Swal.fire({
+            title: 'Wating process add category',
+            didOpen: async () => {
+                Swal.showLoading();
+                const result = await services.addCategory(formData);
+
+                if (result.isSuccess === 'true') {
+                    toast.success('Thêm danh mục thành công');
+                } else {
+                    toast.error('Thêm danh mục thất bại');
+                }
+
+                Swal.close();
+            },
+        });
+    };
 
     return (
         <>

@@ -18,12 +18,14 @@ function Images({ images }) {
     const handlePrev = () => setTranslateX(translateX + 100);
     const handleNext = () => setTranslateX(translateX - 100);
 
+    console.log(images);
+
     return (
         <>
             <div
                 className={cx('product-img-select')}
                 style={{
-                    backgroundImage: `url(${images[indexSelect]})`,
+                    backgroundImage: `url(${images[indexSelect].url})`,
                 }}
             ></div>
             <div className={cx('img-list-wrapper')}>
@@ -46,9 +48,9 @@ function Images({ images }) {
                             onClick={() => handleSelect(index)}
                         >
                             <img
-                                src={item}
+                                src={item.url}
                                 className={cx('product-img')}
-                                alt={'img'}
+                                alt={item['id_image']}
                             />
                         </li>
                     ))}

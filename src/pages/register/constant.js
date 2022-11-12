@@ -8,8 +8,7 @@ const context = {
     title: 'Đăng ký tài khoản',
     register: 'Đăng ký',
     login: 'Đăng nhập',
-    firstName: 'Tên',
-    lastName: 'Họ',
+    name: 'Họ và tên',
     email: 'Email',
     fieldPassword: 'Mật khẩu',
     retypePassword: 'Nhập lại mật khẩu',
@@ -18,8 +17,7 @@ const context = {
 };
 
 const placeholder = {
-    firstName: 'Nhập tên của bạn',
-    lastName: 'Nhập họ của bạn',
+    name: 'Nhập họ và tên của bạn',
     email: 'Nhập email của bạn',
     fieldPassword: 'Nhập mật khẩu của bạn',
     retypePassword: 'Nhập lại mật khẩu',
@@ -28,8 +26,7 @@ const placeholder = {
 };
 
 const schema = yup.object({
-    lastName: yup.string().trim().required(),
-    firstName: yup.string().trim().required(),
+    name: yup.string().trim().required(),
     email: yup.string().email().required(),
     password: yup.string().min(8).required(),
     passwordComfirm: yup

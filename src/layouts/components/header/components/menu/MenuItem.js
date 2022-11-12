@@ -19,9 +19,9 @@ function MenuItem({ item, side }) {
 
     return (
         <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <NavLink to={item.to} className={classes}>
+            <NavLink to={`search/${item.id}`} className={classes}>
                 <div className={cx('menu-item__left')}>
-                    {item.img && (
+                    {item?.img && (
                         <img
                             className={cx('menu-item__img')}
                             src={item.img}
@@ -32,14 +32,14 @@ function MenuItem({ item, side }) {
                         {item.name}
                     </span>
                 </div>
-                {item.subMenu && (
+                {item?.subMenu && (
                     <FontAwesomeIcon
                         className={cx('menu-item__right')}
                         icon={faCaretRight}
                     />
                 )}
             </NavLink>
-            {item.subMenu && menu && <Menu items={item.subMenu} side />}
+            {item?.subMenu && menu && <Menu items={item?.subMenu} side />}
         </li>
     );
 }

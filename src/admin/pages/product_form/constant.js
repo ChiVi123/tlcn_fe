@@ -35,8 +35,13 @@ export const placeholder = {
 
 export const schema = yup.object({
     name: yup.string().trim().required(),
-    price: yup.number().positive().required(),
-    sale: yup.number().positive(),
+    price: yup
+        .number()
+        .typeError('Must be a number')
+        .positive()
+        .required('Must be required')
+        .min(500, 'To little'),
+    sale: yup.number().typeError('Must be a number').min(0, 'To little'),
 });
 
 export const defaultValues = {

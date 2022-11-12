@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
+import * as services from '~/services/services';
+
 import { cx, context, placeholder, schema } from './constant';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { userAction } from '~/redux';
 
 function Register() {
     const {
@@ -15,46 +20,46 @@ function Register() {
         resolver: yupResolver(schema),
     });
 
-    const handleOnSubmit = (data) => console.log(data);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleOnSubmit = async (data) => {
+        const { name, email, password } = data;
+        const user = await services.register({ name, email, password });
+
+        if (user) {
+            toast.success('Tạo tài khoản thành công');
+            dispatch(userAction.addUser(user));
+            navigate(pathNames.home);
+        } else {
+            toast.success('Tạo tài khoản thất bại');
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit(handleOnSubmit)} className={cx('wrapper')}>
             <Title line center as={'h1'}>
                 {context.title}
             </Title>
+
             <div className={cx('form')}>
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
-                        {context.lastName}
+                        {context.name}
                         <span>*</span>
                     </label>
                     <input
                         className={cx('input', {
-                            'invalid-input': !!errors.lastName?.message,
+                            'invalid-input': !!errors.name?.message,
                         })}
-                        placeholder={placeholder.lastName}
-                        {...register('lastName')}
+                        placeholder={placeholder.name}
+                        {...register('name')}
                     />
                     <span className={cx('invalid-message')}>
-                        {errors.lastName?.message}
+                        {errors.name?.message}
                     </span>
                 </div>
-                <div className={cx('group')}>
-                    <label className={cx('label-input')}>
-                        {context.firstName}
-                        <span>*</span>
-                    </label>
-                    <input
-                        className={cx('input', {
-                            'invalid-input': !!errors.firstName?.message,
-                        })}
-                        placeholder={placeholder.firstName}
-                        {...register('firstName')}
-                    />
-                    <span className={cx('invalid-message')}>
-                        {errors.firstName?.message}
-                    </span>
-                </div>
+
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
                         {context.email}
@@ -71,6 +76,7 @@ function Register() {
                         {errors.email?.message}
                     </span>
                 </div>
+
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
                         {context.fieldPassword}
@@ -88,6 +94,7 @@ function Register() {
                         {errors.password?.message}
                     </span>
                 </div>
+
                 <div className={cx('group')}>
                     <label className={cx('label-input')}>
                         {context.retypePassword}
@@ -106,6 +113,7 @@ function Register() {
                     </span>
                 </div>
             </div>
+
             <div className={cx('text-center')}>
                 <button className={cx('btn-register')}>
                     {context.register}

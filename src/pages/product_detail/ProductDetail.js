@@ -5,31 +5,46 @@ import {
     faChevronRight,
     faTag,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { products, comments } from '~/utils/constant';
+import { comments, products } from '~/utils/constant';
 import { ProductCart, Title } from '~/components';
-import { cx, context, form } from './constant';
 import { cartAction, cartSelector } from '~/redux';
+import * as services from '~/services/services';
 
+import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
 
 function ProductDetail() {
     const [translateXRealtion, setTranslateXRealtion] = useState(0);
+    const [product, setProduct] = useState({});
+
     const { register, watch, setValue, handleSubmit } = useForm({
         defaultValues: {
             quantity: 1,
         },
     });
+
     const { id } = useParams();
     const dispatch = useDispatch();
+
     const quantityInput = watch(form.quantity, 1);
-    const priceSale = priceSaleVN(products[id].price, products[id].sale);
     const cart = useSelector(cartSelector.getCart);
+
+    useEffect(() => {
+        const fetchApi = async (id) => {
+            const result = await services.getProduct(id);
+            setProduct(result);
+        };
+
+        fetchApi(id);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Handle event
     const handlePrevRelation = () => {
@@ -71,9 +86,9 @@ function ProductDetail() {
                 cartAction.addProduct({
                     ...data,
                     productId: id,
-                    name: products[id].name,
-                    image: products[id].imgs[0],
-                    price: priceSale,
+                    name: product?.name,
+                    image: product?.images[0],
+                    price: priceSaleVN(product?.price, product?.sale),
                 }),
             );
             toast.success('Đã thêm vào vỏ hàng');
@@ -88,26 +103,37 @@ function ProductDetail() {
                 <div className={cx('section', 'section--flex')}>
                     {/* Image */}
                     <div className={cx('section-left')}>
-                        <Images images={products[id].imgs} />
+                        {product?.images && <Images images={product?.images} />}
                     </div>
 
                     {/* Infomation */}
                     <div className={cx('section-right')}>
-                        <Title as='h1'>{products[id].name}</Title>
+                        {product?.name && (
+                            <Title as='h1'>{product?.name}</Title>
+                        )}
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
-                            <Rating rating={products[id].rating} />
+                            <Rating rating={product?.rate} />
                         </div>
 
                         {/* Price */}
                         <div className={cx('section-right__group')}>
-                            <span className={cx('product-sale')}>
-                                {currencyVN(priceSale)}
-                            </span>
-                            <span className={cx('product-old-price')}>
-                                {currencyVN(products[id].price)}
-                            </span>
+                            {product?.price && (
+                                <span className={cx('product-sale')}>
+                                    {currencyVN(
+                                        priceSaleVN(
+                                            product?.price,
+                                            product?.sale,
+                                        ),
+                                    )}
+                                </span>
+                            )}
+                            {product?.price && (
+                                <span className={cx('product-old-price')}>
+                                    {currencyVN(product?.price)}
+                                </span>
+                            )}
                         </div>
 
                         {/* Id Product */}
@@ -116,7 +142,7 @@ function ProductDetail() {
                                 {context.idProduct}
                             </span>
                             <span className={cx('section-text')}>
-                                {products[id].id}
+                                {product?.id}
                             </span>
                         </div>
 
@@ -127,30 +153,30 @@ function ProductDetail() {
                                     className={cx('section-icon')}
                                     icon={faTag}
                                 />
-                                {context.tags}{' '}
+                                {context?.tags}{' '}
                             </span>
-                            <span className={cx('section-text')}>
-                                {products[id].tags.join(', ')}
-                            </span>
+                            {product?.tags && (
+                                <span className={cx('section-text')}>
+                                    {product?.tags.join(', ')}
+                                </span>
+                            )}
                         </div>
 
                         {/* Summary */}
                         <ul className={cx('section-right__group', 'summary')}>
-                            {products[id].summary.map((item, index) => (
-                                <li key={index} className={cx('section-text')}>
-                                    {item}
-                                </li>
-                            ))}
+                            {product?.summary && product?.summary}
                         </ul>
 
                         {/* Form */}
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {/* Options */}
                             <div className={cx('section-right__group')}>
-                                <CheckBox
-                                    options={products[id].options}
-                                    register={register}
-                                />
+                                {product?.options && (
+                                    <CheckBox
+                                        options={product?.options}
+                                        register={register}
+                                    />
+                                )}
                             </div>
 
                             {/* Input quantity */}
@@ -272,7 +298,7 @@ function ProductDetail() {
                             >
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <ul
+                            {/* <ul
                                 style={{
                                     transform: `translateX(${translateXRealtion}px)`,
                                 }}
@@ -286,7 +312,7 @@ function ProductDetail() {
                                         <ProductCart product={item} />
                                     </li>
                                 ))}
-                            </ul>
+                            </ul> */}
                             <button
                                 onClick={handleNextRelation}
                                 className={cx('btn-arrow', 'btn-arrow--right')}

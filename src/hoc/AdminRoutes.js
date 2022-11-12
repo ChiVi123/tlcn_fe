@@ -7,7 +7,7 @@ import { userSelector } from '~/redux';
 function AdminRoutes() {
     const user = useSelector(userSelector.getUser);
 
-    return user.role === 'admin' ? (
+    return user.role === 'role_admin' ? (
         <Outlet />
     ) : (
         <Navigate to={pathNames.home} />
