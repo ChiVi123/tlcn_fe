@@ -29,7 +29,7 @@ function Home() {
             setProducts(result.list);
         };
 
-        fetchApi(1, 3);
+        fetchApi(0, 6);
     }, []);
 
     return (

@@ -19,7 +19,7 @@ function MenuItem({ item, side }) {
 
     return (
         <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <NavLink to={`search/${item.id}`} className={classes}>
+            <NavLink to={`/search/${item.id}`} className={classes}>
                 <div className={cx('menu-item__left')}>
                     {item?.img && (
                         <img

@@ -31,14 +31,14 @@ function CategoryForm() {
 
     // Hanlde event
     const handleOnSubmit = async (data) => {
-        const formData = new FormData();
-        formData.append('name', data.name);
-
         Swal.fire({
             title: 'Wating process add category',
             didOpen: async () => {
                 Swal.showLoading();
-                const result = await services.addCategory(formData);
+                const result = await services.addCategory({
+                    name: data.name,
+                    state: 'enable',
+                });
 
                 if (result.isSuccess === 'true') {
                     toast.success('Thêm danh mục thành công');

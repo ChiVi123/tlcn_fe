@@ -4,7 +4,7 @@ import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
 
-import { Button, Title } from '~/components';
+import { Button, ButtonPagination, Title } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { ButtonCustomize } from '~/admin/components';
 import * as services from '~/services/services';
@@ -18,12 +18,12 @@ function Products() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await services.getProducts();
+        const fetchApi = async (page, size) => {
+            const result = await services.getProducts(page, size);
             setProducts(result.list);
         };
 
-        fetchApi();
+        fetchApi(0, 4);
     }, []);
     return (
         <>
@@ -57,10 +57,10 @@ function Products() {
                                 </span>
                             </td>
                             <td className={cx('td')}>
-                                {currencyVN(item.price)}
+                                {item.price && currencyVN(item.price)}
                             </td>
                             <td className={cx('td', 'td-summary')}>
-                                <div className='ql-editor'>
+                                <div className={cx('ql-editor', 'summary')}>
                                     {parse(item.summary)}
                                 </div>
                             </td>
@@ -80,6 +80,14 @@ function Products() {
                     ))}
                 </tbody>
             </table>
+
+            <ButtonPagination
+                nextLabel={'next >'}
+                previousLabel={'< previous'}
+                currentPage={0}
+                rangeDisplay={5}
+                totalPage={12}
+            />
         </>
     );
 }

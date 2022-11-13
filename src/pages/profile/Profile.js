@@ -124,15 +124,7 @@ function Profile() {
                                     {...register('email')}
                                 />
                             </div>
-                            <div className={cx('group')}>
-                                <Button
-                                    to={pathNames.addresses}
-                                    solid={true}
-                                    className={cx('btn')}
-                                >
-                                    {context.addressesButton}
-                                </Button>
-                            </div>
+
                             <div className={cx('group')}>
                                 <Button solid={true} className={cx('btn')}>
                                     {context.editButton}

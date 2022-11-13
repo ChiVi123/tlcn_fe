@@ -9,9 +9,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import parser from 'html-react-parser';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { comments, products } from '~/utils/constant';
+import { comments } from '~/utils/constant';
 import { ProductCart, Title } from '~/components';
 import { cartAction, cartSelector } from '~/redux';
 import * as services from '~/services/services';
@@ -131,7 +132,8 @@ function ProductDetail() {
                             )}
                             {product?.price && (
                                 <span className={cx('product-old-price')}>
-                                    {currencyVN(product?.price)}
+                                    {product?.sale !== 0 &&
+                                        currencyVN(product?.price)}
                                 </span>
                             )}
                         </div>
@@ -139,14 +141,14 @@ function ProductDetail() {
                         {/* Id Product */}
                         <div className={cx('section-right__group')}>
                             <span className={cx('section-title')}>
-                                {context.idProduct}
+                                {context.idProduct}{' '}
                             </span>
                             <span className={cx('section-text')}>
                                 {product?.id}
                             </span>
                         </div>
 
-                        {/* Tag */}
+                        {/* Tags */}
                         <div className={cx('section-right__group')}>
                             <span className={cx('section-title')}>
                                 <FontAwesomeIcon
@@ -163,9 +165,11 @@ function ProductDetail() {
                         </div>
 
                         {/* Summary */}
-                        <ul className={cx('section-right__group', 'summary')}>
-                            {product?.summary && product?.summary}
-                        </ul>
+                        <div className={cx('section-right__group')}>
+                            <div className={cx('ql-editor', 'summary')}>
+                                {product?.summary && parser(product?.summary)}
+                            </div>
+                        </div>
 
                         {/* Form */}
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -233,23 +237,10 @@ function ProductDetail() {
                         <Title as='h2' line>
                             {context.description}
                         </Title>
-                        <p className={cx('description')}>
-                            Et voluptua sanctus diam lorem sed clita dolores. Et
-                            duo sed stet et sed takimata ut duo, ea rebum ea
-                            diam ipsum magna labore. Sed diam takimata invidunt
-                            sed. Tempor ut ipsum sea at duo sed eirmod. Lorem
-                            clita et nonumy et sadipscing ipsum dolore at amet.
-                            Labore ut sadipscing kasd gubergren dolor ipsum.
-                            Diam tempor voluptua consetetur invidunt. Aliquyam
-                            ut sit aliquyam amet clita diam stet. Ipsum dolor
-                            erat ea consetetur sit, sadipscing sea sit tempor
-                            sanctus. Accusam consetetur magna voluptua erat et
-                            clita est dolor gubergren, lorem magna et consetetur
-                            magna diam consetetur rebum, erat elitr et dolore et
-                            amet, gubergren no sed amet et sit rebum no at
-                            justo, gubergren ea duo sit aliquyam lorem ea,
-                            voluptua.
-                        </p>
+                        <div className={cx('ql-editor', 'description')}>
+                            {product?.description &&
+                                parser(product?.description)}
+                        </div>
                     </div>
                 </div>
 

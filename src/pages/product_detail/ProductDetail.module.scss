@@ -37,6 +37,10 @@
 
     &__group {
         margin: 0.5rem 0;
+
+        div {
+            padding: 0;
+        }
     }
 }
 
@@ -69,8 +73,13 @@
 }
 
 .summary {
-    list-style: disc;
-    margin-left: 1.8rem;
+    ul {
+        padding-left: 1.2rem;
+
+        li {
+            padding-left: 1rem !important;
+        }
+    }
 }
 
 .quantity {
@@ -159,7 +168,6 @@
 
 .description {
     padding: 1.2rem 0.8rem;
-    text-align: justify;
 }
 
 .relation-wrapper {

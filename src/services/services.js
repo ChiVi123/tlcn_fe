@@ -19,9 +19,24 @@ export const register = async (data) => {
 };
 
 // Get
+// - Product/Products
 export const getProducts = async (page, size) => {
     try {
-        const response = await request.get('products', { page, size });
+        const response = await request.get(
+            `products?page=${page}&size=${size}`,
+        );
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getProductsByCategory = async (id, page, size) => {
+    try {
+        const response = await request.get(
+            `products/category/${id}?page=${page}&size=${size}`,
+        );
+
         return response.data;
     } catch (error) {
         console.log(error);
@@ -75,9 +90,7 @@ export const addOptionsProduct = async (data, id) => {
 
 export const addCategory = async (data) => {
     try {
-        const response = await request.post('categories/add', data, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        const response = await request.post('admin/manage/categories', data);
         return response;
     } catch (error) {
         console.log(error);

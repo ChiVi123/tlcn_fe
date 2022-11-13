@@ -151,10 +151,8 @@ function ProductForm() {
                     result.data.id,
                 );
 
-                if (
-                    result.isSuccess === 'true' &&
-                    resultOption.isSuccess === 'true'
-                ) {
+                // resultOption.isSuccess === 'true'
+                if (result.isSuccess === 'true') {
                     toast.success('Thêm sản phẩm thành công');
                 } else {
                     toast.error('Thêm sản phẩm thất bại');
@@ -258,13 +256,15 @@ function ProductForm() {
                             name={`options.name`}
                             label={'Option'}
                         >
-                            <Input
-                                type={'text'}
-                                name={`options.name`}
-                                register={register}
-                                errors={errors}
-                                placeholder={'Type option name'}
-                            />
+                            {fields.length > 0 && (
+                                <Input
+                                    type={'text'}
+                                    name={`options.name`}
+                                    register={register}
+                                    errors={errors}
+                                    placeholder={'Type option name'}
+                                />
+                            )}
                         </FormGroup>
                     </div>
                     {fields.map((item, index) => (
@@ -326,6 +326,24 @@ function ProductForm() {
                     >
                         {context.addOptionBtn}
                     </ButtonCustomize>
+
+                    <div className={cx('row')}>
+                        <FormGroup
+                            classes={cx('col', 'l-8')}
+                            name={`quantity`}
+                            label={'Quantity'}
+                        >
+                            {fields.length === 0 && (
+                                <Input
+                                    type={'number'}
+                                    name={`quantity`}
+                                    register={register}
+                                    errors={errors}
+                                    placeholder={'Type quantity'}
+                                />
+                            )}
+                        </FormGroup>
+                    </div>
                 </div>
 
                 {/* Tags */}

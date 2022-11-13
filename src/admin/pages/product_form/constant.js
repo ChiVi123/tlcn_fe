@@ -41,7 +41,14 @@ export const schema = yup.object({
         .positive()
         .required('Must be required')
         .min(500, 'To little'),
-    sale: yup.number().typeError('Must be a number').min(0, 'To little'),
+    sale: yup
+        .number()
+        .typeError('Must be a number')
+        .min(0, 'Number is positive'),
+    // quantity: yup
+    //     .number()
+    //     .typeError('Must be a number')
+    //     .min(0, 'Number is positive'),
 });
 
 export const defaultValues = {

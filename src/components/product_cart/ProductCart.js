@@ -9,7 +9,7 @@ function ProductCart({ product }) {
 
     return (
         <Link to={`/product/${product.id}`} className={cx('product')}>
-            {product.sale && (
+            {product.sale !== 0 && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm
                 </span>
@@ -29,7 +29,7 @@ function ProductCart({ product }) {
                         </span>
                     </div>
                     <div>
-                        {product.sale && (
+                        {product.sale !== 0 && (
                             <span className={cx('product-price')}>
                                 {currencyVN(product.price)}
                             </span>

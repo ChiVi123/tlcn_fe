@@ -1,6 +1,6 @@
 // Library
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
@@ -17,15 +17,12 @@ import {
 } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
-import { addresses } from '~/utils/constant';
 import { currencyVN } from '~/utils/funcs';
 import * as servicesGHN from '~/services/servicesGHN';
+import { cartSelector } from '~/redux';
 
 // Local
-import SelectControlAddresses from './component/SelectControlAddresses';
 import { context, cx, schema, defaultValues } from './constant';
-import { useSelector } from 'react-redux';
-import { cartSelector } from '~/redux';
 
 function Checkout() {
     // Hooks
@@ -39,7 +36,6 @@ function Checkout() {
         register,
         control,
         handleSubmit,
-        setValue,
         watch,
         formState: { errors },
     } = useForm({
@@ -89,12 +85,6 @@ function Checkout() {
         return () => subscription.unsubscribe();
     }, [watch]);
 
-    // Handle event
-    const handleAddresses = (value) => {
-        setValue('name', value.name);
-        setValue('phone', value.phone);
-        setValue('address', value.address);
-    };
     const handleOnSubmit = (data) => {
         const { name, email, phone, note, address, province, district, ward } =
             data;
@@ -123,20 +113,6 @@ function Checkout() {
 
                     {/* Info address */}
                     <div className={cx('row')}>
-                        <FormGroup classes={cx('col', 'l-6')}>
-                            <Select
-                                options={addresses}
-                                className={cx('input-select')}
-                                onChange={handleAddresses}
-                                components={{
-                                    Option: SelectControlAddresses,
-                                }}
-                                getOptionLabel={(option) =>
-                                    `${option.name} ${option.address}`
-                                }
-                            />
-                        </FormGroup>
-
                         {/* Email */}
                         <FormGroup
                             classes={cx('col', 'l-6')}
@@ -206,6 +182,7 @@ function Checkout() {
                                 options={provinces}
                                 label={'ProvinceName'}
                                 value={'ProvinceID'}
+                                placeholder={'Province ...'}
                             />
                         </FormGroup>
 
@@ -217,6 +194,7 @@ function Checkout() {
                                 options={districts}
                                 label={'DistrictName'}
                                 value={'DistrictID'}
+                                placeholder={'District ...'}
                             />
                         </FormGroup>
 
@@ -228,6 +206,7 @@ function Checkout() {
                                 options={wards}
                                 label={'WardName'}
                                 value={'WardID'}
+                                placeholder={'Ward ...'}
                             />
                         </FormGroup>
 
@@ -273,7 +252,7 @@ function Checkout() {
                                             </span>
                                             <div className={cx('info')}>
                                                 <img
-                                                    src={item.image}
+                                                    src={item.image.url}
                                                     alt={item.name}
                                                     className={cx('img')}
                                                 />

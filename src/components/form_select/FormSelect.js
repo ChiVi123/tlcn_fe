@@ -2,7 +2,15 @@ import { Controller } from 'react-hook-form';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 
-function FormSelect({ name, options, label, value, isDisable, control }) {
+function FormSelect({
+    name,
+    options,
+    label,
+    value,
+    isDisable,
+    control,
+    placeholder,
+}) {
     const Option = ({ children, ...props }) => {
         const { data } = props;
         props.value = data[value];
@@ -29,6 +37,7 @@ function FormSelect({ name, options, label, value, isDisable, control }) {
                         onChange({ value: option[value], label: option[label] })
                     }
                     isDisabled={isDisable}
+                    placeholder={placeholder}
                 />
             )}
         />

@@ -8,22 +8,22 @@ function CheckBox({ options, register }) {
         <Fragment>
             {options.map((item, index) => (
                 <Fragment key={index}>
-                    <span className={cx('section-title')}>{item.label}</span>
+                    <span className={cx('section-title')}>{item.name}</span>
                     <ul className={cx('options')}>
                         {item.selects.map((option, index) => (
                             <li key={index} className={cx('options-item')}>
                                 <input
                                     type={'radio'}
-                                    id={option.value}
+                                    id={option.id}
                                     {...register(item.name)}
                                     value={option.value}
                                     defaultChecked={!index}
                                 />
                                 <label
-                                    htmlFor={option.value}
+                                    htmlFor={option.id}
                                     className={cx('options-item__label')}
                                 >
-                                    {option.label}
+                                    {option.value}
                                 </label>
                             </li>
                         ))}

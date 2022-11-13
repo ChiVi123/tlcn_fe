@@ -11,6 +11,8 @@ function CartItem({ product }) {
     const [quantity, setQuantity] = useState(product.quantity);
     const dispatch = useDispatch();
 
+    console.log(product);
+
     // Handle event
     const handleQuantity = ({ target: { value } }) => {
         if (Number.isInteger(value)) {
@@ -63,7 +65,7 @@ function CartItem({ product }) {
         <li className={cxCartItem('cart-item')}>
             <div className={cxCartItem('col', 'l-3')}>
                 <img
-                    src={product.image}
+                    src={product.image.url}
                     alt={product.name}
                     className={cxCartItem('cart-item__image')}
                 />

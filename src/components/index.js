@@ -9,3 +9,4 @@ export { default as FormQuill } from './form_quill/FormQuill';
 export { default as FormSelect } from './form_select/FormSelect';
 export { default as FormCreatable } from './form_select/FormCreatable';
 export { default as Input } from './input/Input';
+export { default as ButtonPagination } from './button_pagination/ButtonPagination';

@@ -11,6 +11,10 @@
 
     &-summary {
         width: 20rem;
+
+        div {
+            padding: 0;
+        }
     }
 }
 
@@ -40,17 +44,20 @@
 }
 
 .summary {
-    width: 18rem;
-    margin-left: 1.8rem;
-    list-style-type: disc;
+    ul {
+        width: 18rem;
+        padding-left: 0.8rem;
+        list-style: disc;
 
-    &__context {
-        display: block;
-        width: 100%;
+        li {
+            display: block;
+            padding-left: 1rem !important;
+            width: 100%;
 
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
