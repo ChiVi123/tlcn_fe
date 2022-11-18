@@ -1,10 +1,10 @@
 export const context = {
-    title: 'All product',
-    imageCol: 'Image',
-    productNameCol: 'Product name',
-    priceCol: 'Price',
-    stateCol: 'State',
-    summaryCol: 'Summary',
-    actionCol: 'Actions',
-    addButton: '+ Add product',
+    title: 'Các sản phẩm',
+    imageCol: 'Hình ảnh',
+    productNameCol: 'Tên sản phẩm',
+    priceCol: 'Giá',
+    stateCol: 'Trạng thái',
+    summaryCol: 'Tổng quan',
+    actionCol: 'Các hoạt động',
+    addButton: '+ Thêm sản phẩm',
 };

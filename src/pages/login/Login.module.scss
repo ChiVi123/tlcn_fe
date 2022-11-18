@@ -1,7 +1,11 @@
 .wrapper {
     --form-height: 4rem;
 
+    min-height: calc(
+        100vh - var(--total-height-header) - var(--height-footer) * 2
+    );
     width: 56.5rem;
+    padding-top: 1.8rem;
     margin: 3.56rem auto;
 }
 
@@ -89,4 +93,10 @@
     display: block;
     margin: 1rem 0;
     color: #a94442;
+}
+
+@media screen and (max-width: 739px) {
+    .wrapper {
+        width: 30rem;
+    }
 }

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ProductCart, Title } from '~/components';
 import { pathNames } from '~/routes';
-import { userAction, userSelector } from '~/redux';
+import { userActions, userSelector } from '~/redux';
 import * as services from '~/services/services';
 
 import { cx, context } from './constant';
@@ -17,7 +17,7 @@ function Home() {
 
     useEffect(() => {
         if (user.email && !user.isToast) {
-            dispatch(userAction.showedToast());
+            dispatch(userActions.showedToast());
             toast.success(context.loginSuccess);
         }
 
@@ -29,7 +29,7 @@ function Home() {
             setProducts(result.list);
         };
 
-        fetchApi(0, 6);
+        fetchApi(0, 12);
     }, []);
 
     return (
@@ -44,7 +44,10 @@ function Home() {
                 <div className={cx('grid', 'wide')}>
                     <div className={cx('row')}>
                         {products.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-2-4')}>
+                            <div
+                                key={index}
+                                className={cx('col', 'l-2-4', 'm-4', 's-6')}
+                            >
                                 <ProductCart key={index} product={item} />
                             </div>
                         ))}
@@ -73,7 +76,10 @@ function Home() {
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-2-4')}>
+                            <div
+                                key={index}
+                                className={cx('col', 'l-2-4', 'm-4', 's-6')}
+                            >
                                 <ProductCart key={index} product={item} />
                             </div>
                         ))}
@@ -92,7 +98,10 @@ function Home() {
                     </nav>
                     <div className={cx('row')}>
                         {products.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-2-4')}>
+                            <div
+                                key={index}
+                                className={cx('col', 'l-2-4', 'm-4', 's-6')}
+                            >
                                 <ProductCart key={index} product={item} />
                             </div>
                         ))}

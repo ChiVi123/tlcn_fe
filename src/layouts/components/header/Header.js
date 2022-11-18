@@ -1,16 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import {
+    faBars,
+    faBasketShopping,
+    faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
-import { cartSelector, userSelector } from '~/redux';
-import * as services from '~/services/services';
+import {
+    cartSelector,
+    userSelector,
+    categoriesSelector,
+    modalActions,
+} from '~/redux';
 
-import { cx, actions, navItems, topbarsLeft } from './constant';
-
+import { cx, actions, navItems, topbarsLeft, context } from './constant';
 import Menu from './components/menu/Menu';
 import {
     TopbarRightAdmin,
@@ -20,14 +27,16 @@ import {
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
-    const [categories, setCategories] = useState([]);
 
     let TopbarRight = TopbarRightLogout;
+    const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
     const productQuantity = useSelector(cartSelector.getProductQuantity);
+    const categories = useSelector(categoriesSelector.getAllcategory);
 
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
+    const handleClickMenu = () => dispatch(modalActions.open());
 
     if (user.email) {
         if (user?.role === 'role_admin') {
@@ -36,15 +45,6 @@ function Header() {
             TopbarRight = TopbarRightLogin;
         }
     }
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await services.getCategories();
-            setCategories(result);
-        };
-
-        fetchApi();
-    }, []);
 
     return (
         <header className={cx('header')}>
@@ -71,20 +71,46 @@ function Header() {
                     </ul>
 
                     <TopbarRight
-                        topbarSection={cx('topbar-section')}
+                        topbarSection={cx(
+                            'topbar-section',
+                            'topbar-section--mobile',
+                        )}
                         topbarItem={cx('topbar__item')}
                         btn={cx('btn')}
                     />
                 </div>
 
                 <div className={cx('wrapper')}>
-                    <Button
-                        reset={true}
-                        to={pathNames.home}
-                        className={cx('logo')}
-                    >
-                        <img src={imgLogo} alt='logo' />
-                    </Button>
+                    <div className={cx('wrapper-left')}>
+                        <Button
+                            className={cx('menu-btn')}
+                            onClick={handleClickMenu}
+                        >
+                            <FontAwesomeIcon
+                                className={cx('menu-btn__icon')}
+                                icon={faBars}
+                            />
+                        </Button>
+
+                        <Button
+                            reset={true}
+                            to={pathNames.home}
+                            className={cx('logo')}
+                        >
+                            <img src={imgLogo} alt='logo' />
+                        </Button>
+
+                        <Button
+                            to={'/cart'}
+                            className={cx('basket-icon-mobile')}
+                        >
+                            <FontAwesomeIcon
+                                icon={faBasketShopping}
+                                className={cx('')}
+                            />
+                            <span>{productQuantity}</span>
+                        </Button>
+                    </div>
 
                     <div className={cx('wrapper-right')}>
                         {/* Search */}
@@ -148,10 +174,12 @@ function Header() {
                             icon={faBars}
                         />
                         <span className={cx('nav-item__context')}>
-                            Danh mục sản phẩm
+                            {context.categories}
                         </span>
 
-                        {dropDown && <Menu items={categories} top />}
+                        {dropDown && categories && (
+                            <Menu items={categories} top />
+                        )}
                     </span>
 
                     {navItems.map((item, index) => (

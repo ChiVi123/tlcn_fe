@@ -33,29 +33,30 @@ function Categories() {
                     </tr>
                 </thead>
                 <tbody>
-                    {categories.map((item, index) => (
-                        <tr key={index}>
-                            <td>
-                                {item.url && (
-                                    <img
-                                        className={cx('image-category')}
-                                        src={item.url}
-                                        alt={item.name}
-                                    />
-                                )}
-                            </td>
-                            <td>{item.name}</td>
-                            <td>{item.state}</td>
-                            <td>
-                                <Button
-                                    solid={true}
-                                    className={cx('btn', 'btn--delete')}
-                                >
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
+                    {categories.length > 0 &&
+                        categories.map((item, index) => (
+                            <tr key={index}>
+                                <td>
+                                    {item['categoryimage'] && (
+                                        <img
+                                            className={cx('image-category')}
+                                            src={item['categoryimage']}
+                                            alt={item.name}
+                                        />
+                                    )}
+                                </td>
+                                <td>{item.name}</td>
+                                <td>{item.state}</td>
+                                <td>
+                                    <Button
+                                        solid={true}
+                                        className={cx('btn', 'btn--delete')}
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </>

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
 import * as services from '~/services/services';
-import { userAction } from '~/redux';
+import { userActions } from '~/redux';
 
 import { cx, context, form, schema, defaultValues } from './constant';
 import { toast } from 'react-toastify';
@@ -28,7 +28,7 @@ function Login() {
         const user = await services.login(data);
 
         if (user) {
-            dispatch(userAction.addUser(user));
+            dispatch(userActions.addUser(user));
             navigate(pathNames.home);
         } else {
             toast.error('Something wrong, email or password incorrect');

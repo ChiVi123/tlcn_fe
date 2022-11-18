@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { imgCloudUpload } from '~/assets/images/statics';
 import { cx, context } from './constant';
 
-function UploadImage({ onChange, value = [], isMultiple }) {
+function UploadImage({ onChange, value = [], isMultiple, colBase }) {
     // Hooks
     // - useState
     const [dragover, setDragOver] = useState(false);
@@ -67,7 +67,7 @@ function UploadImage({ onChange, value = [], isMultiple }) {
                         files.map((item, index) => (
                             <li
                                 key={index}
-                                className={cx('image-preview', 'col', 'l-3')}
+                                className={cx('image-preview', 'col', colBase)}
                             >
                                 <div className={cx('wrapper-image')}>
                                     <img

@@ -4,12 +4,12 @@ import * as yup from 'yup';
 export const cx = classNames.bind();
 
 export const context = {
-    titleAdd: 'Add category',
-    titleEdit: 'Edit category',
-    backToCategoriesPage: 'Back to categories page',
-    nameLabel: 'Name ',
-    imageLabel: 'Image ',
-    addBtn: '+ Add category',
+    titleAdd: 'Thêm mục sản phẩm',
+    titleEdit: 'Chỉnh sửa mục sản phẩm',
+    backToCategoriesPage: 'Trở về trang danh mục sản phẩm',
+    nameLabel: 'Tên danh mục ',
+    imageLabel: 'Hình ảnh ',
+    addBtn: '+ Thêm mục sản phẩm',
 };
 
 export const placeholder = {

@@ -11,22 +11,22 @@ export const cx = classNames.bind(styles);
 
 export const sidebarItems = [
     {
-        context: 'Products',
+        context: 'Danh sách sản phẩm',
         navTo: '/admin/products',
         icon: faBox,
     },
     {
-        context: 'Categories',
+        context: 'Danh sách mục sản phẩm',
         navTo: '/admin/categories',
         icon: faRectangleList,
     },
     {
-        context: 'Orders',
+        context: 'Danh sách hóa đơn',
         navTo: '/admin/orders',
         icon: faReceipt,
     },
     {
-        context: 'Users',
+        context: 'Danh sách người dùng',
         navTo: '/admin/users',
         icon: faAddressCard,
     },

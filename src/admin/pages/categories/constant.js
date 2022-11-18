@@ -4,10 +4,10 @@ import styles from './Categories.module.scss';
 export const cx = classNames.bind(styles);
 
 export const context = {
-    title: 'All category',
-    addButton: '+ Add category',
-    imageCol: 'Image',
-    nameCol: 'Category name',
-    stateCol: 'State',
-    actionsCol: 'Actions',
+    title: 'Danh sách các danh mục sản phẩm',
+    addButton: '+ Thêm danh mục sản phẩm',
+    imageCol: 'Hình ảnh',
+    nameCol: 'Tên danh mục  sản phẩm',
+    stateCol: 'Trạng thái',
+    actionsCol: 'Các hoạt động',
 };

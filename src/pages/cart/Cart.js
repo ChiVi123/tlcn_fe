@@ -1,10 +1,10 @@
-// import { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Section, Title, Wrapper } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { pathNames } from '~/routes';
-import { cartAction, cartSelector } from '~/redux';
+import { cartActions, cartSelector } from '~/redux';
 
 import { cxCart, context } from './constant';
 import CartItem from './CartItem';
@@ -13,8 +13,14 @@ function Cart() {
     const cart = useSelector(cartSelector.getCart);
     const dispatch = useDispatch();
 
+    const total = useMemo(() => {
+        return cart.items.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.price * currentValue.quantity;
+        }, 0);
+    }, [cart.items]);
+
     const handleReset = () => {
-        dispatch(cartAction.resetCart());
+        dispatch(cartActions.resetCart());
     };
 
     return (
@@ -23,7 +29,9 @@ function Cart() {
                 <Section>
                     {cart.items.length > 0 ? (
                         <div className={cxCart('row')}>
-                            <div className={cxCart('col', 'l-9')}>
+                            <div
+                                className={cxCart('col', 'l-9', 'm-12', 's-12')}
+                            >
                                 <h1 className={cxCart('title')}>
                                     {context.title}
                                 </h1>
@@ -37,14 +45,16 @@ function Cart() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className={cxCart('col', 'l-3')}>
+                            <div
+                                className={cxCart('col', 'l-3', 'm-12', 's-12')}
+                            >
                                 <div className={cxCart('wrapper-total')}>
                                     <div className={cxCart('price-info')}>
                                         <span className={cxCart('text')}>
                                             {context.total}
                                         </span>
                                         <span className={cxCart('price')}>
-                                            {currencyVN(cart.total)}
+                                            {currencyVN(total)}
                                         </span>
                                     </div>
                                     <div className={cxCart('section-btn')}>

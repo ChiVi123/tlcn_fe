@@ -1,59 +1,66 @@
-import { useState } from 'react';
-import { cx } from './constant';
+import { useEffect, useState } from 'react';
+import { arrayPageItem, cx } from './constant';
 
-function ButtonPagination({ rangeDisplay, totalPage }) {
-    const [indexItem, setIndexItem] = useState(0);
+function ButtonPagination({ currentPage, rangeDisplay, totalPage, onClick }) {
+    const [pages, setPages] = useState(
+        arrayPageItem(currentPage, rangeDisplay, totalPage),
+    );
+    const [valueItem, setValueItem] = useState(currentPage);
+
+    useEffect(() => {
+        setPages(arrayPageItem(valueItem, rangeDisplay, totalPage));
+    }, [valueItem, rangeDisplay, totalPage]);
 
     const handleDecrease = () => {
-        setIndexItem((prev) => {
-            if (prev > 0) {
-                return prev - 1;
-            } else {
-                return prev;
-            }
+        setValueItem((prev) => {
+            return prev - 1;
         });
+
+        if (onClick) {
+            onClick(valueItem - 1);
+        }
     };
     const handleIncrease = () => {
-        setIndexItem((prev) => {
-            if (prev < totalPage) {
-                return prev + 1;
-            } else {
-                return prev;
-            }
+        setValueItem((prev) => {
+            return prev + 1;
         });
+
+        if (onClick) {
+            onClick(valueItem + 1);
+        }
     };
-    const handleItem = (index) => {
-        setIndexItem(index);
+    const handleItem = (item) => {
+        setValueItem(item);
+
+        if (onClick) {
+            onClick(item);
+        }
     };
 
     return (
         <div className={cx('pagination')}>
             <button
-                className={cx('btn', { 'btn--disable': indexItem === 0 })}
+                className={cx('btn', { 'btn--disable': valueItem === 1 })}
                 onClick={handleDecrease}
             >
                 {'< previous'}
             </button>
-            {(() => {
-                const indents = [];
-                for (let index = 0; index < rangeDisplay; index++) {
-                    indents.push(
-                        <button
-                            key={index}
-                            className={cx('btn', {
-                                'btn--active': indexItem === index,
-                            })}
-                            onClick={() => handleItem(index)}
-                        >
-                            {index + 4}
-                        </button>,
-                    );
-                }
-                return indents;
-            })()}
+
+            {pages.map((item, index) => (
+                <button
+                    key={index}
+                    className={cx('btn', {
+                        'btn--active': item === valueItem,
+                    })}
+                    onClick={() => handleItem(item)}
+                >
+                    {item}
+                </button>
+            ))}
+
             <button
                 className={cx('btn', {
-                    'btn--disable': indexItem === totalPage,
+                    'btn--disable': valueItem === totalPage,
                 })}
                 onClick={handleIncrease}
             >

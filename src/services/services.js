@@ -18,8 +18,36 @@ export const register = async (data) => {
     }
 };
 
-// Get
-// - Product/Products
+export const getUser = async (id) => {
+    try {
+        const response = await request.get(`users/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateUser = async (id, data) => {
+    try {
+        const response = await request.put(`users/${id}`, data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const uploadAvatar = async (id, data) => {
+    try {
+        const response = await request.post(`users/avatar/${id}`, data, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Product/Products
 export const getProducts = async (page, size) => {
     try {
         const response = await request.get(
@@ -52,16 +80,6 @@ export const getProduct = async (id) => {
     }
 };
 
-export const getCategories = async () => {
-    try {
-        const response = await request.get('categories');
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// Add
 export const addProduct = async (data) => {
     try {
         const response = await request.post('products/add', data, {
@@ -88,10 +106,57 @@ export const addOptionsProduct = async (data, id) => {
     }
 };
 
+// Cateogry/Categories
+export const getCategories = async () => {
+    try {
+        const response = await request.get('categories');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const addCategory = async (data) => {
     try {
         const response = await request.post('admin/manage/categories', data);
         return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateCategory = async (id, data) => {
+    try {
+        const response = await request.put(
+            `admin/manage/categories/${id}`,
+            data,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateImageCategory = async (id, data) => {
+    try {
+        const response = await request.post(
+            `admin/manage/categories/uploadimage/${id}`,
+            data,
+            {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            },
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// User/users
+export const getUsers = async () => {
+    try {
+        const response = await request.get('admin/manage/users');
+        return response.data;
     } catch (error) {
         console.log(error);
     }

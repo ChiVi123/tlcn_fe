@@ -14,7 +14,7 @@ import parser from 'html-react-parser';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { comments } from '~/utils/constant';
 import { ProductCart, Title } from '~/components';
-import { cartAction, cartSelector } from '~/redux';
+import { cartActions, cartSelector } from '~/redux';
 import * as services from '~/services/services';
 
 import { cx, context, form } from './constant';
@@ -84,7 +84,7 @@ function ProductDetail() {
 
         if (data.quantity > 0 && !existProduct) {
             dispatch(
-                cartAction.addProduct({
+                cartActions.addProduct({
                     ...data,
                     productId: id,
                     name: product?.name,

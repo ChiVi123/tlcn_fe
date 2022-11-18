@@ -26,6 +26,10 @@ const userSlice = createSlice({
             state.role = payload.role;
             state.accessToken = payload.accessToken;
         },
+        updateUser(state, { payload }) {
+            state.name = payload.name;
+            state.avatar = payload.avatar && state.avatar;
+        },
         showedToast(state) {
             state.isToast = true;
         },
@@ -43,6 +47,6 @@ const userSlice = createSlice({
     },
 });
 
-export const userAction = userSlice.actions;
+export const userActions = userSlice.actions;
 
 export default userSlice.reducer;

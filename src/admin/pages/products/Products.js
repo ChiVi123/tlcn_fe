@@ -16,15 +16,28 @@ const cx = classNames.bind(styles);
 
 function Products() {
     const [products, setProducts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(5);
+    const [rangeDisplay, setRangeDisplay] = useState(3);
+    const itemPerPage = 4;
 
     useEffect(() => {
         const fetchApi = async (page, size) => {
             const result = await services.getProducts(page, size);
             setProducts(result.list);
+            setTotalPage(result.totalPage);
+            setRangeDisplay((prev) => {
+                if (result.totalPage > 5) {
+                    return 5;
+                } else {
+                    return prev;
+                }
+            });
         };
 
-        fetchApi(0, 4);
-    }, []);
+        fetchApi(page - 1, itemPerPage);
+    }, [page]);
+
     return (
         <>
             <Title as='h1'>{context.title}</Title>
@@ -84,9 +97,10 @@ function Products() {
             <ButtonPagination
                 nextLabel={'next >'}
                 previousLabel={'< previous'}
-                currentPage={0}
-                rangeDisplay={5}
-                totalPage={12}
+                currentPage={page}
+                rangeDisplay={rangeDisplay}
+                totalPage={totalPage}
+                onClick={(value) => setPage(value)}
             />
         </>
     );

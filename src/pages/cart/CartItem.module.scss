@@ -109,3 +109,38 @@
         appearance: textfield;
     }
 }
+
+// Responsive
+@media screen and (max-width: 1200px) {
+}
+
+/* Mobile, Tablet */
+@media screen and (max-width: 1023px) {
+    .cart-item {
+        &__info {
+            flex-direction: column;
+        }
+
+        &__name {
+            margin-right: 1.2rem;
+        }
+
+        &--mobile {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+}
+
+/* Mobile */
+@media screen and (max-width: 739px) {
+    .cart-item {
+        &__name {
+            margin-right: 0.8rem;
+        }
+    }
+}

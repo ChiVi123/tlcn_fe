@@ -31,6 +31,9 @@ function CategoryForm() {
 
     // Hanlde event
     const handleOnSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append('categoryimage', data.image[0]);
+
         Swal.fire({
             title: 'Wating process add category',
             didOpen: async () => {
@@ -41,7 +44,14 @@ function CategoryForm() {
                 });
 
                 if (result.isSuccess === 'true') {
-                    toast.success('Thêm danh mục thành công');
+                    const resultImage = await services.updateImageCategory(
+                        result.data.id,
+                        formData,
+                    );
+
+                    if (resultImage.isSuccess === 'true') {
+                        toast.success('Thêm danh mục thành công');
+                    }
                 } else {
                     toast.error('Thêm danh mục thất bại');
                 }
@@ -86,6 +96,7 @@ function CategoryForm() {
                             <UploadImage
                                 value={value}
                                 onChange={(files) => onChange(files)}
+                                colBase={'l-12'}
                             />
                         )}
                     />

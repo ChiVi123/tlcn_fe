@@ -21,10 +21,10 @@ function MenuItem({ item, side }) {
         <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <NavLink to={`/search/${item.id}`} className={classes}>
                 <div className={cx('menu-item__left')}>
-                    {item?.img && (
+                    {item['categoryimage'] && (
                         <img
                             className={cx('menu-item__img')}
-                            src={item.img}
+                            src={item['categoryimage']}
                             alt={item.name}
                         />
                     )}

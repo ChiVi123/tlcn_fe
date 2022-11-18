@@ -88,3 +88,31 @@
     margin: 0.1rem;
     border: 0.1rem solid var(--theme-img-list);
 }
+
+// Responsive
+@media screen and (max-width: 1200px) {
+}
+
+/* Mobile, Tablet */
+@media screen and (max-width: 1023px) {
+}
+
+/* Tablet */
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+    .product-img-select {
+        --size: 20rem;
+    }
+
+    .product-img {
+        height: 6rem;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 739px) {
+    .product-img-select {
+        --size: 30rem;
+
+        margin: 0 auto;
+    }
+}

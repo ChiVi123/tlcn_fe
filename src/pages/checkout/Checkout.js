@@ -1,6 +1,6 @@
 // Library
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
@@ -19,18 +19,26 @@ import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import { currencyVN } from '~/utils/funcs';
 import * as servicesGHN from '~/services/servicesGHN';
-import { cartSelector } from '~/redux';
+import { cartSelector, userSelector } from '~/redux';
 
 // Local
-import { context, cx, schema, defaultValues } from './constant';
+import { context, cx, schema } from './constant';
 
 function Checkout() {
     // Hooks
     const cart = useSelector(cartSelector.getCart);
+    const user = useSelector(userSelector.getUser);
     // - useState
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
+
+    const total = useMemo(() => {
+        return cart.items.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.price * currentValue.quantity;
+        }, 0);
+    }, [cart.items]);
+
     // - useForm
     const {
         register,
@@ -40,7 +48,12 @@ function Checkout() {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues,
+        defaultValues: {
+            name: '',
+            email: user.email,
+            phone: '',
+            note: '',
+        },
     });
     // - useEffect
     useEffect(() => {
@@ -86,22 +99,21 @@ function Checkout() {
     }, [watch]);
 
     const handleOnSubmit = (data) => {
-        const { name, email, phone, note, address, province, district, ward } =
-            data;
+        const { address, province, district, ward } = data;
+
+        const newCart = { ...cart, total };
+
         console.log({
-            name,
-            email,
-            phone,
-            note,
+            ...data,
             address: `${address}, ${ward.label}, ${district.label}, ${province.label}`,
-            cart,
+            newCart,
         });
     };
 
     return (
         <div className={cx('grid', 'wide')}>
             <Form onSubmit={handleSubmit(handleOnSubmit)}>
-                <div className={cx('col', 'l-7')}>
+                <div className={cx('col', 'l-7', 'm-12', 's-12')}>
                     {/* Logo */}
                     <Button to={pathNames.home} className={cx('logo')} reset>
                         <img
@@ -115,7 +127,7 @@ function Checkout() {
                     <div className={cx('row')}>
                         {/* Email */}
                         <FormGroup
-                            classes={cx('col', 'l-6')}
+                            classes={cx('col', 'l-6', 'm-6', 's-12')}
                             name={'email'}
                             errors={errors}
                         >
@@ -131,7 +143,7 @@ function Checkout() {
 
                         {/* Name */}
                         <FormGroup
-                            classes={cx('col', 'l-6')}
+                            classes={cx('col', 'l-6', 'm-6', 's-12')}
                             name={'name'}
                             errors={errors}
                         >
@@ -146,7 +158,7 @@ function Checkout() {
 
                         {/* Phone */}
                         <FormGroup
-                            classes={cx('col', 'l-6')}
+                            classes={cx('col', 'l-6', 'm-6', 's-12')}
                             name={'phone'}
                             errors={errors}
                         >
@@ -161,7 +173,7 @@ function Checkout() {
 
                         {/* Address */}
                         <FormGroup
-                            classes={cx('col', 'l-6')}
+                            classes={cx('col', 'l-6', 'm-6', 's-12')}
                             name={'address'}
                             errors={errors}
                         >
@@ -175,43 +187,55 @@ function Checkout() {
                         </FormGroup>
 
                         {/* Provinces */}
-                        <FormGroup classes={cx('col', 'l-6')}>
+                        <FormGroup
+                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            name={'province'}
+                            errors={errors}
+                        >
                             <FormSelect
                                 name='province'
                                 control={control}
                                 options={provinces}
                                 label={'ProvinceName'}
                                 value={'ProvinceID'}
-                                placeholder={'Province ...'}
+                                placeholder={'Tỉnh thành ...'}
                             />
                         </FormGroup>
 
                         {/* Districts */}
-                        <FormGroup classes={cx('col', 'l-6')}>
+                        <FormGroup
+                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            name={'district'}
+                            errors={errors}
+                        >
                             <FormSelect
                                 name='district'
                                 control={control}
                                 options={districts}
                                 label={'DistrictName'}
                                 value={'DistrictID'}
-                                placeholder={'District ...'}
+                                placeholder={'Quận, huyện ...'}
                             />
                         </FormGroup>
 
                         {/* Wards */}
-                        <FormGroup classes={cx('col', 'l-6')}>
+                        <FormGroup
+                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            name={'ward'}
+                            errors={errors}
+                        >
                             <FormSelect
                                 name='ward'
                                 control={control}
                                 options={wards}
                                 label={'WardName'}
                                 value={'WardID'}
-                                placeholder={'Ward ...'}
+                                placeholder={'Xã ...'}
                             />
                         </FormGroup>
 
                         {/* Note */}
-                        <FormGroup classes={cx('col', 'l-12')}>
+                        <FormGroup classes={cx('col', 'l-12', 'm-12', 's-12')}>
                             <Input
                                 name={'note'}
                                 type={'text'}
@@ -226,7 +250,7 @@ function Checkout() {
                     </div>
                 </div>
 
-                <div className={cx('col', 'l-5')}>
+                <div className={cx('col', 'l-5', 'm-12', 's-12')}>
                     <div className={cx('container')}>
                         <div className={cx('row', 'section')}>
                             <div className={cx('col', 'l-12')}>
@@ -240,7 +264,7 @@ function Checkout() {
 
                         {/* Products */}
                         <div className={cx('row', 'section')}>
-                            <div className={cx('col', 'l-12')}>
+                            <div className={cx('col', 'l-12', 'm-12', 's-12')}>
                                 <ul className={cx('products')}>
                                     {cart.items.map((item, index) => (
                                         <li
@@ -271,7 +295,7 @@ function Checkout() {
 
                         {/* Bill */}
                         <div className={cx('row', 'section')}>
-                            <div className={cx('col', 'l-12')}>
+                            <div className={cx('col', 'l-12', 'm-12', 's-12')}>
                                 <div className={cx('section-text')}>
                                     <span className={cx('text')}>
                                         {context.tempCalc}
@@ -281,7 +305,7 @@ function Checkout() {
                                     </span>
                                 </div>
                             </div>
-                            <div className={cx('col', 'l-12')}>
+                            <div className={cx('col', 'l-12', 'm-12', 's-12')}>
                                 <div className={cx('section-text')}>
                                     <span className={cx('text')}>
                                         {context.feeShip}
@@ -292,7 +316,7 @@ function Checkout() {
                         </div>
 
                         <div className={cx('row', 'section')}>
-                            <div className={cx('col', 'l-12')}>
+                            <div className={cx('col', 'l-12', 'm-12', 's-12')}>
                                 <div className={cx('section-text')}>
                                     <span className={cx('large-text')}>
                                         {context.priceTotal}
@@ -303,7 +327,7 @@ function Checkout() {
                                             'large-text--blue',
                                         )}
                                     >
-                                        {currencyVN(cart.total)}
+                                        {currencyVN(total)}
                                     </span>
                                 </div>
                             </div>

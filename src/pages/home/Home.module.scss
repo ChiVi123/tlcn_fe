@@ -109,3 +109,13 @@
         cursor: pointer;
     }
 }
+
+/* Mobile */
+@media screen and (max-width: 739px) {
+    .section {
+        --padding-horizontal: 1rem;
+
+        padding-right: var(--padding-horizontal);
+        padding-left: var(--padding-horizontal);
+    }
+}

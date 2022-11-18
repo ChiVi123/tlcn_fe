@@ -1,11 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { pathNames } from '~/routes';
 import { cx } from './constant';
 
 function BreadCrumb() {
+    const location = useLocation();
+
+    console.log(location);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'wide')}>

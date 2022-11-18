@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { cartAction } from '~/redux';
+import { cartActions } from '~/redux';
 import { currencyVN } from '~/utils/funcs';
 
 import { cxCartItem, context } from './constant';
@@ -10,8 +10,6 @@ import { cxCartItem, context } from './constant';
 function CartItem({ product }) {
     const [quantity, setQuantity] = useState(product.quantity);
     const dispatch = useDispatch();
-
-    console.log(product);
 
     // Handle event
     const handleQuantity = ({ target: { value } }) => {
@@ -36,7 +34,7 @@ function CartItem({ product }) {
                     toast.error('Lượng sản phẩm không hợp lệ');
                 } else {
                     dispatch(
-                        cartAction.changeQuantityProduct({
+                        cartActions.changeQuantityProduct({
                             id,
                             quantity,
                         }),
@@ -50,29 +48,29 @@ function CartItem({ product }) {
     const handleDecreaseQuantity = (id) => {
         if (quantity > 1) {
             setQuantity(quantity - 1);
-            dispatch(cartAction.subtractQuantityProduct(id));
+            dispatch(cartActions.subtractQuantityProduct(id));
         }
     };
     const handleIncreaseQuantity = (id) => {
         setQuantity(quantity + 1);
-        dispatch(cartAction.plusQuantityProduct(id));
+        dispatch(cartActions.plusQuantityProduct(id));
     };
     const handleDelete = (id) => {
-        dispatch(cartAction.removeProduct(id));
+        dispatch(cartActions.removeProduct(id));
     };
 
     return (
         <li className={cxCartItem('cart-item')}>
-            <div className={cxCartItem('col', 'l-3')}>
+            <div className={cxCartItem('col', 'l-3', 'm-2', 's-3')}>
                 <img
                     src={product.image.url}
                     alt={product.name}
                     className={cxCartItem('cart-item__image')}
                 />
             </div>
-            <div className={cxCartItem('col', 'l-7')}>
+            <div className={cxCartItem('col', 'l-7', 'm-8', 's-6')}>
                 <div className={cxCartItem('cart-item__info')}>
-                    <div>
+                    <div className={cxCartItem('cart-item--mobile')}>
                         <h3 className={cxCartItem('cart-item__name')}>
                             {product.name}
                         </h3>
@@ -90,7 +88,7 @@ function CartItem({ product }) {
                 </div>
             </div>
 
-            <div className={cxCartItem('col', 'l-2')}>
+            <div className={cxCartItem('col', 'l-2', 'm-2', 's-3')}>
                 <div className={cxCartItem('quantity')}>
                     <button
                         className={cxCartItem(

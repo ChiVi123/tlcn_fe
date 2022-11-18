@@ -4,17 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import slugify from 'slugify';
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 import { Button, Title } from '~/components';
-import {
-    context,
-    cx,
-    formatsDescription,
-    formatsSummary,
-    modulesDescription,
-    modulesSummary,
-    schema,
-} from './constant';
 import {
     ButtonCustomize,
     FormQuill,
@@ -26,7 +18,16 @@ import {
     FormCreatable,
 } from '~/admin/components';
 import * as services from '~/services/services';
-import { toast } from 'react-toastify';
+
+import {
+    context,
+    cx,
+    formatsDescription,
+    formatsSummary,
+    modulesDescription,
+    modulesSummary,
+    schema,
+} from './constant';
 
 // Component
 function ProductForm() {
@@ -50,11 +51,12 @@ function ProductForm() {
             summary: '',
             description: '',
             category: '',
+            quantity: 0,
         },
     });
     const { fields, append, remove, insert } = useFieldArray({
         control,
-        name: 'options.selects',
+        name: 'options',
     });
 
     useEffect(() => {
@@ -71,12 +73,11 @@ function ProductForm() {
                 setValue('price', resultProduct.price || 0);
                 setValue('sale', resultProduct.sale || 0);
                 setValue('category', resultProduct.category || '');
-                setValue('options.name', resultProduct.options[0]?.name || '');
 
-                resultProduct.options[0]?.selects.map((item, index) => {
+                resultProduct.options.map((item, index) => {
                     insert(index, { value: item.value, stock: item.stock });
-                    setValue(`options.selects.${index}.value`, item.value);
-                    setValue(`options.selects.${index}.stock`, item.stock);
+                    setValue(`options.${index}.value`, item.value);
+                    setValue(`options.${index}.stock`, item.stock);
 
                     return 0;
                 });
@@ -86,6 +87,7 @@ function ProductForm() {
                 setValue('description', resultProduct.description || '');
                 setValue('images', resultProduct.images || []);
             }
+
             setProduct(resultProduct);
             setCategories(resultCategories);
         };
@@ -97,9 +99,6 @@ function ProductForm() {
 
     // Hanlde event
     const handleOnSubmit = async (data) => {
-        const {
-            options: { selects },
-        } = data;
         const newSale = parseFloat(data.sale);
         const newTags = data.tags.map((item) => item.value);
         const newSlugify = slugify(data.name);
@@ -114,10 +113,16 @@ function ProductForm() {
         formData.append('tags', newTags);
         formData.append('summary', data.summary);
         formData.append('description', data.description);
-        formDataOption.append('name', data.options);
 
-        data.images.forEach((image) => {
-            formData.append('images', image);
+        if (data.images) {
+            data.images.forEach((image) => {
+                formData.append('images', image);
+            });
+        }
+
+        data.options.forEach((option) => {
+            option.stock = parseInt(option.stock);
+            data.quantity += option.stock;
         });
 
         Swal.fire({
@@ -125,34 +130,21 @@ function ProductForm() {
             didOpen: async () => {
                 Swal.showLoading();
                 const result = await services.addProduct(formData);
-                // selects.forEach(async (item) => {
-                //     formDataOption.append('value', item.value);
-                //     formDataOption.append('stock', parseInt(item.stock));
 
-                //     const resultOption = await services.addOptionsProduct(
-                //         formDataOption,
-                //         result.data.id,
-                //     );
-
-                //     if(resultOption.isSuccess === 'true') {
-                //         formDataOption.delete('value');
-                //         formDataOption.delete('stock');
-                //     } else {
-
-                //     };
-
-                // });
-
-                formDataOption.append('value', selects[0].value);
-                formDataOption.append('stock', parseInt(selects[0].stock));
-
-                const resultOption = await services.addOptionsProduct(
-                    formDataOption,
-                    result.data.id,
-                );
-
-                // resultOption.isSuccess === 'true'
                 if (result.isSuccess === 'true') {
+                    data.options.forEach(async (item) => {
+                        formDataOption.append('value', item.value);
+                        formDataOption.append('stock', item.stock);
+
+                        await services.addOptionsProduct(
+                            formDataOption,
+                            result.data.id,
+                        );
+
+                        formDataOption.delete('value');
+                        formDataOption.delete('stock');
+                    });
+
                     toast.success('Thêm sản phẩm thành công');
                 } else {
                     toast.error('Thêm sản phẩm thất bại');
@@ -225,6 +217,7 @@ function ProductForm() {
                     classes={cx('col', 'l-4')}
                     name={'category'}
                     label={context.categoryLabel}
+                    errors={errors}
                 >
                     {id ? (
                         product?.category && (
@@ -250,35 +243,18 @@ function ProductForm() {
 
                 {/* Options */}
                 <div className={cx('col', 'l-8')}>
-                    <div className={cx('row')}>
-                        <FormGroup
-                            classes={cx('col', 'l-8')}
-                            name={`options.name`}
-                            label={'Option'}
-                        >
-                            {fields.length > 0 && (
-                                <Input
-                                    type={'text'}
-                                    name={`options.name`}
-                                    register={register}
-                                    errors={errors}
-                                    placeholder={'Type option name'}
-                                />
-                            )}
-                        </FormGroup>
-                    </div>
                     {fields.map((item, index) => (
                         <div key={item.id} className={cx('row')}>
                             <div className={cx('col', 'l-6')}>
                                 <div className={cx('row')}>
                                     <FormGroup
                                         classes={cx('col', 'l-12')}
-                                        name={`options.selects.${index}.value`}
+                                        name={`options.${index}.value`}
                                         label={`Select ${index}`}
                                     >
                                         <Input
                                             type={'text'}
-                                            name={`options.selects.${index}.value`}
+                                            name={`options.${index}.value`}
                                             register={register}
                                             errors={errors}
                                             placeholder={'Type label'}
@@ -286,11 +262,11 @@ function ProductForm() {
                                     </FormGroup>
                                     <FormGroup
                                         classes={cx('col', 'l-12')}
-                                        name={`options.selects.${index}.stock`}
+                                        name={`options.${index}.stock`}
                                     >
                                         <Input
                                             type={'number'}
-                                            name={`options.selects.${index}.stock`}
+                                            name={`options.${index}.stock`}
                                             register={register}
                                             errors={errors}
                                             placeholder={'Type stock'}
@@ -327,13 +303,13 @@ function ProductForm() {
                         {context.addOptionBtn}
                     </ButtonCustomize>
 
-                    <div className={cx('row')}>
-                        <FormGroup
-                            classes={cx('col', 'l-8')}
-                            name={`quantity`}
-                            label={'Quantity'}
-                        >
-                            {fields.length === 0 && (
+                    {fields.length === 0 && (
+                        <div className={cx('row')}>
+                            <FormGroup
+                                classes={cx('col', 'l-8')}
+                                name={`quantity`}
+                                label={'Quantity'}
+                            >
                                 <Input
                                     type={'number'}
                                     name={`quantity`}
@@ -341,9 +317,9 @@ function ProductForm() {
                                     errors={errors}
                                     placeholder={'Type quantity'}
                                 />
-                            )}
-                        </FormGroup>
-                    </div>
+                            </FormGroup>
+                        </div>
+                    )}
                 </div>
 
                 {/* Tags */}
@@ -351,6 +327,7 @@ function ProductForm() {
                     classes={cx('col', 'l-4')}
                     name={'tags'}
                     label={context.tagsLabel}
+                    errors={errors}
                 >
                     {id ? (
                         product?.tags && (
@@ -375,6 +352,7 @@ function ProductForm() {
                     classes={cx('col', 'l-12')}
                     name={'summary'}
                     label={context.summaryLabel}
+                    errors={errors}
                 >
                     <FormQuill
                         name='summary'
@@ -389,6 +367,7 @@ function ProductForm() {
                     classes={cx('col', 'l-12')}
                     name={'description'}
                     label={context.descriptionLabel}
+                    errors={errors}
                 >
                     <FormQuill
                         name='description'
@@ -403,6 +382,7 @@ function ProductForm() {
                     classes={cx('col', 'l-12')}
                     name={'images'}
                     label={context.imagesLabel}
+                    errors={errors}
                 >
                     {id ? (
                         product.images && (
@@ -414,6 +394,7 @@ function ProductForm() {
                                         value={product.images}
                                         onChange={(files) => onChange(files)}
                                         isMultiple
+                                        colBase={'l-3'}
                                     />
                                 )}
                             />
@@ -427,6 +408,7 @@ function ProductForm() {
                                     value={value}
                                     onChange={(files) => onChange(files)}
                                     isMultiple
+                                    colBase={'l-3'}
                                 />
                             )}
                         />

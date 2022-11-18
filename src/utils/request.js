@@ -40,3 +40,8 @@ export const post = async (path, options = {}, configs = {}) => {
     const response = await requestApi.post(path, options, configs);
     return response.data;
 };
+
+export const put = async (path, options = {}, configs = {}) => {
+    const response = await requestApi.put(path, options, configs);
+    return response.data;
+};

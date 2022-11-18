@@ -32,15 +32,12 @@ export const inputId = {
 };
 
 export const schema = yup.object({
-    name: yup.string().trim().required(),
+    name: yup.string().trim().required('Tên đang trống'),
     email: yup.string().trim().required(),
-    phone: yup.string().trim().required(),
+    phone: yup.string().trim().required('Số điện thoại đang trống'),
     note: yup.string().trim(),
+    address: yup.string().trim().required('Địa chỉ đang trống'),
+    province: yup.string().required('Chọn tỉnh thành'),
+    district: yup.string().required('Chọn quận, huyện'),
+    ward: yup.string().required('Chọn xã'),
 });
-
-export const defaultValues = {
-    name: '',
-    email: 'nhatsangtv123@gmail.com',
-    phone: '',
-    note: '',
-};

@@ -34,32 +34,27 @@ export const placeholder = {
 };
 
 export const schema = yup.object({
-    name: yup.string().trim().required(),
+    name: yup.string().trim().required('Tên sản phẩm đang bị trống'),
     price: yup
         .number()
-        .typeError('Must be a number')
+        .typeError('Giá sản phẩm là số')
         .positive()
-        .required('Must be required')
-        .min(500, 'To little'),
+        .required('Giá sản phẩm đang bị trống')
+        .min(500, 'Giá quá thấp'),
     sale: yup
         .number()
-        .typeError('Must be a number')
-        .min(0, 'Number is positive'),
-    // quantity: yup
-    //     .number()
-    //     .typeError('Must be a number')
-    //     .min(0, 'Number is positive'),
+        .typeError('Giảm giá là số')
+        .min(0, 'Giảm giá là số dương'),
+    images: yup.array().required('Phải thêm ít nhất một ảnh'),
+    summary: yup.string().required('Tổng quan sản phẩm đang bị trống'),
+    description: yup.string().required('Mô tả sản phẩm đang bị trống'),
+    category: yup.string().required('Chưa chọn danh mục'),
+    tags: yup.array().required('Phải có ít nhất một tag'),
+    quantity: yup
+        .number()
+        .typeError('Số lượng sản phẩm là số')
+        .min(0, 'Số lượng sản phẩm là số dương'),
 });
-
-export const defaultValues = {
-    name: '',
-    price: 0,
-    sale: 0,
-    summary: '',
-    description: '',
-    category: '',
-    imgs: [],
-};
 
 export const formatsDescription = [
     'header',

@@ -9,7 +9,7 @@ import * as services from '~/services/services';
 import { cx, context, placeholder, schema } from './constant';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { userAction } from '~/redux';
+import { userActions } from '~/redux';
 
 function Register() {
     const {
@@ -29,7 +29,7 @@ function Register() {
 
         if (user) {
             toast.success('Tạo tài khoản thành công');
-            dispatch(userAction.addUser(user));
+            dispatch(userActions.addUser(user));
             navigate(pathNames.home);
         } else {
             toast.success('Tạo tài khoản thất bại');

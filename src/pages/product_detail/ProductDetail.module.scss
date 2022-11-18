@@ -2,6 +2,7 @@
     --theme: #efefef;
     --padding-vertical: 1.6rem;
 
+    padding-top: 1.8rem;
     padding-bottom: 1.6rem;
     background-color: var(--theme);
 }
@@ -271,4 +272,32 @@
 .comment-content {
     color: var(--text-color);
     font-size: 1.6rem;
+}
+
+// Responsive
+@media screen and (max-width: 1200px) {
+}
+
+/* Mobile, Tablet */
+@media screen and (max-width: 1023px) {
+    .section-left {
+        width: calc(20rem + var(--left-padding-side) * 2);
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+}
+
+/* Mobile */
+@media screen and (max-width: 739px) {
+    .section-left {
+        width: 100%;
+    }
+
+    .section {
+        &--flex {
+            flex-direction: column;
+        }
+    }
 }

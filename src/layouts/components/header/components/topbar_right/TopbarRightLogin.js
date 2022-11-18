@@ -7,13 +7,14 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { Button } from '~/components';
-import { userAction } from '~/redux';
+import { cartActions, userActions } from '~/redux';
 
 function TopbarRightLogin({ topbarSection, topbarItem, btn }) {
     const dispatch = useDispatch();
 
     const handleLogout = () => {
-        dispatch(userAction.resetUser());
+        dispatch(userActions.resetUser());
+        dispatch(cartActions.resetCart());
     };
 
     return (

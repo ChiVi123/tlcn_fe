@@ -2,17 +2,25 @@ import { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 import { Button, Form, Section, Title, Wrapper } from '~/components';
-import { pathNames } from '~/routes';
 import { userSelector } from '~/redux';
 import { avatarDefault } from '~/assets/images/statics';
+import * as services from '~/services/services';
+import { userActions } from '~/redux';
 
 import { context, cx, schema } from './constant';
 
 function Profile() {
     const user = useSelector(userSelector.getUser);
+    const [file, setFile] = useState({
+        preview: user?.avatar || avatarDefault,
+    });
+
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -25,10 +33,6 @@ function Profile() {
             name: user.name,
             email: user.email,
         },
-    });
-
-    const [file, setFile] = useState({
-        preview: user?.avatar || avatarDefault,
     });
 
     useEffect(() => {
@@ -52,14 +56,79 @@ function Profile() {
 
     const handleImage = (event) => {
         setFile((prev) => {
-            console.log(prev);
             prev = event.target.files[0];
             prev.preview = URL.createObjectURL(prev);
 
             return prev;
         });
     };
-    const handleOnSubmit = (data) => console.log(data);
+    const handleOnSubmit = async (data) => {
+        const { name, email, avatar } = data;
+        const formData = new FormData();
+
+        if (avatar) {
+            formData.append('avatar', avatar[0]);
+        }
+
+        Swal.fire({
+            title: 'Wating process update user',
+            didOpen: async () => {
+                Swal.showLoading();
+
+                if (name !== user.name) {
+                    const result = await services.updateUser(user.id, {
+                        name,
+                        email,
+                    });
+
+                    if (result.isSuccess === 'ok') {
+                        toast.success('Chỉnh sửa thành công');
+                        dispatch(
+                            userActions.updateUser({
+                                name,
+                                avatar: user.avatar,
+                            }),
+                        );
+                    } else {
+                        toast.error('Chỉnh sửa thất bại');
+                        dispatch(
+                            userActions.updateUser({
+                                name: user.name,
+                                avatar: user.avatar,
+                            }),
+                        );
+                    }
+                }
+
+                if (avatar) {
+                    const resultImage = await services.uploadAvatar(
+                        user.id,
+                        formData,
+                    );
+
+                    if (resultImage.isSuccess === 'true') {
+                        toast.success('Chỉnh sửa ảnh thành công');
+                        dispatch(
+                            userActions.updateUser({
+                                name: user.name,
+                                avatar: resultImage.data.avatar,
+                            }),
+                        );
+                    } else {
+                        toast.error('Chỉnh sửa ảnh thất bại');
+                        dispatch(
+                            userActions.updateUser({
+                                name: user.name,
+                                avatar: user.avatar,
+                            }),
+                        );
+                    }
+                }
+
+                Swal.close();
+            },
+        });
+    };
 
     return (
         <Wrapper>

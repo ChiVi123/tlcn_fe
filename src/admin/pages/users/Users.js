@@ -1,14 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faPen } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react';
 
 import { ButtonCustomize } from '~/admin/components';
 import { Title } from '~/components';
-import { user } from '~/utils/constant';
+import * as services from '~/services/services';
 
 import { context } from './constant';
 
 function Users() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await services.getUsers();
+
+            setUsers(result);
+        };
+
+        fetchApi();
+    }, []);
     const handleRole = () => {
         Swal.fire({
             title: 'Select role member',
@@ -57,24 +69,27 @@ function Users() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            {user.lastName} {user.firstName}
-                        </td>
-                        <td>{user.email}</td>
-                        <td>{user.role}</td>
-                        <td>Activated</td>
-                        <td>
-                            <ButtonCustomize onClick={handleIsActivate}>
-                                <FontAwesomeIcon icon={faCircleCheck} />
-                            </ButtonCustomize>
+                    {users.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.id}</td>
+                            <td>{item.name}</td>
+                            <td>{item.email}</td>
+                            <td>{item.role}</td>
+                            <td>{item.state}</td>
+                            <td>
+                                <ButtonCustomize onClick={handleIsActivate}>
+                                    <FontAwesomeIcon icon={faCircleCheck} />
+                                </ButtonCustomize>
 
-                            <ButtonCustomize isEdit={true} onClick={handleRole}>
-                                <FontAwesomeIcon icon={faPen} />
-                            </ButtonCustomize>
-                        </td>
-                    </tr>
+                                <ButtonCustomize
+                                    isEdit={true}
+                                    onClick={handleRole}
+                                >
+                                    <FontAwesomeIcon icon={faPen} />
+                                </ButtonCustomize>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>
