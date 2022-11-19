@@ -116,6 +116,24 @@ export const getCategories = async () => {
     }
 };
 
+export const getCategoryById = async (id) => {
+    try {
+        const response = await request.get(`categories/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getCategoriesRoleAdmin = async () => {
+    try {
+        const response = await request.get('admin/manage/categories');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const addCategory = async (data) => {
     try {
         const response = await request.post('admin/manage/categories', data);

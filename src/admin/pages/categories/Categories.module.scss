@@ -40,4 +40,15 @@
             box-shadow: 1px 0px 6px 2px rgb(239 68 68 / 25%);
         }
     }
+
+    &--check {
+        --check-color: #4ba1fa;
+
+        background-color: var(--check-color);
+        border: 0.1rem solid var(--check-color);
+
+        &:hover {
+            box-shadow: 1px 0px 6px 2px rgb(75 161 250 / 25%);
+        }
+    }
 }

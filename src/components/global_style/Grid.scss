@@ -49,6 +49,10 @@ bằng tổng số cột cơ sở mà ta cần.
     margin-right: var(--margin-side);
 }
 
+.row--nowrap {
+    flex-wrap: nowrap;
+}
+
 .col {
     --padding-side: 4px;
 

@@ -126,7 +126,7 @@ function ProductForm() {
         });
 
         Swal.fire({
-            title: 'Wating process add product',
+            title: 'Tiến hành thêm sản phẩm',
             didOpen: async () => {
                 Swal.showLoading();
                 const result = await services.addProduct(formData);

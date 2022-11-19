@@ -11,7 +11,12 @@ function UploadImage({ onChange, value = [], isMultiple, colBase }) {
 
     // - useEffect
     useEffect(() => {
-        return () => files.map((item) => URL.revokeObjectURL(item.preview));
+        return () =>
+            files.forEach((item) => {
+                if (typeof item !== 'string') {
+                    URL.revokeObjectURL(item.preview);
+                }
+            });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [files]);
@@ -72,7 +77,7 @@ function UploadImage({ onChange, value = [], isMultiple, colBase }) {
                                 <div className={cx('wrapper-image')}>
                                     <img
                                         className={cx('image')}
-                                        src={item?.preview || item.url}
+                                        src={item?.preview || item?.url || item}
                                         alt={item?.name || `image ${index}`}
                                     />
                                 </div>

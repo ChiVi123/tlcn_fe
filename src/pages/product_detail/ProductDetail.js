@@ -21,7 +21,8 @@ import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox } from './components';
 
 function ProductDetail() {
-    const [translateXRealtion, setTranslateXRealtion] = useState(0);
+    const [translateXRelation, setTranslateXRelation] = useState(0);
+    const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
 
     const { register, watch, setValue, handleSubmit } = useForm({
@@ -39,7 +40,12 @@ function ProductDetail() {
     useEffect(() => {
         const fetchApi = async (id) => {
             const result = await services.getProduct(id);
+            const resultRelation = await services.getProductsByCategory(
+                result.category_id,
+            );
+
             setProduct(result);
+            setProductsRelation(resultRelation.list);
         };
 
         fetchApi(id);
@@ -49,10 +55,10 @@ function ProductDetail() {
 
     // Handle event
     const handlePrevRelation = () => {
-        setTranslateXRealtion(translateXRealtion + 240);
+        setTranslateXRelation(translateXRelation + 240);
     };
     const handleNextRelation = () => {
-        setTranslateXRealtion(translateXRealtion - 240);
+        setTranslateXRelation(translateXRelation - 240);
     };
     const handleQuantity = ({ target: { value } }) => {
         if (Number.isInteger(value)) {
@@ -289,21 +295,31 @@ function ProductDetail() {
                             >
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            {/* <ul
+                            <ul
                                 style={{
-                                    transform: `translateX(${translateXRealtion}px)`,
+                                    transform: `translateX(${translateXRelation}px)`,
                                 }}
-                                className={cx('relations')}
+                                className={cx(
+                                    'relations',
+                                    'row',
+                                    'row--nowrap',
+                                )}
                             >
-                                {products.map((item, index) => (
-                                    <li
-                                        key={index}
-                                        className={cx('col', 'l-2-4')}
-                                    >
-                                        <ProductCart product={item} />
-                                    </li>
-                                ))}
-                            </ul> */}
+                                {productsRelation.length > 0 &&
+                                    productsRelation.map((item, index) => (
+                                        <li
+                                            key={index}
+                                            className={cx(
+                                                'col',
+                                                'l-2-4',
+                                                'm-3',
+                                                's-6',
+                                            )}
+                                        >
+                                            <ProductCart product={item} />
+                                        </li>
+                                    ))}
+                            </ul>
                             <button
                                 onClick={handleNextRelation}
                                 className={cx('btn-arrow', 'btn-arrow--right')}
