@@ -301,7 +301,7 @@ function Checkout() {
                                         {context.tempCalc}
                                     </span>
                                     <span className={cx('text')}>
-                                        {currencyVN(cart.total)}
+                                        {currencyVN(total)}
                                     </span>
                                 </div>
                             </div>

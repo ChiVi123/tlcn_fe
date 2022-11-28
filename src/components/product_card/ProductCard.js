@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { cx } from './constant';
 
-function ProductCart({ product }) {
+function ProductCard({ product }) {
     const percent = 100;
     const priceSale = priceSaleVN(product.price, product.sale);
 
@@ -44,4 +44,4 @@ function ProductCart({ product }) {
     );
 }
 
-export default ProductCart;
+export default ProductCard;

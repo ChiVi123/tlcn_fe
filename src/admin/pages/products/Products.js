@@ -19,7 +19,7 @@ function Products() {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(5);
     const [rangeDisplay, setRangeDisplay] = useState(3);
-    const itemPerPage = 4;
+    const itemPerPage = 8;
 
     useEffect(() => {
         const fetchApi = async (page, size) => {
@@ -58,11 +58,13 @@ function Products() {
                     {products.map((item, index) => (
                         <tr key={index}>
                             <td className={cx('col-img')}>
-                                <img
-                                    className={cx('img')}
-                                    src={item.images[0].url}
-                                    alt={item.name}
-                                />
+                                {item.images[0]?.url && (
+                                    <img
+                                        className={cx('img')}
+                                        src={item.images[0].url}
+                                        alt={item.name}
+                                    />
+                                )}
                             </td>
                             <td className={cx('td', 'td-name')}>
                                 <span className={cx('product-name')}>

@@ -82,23 +82,42 @@ export const getProduct = async (id) => {
 
 export const addProduct = async (data) => {
     try {
-        const response = await request.post('products/add', data, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        const response = await request.post('products/add', data);
         return response;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const addOptionsProduct = async (data, id) => {
+export const editProduct = async (id, data) => {
+    try {
+        const response = await request.put(`products/update/${id}`, data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addImagesProduct = async (id, data) => {
     try {
         const response = await request.post(
-            `manage/products/option/${id}`,
+            `products/uploadimage/${id}`,
             data,
             {
                 headers: { 'Content-Type': 'multipart/form-data' },
             },
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addOptionsProduct = async (id, data) => {
+    try {
+        const response = await request.post(
+            `manage/products/option/${id}`,
+            data,
         );
         return response;
     } catch (error) {

@@ -3,17 +3,22 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ProductCart, Title } from '~/components';
+import { ProductCard, Title } from '~/components';
 import { pathNames } from '~/routes';
 import { userActions, userSelector } from '~/redux';
 import * as services from '~/services/services';
 
 import { cx, context } from './constant';
 
+const itemCapacity = 15;
+const pageNumber = 0;
+
 function Home() {
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
     const [products, setProducts] = useState([]);
+    const [microcontrollers, setMicrocontrollers] = useState([]);
+    const [toolers, setToolers] = useState([]);
 
     useEffect(() => {
         if (user.email && !user.isToast) {
@@ -26,10 +31,23 @@ function Home() {
     useEffect(() => {
         const fetchApi = async (page, size) => {
             const result = await services.getProducts(page, size);
+            const resultMicrocontrollers = await services.getProductsByCategory(
+                '6377c780e5faa15251783671',
+                page,
+                size,
+            );
+            const resultToolers = await services.getProductsByCategory(
+                '6377c803e5faa15251783677',
+                page,
+                size,
+            );
+
             setProducts(result.list);
+            setMicrocontrollers(resultMicrocontrollers.list);
+            setToolers(resultToolers.list);
         };
 
-        fetchApi(0, 12);
+        fetchApi(pageNumber, itemCapacity);
     }, []);
 
     return (
@@ -40,6 +58,7 @@ function Home() {
                 </Title>
             </div>
 
+            {/* Products */}
             <div className={cx('section')}>
                 <div className={cx('grid', 'wide')}>
                     <div className={cx('row')}>
@@ -48,7 +67,7 @@ function Home() {
                                 key={index}
                                 className={cx('col', 'l-2-4', 'm-4', 's-6')}
                             >
-                                <ProductCart key={index} product={item} />
+                                <ProductCard key={index} product={item} />
                             </div>
                         ))}
                     </div>
@@ -62,6 +81,8 @@ function Home() {
                     </div>
                 </div>
             </div>
+
+            {/* Microcontrollers */}
             <div className={cx('section')}>
                 <div className={cx('grid', 'wide')}>
                     <nav className={cx('section-cate')}>
@@ -75,17 +96,19 @@ function Home() {
                         </Link>
                     </nav>
                     <div className={cx('row')}>
-                        {products.map((item, index) => (
+                        {microcontrollers.map((item, index) => (
                             <div
                                 key={index}
                                 className={cx('col', 'l-2-4', 'm-4', 's-6')}
                             >
-                                <ProductCart key={index} product={item} />
+                                <ProductCard key={index} product={item} />
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+
+            {/* Toolers */}
             <div className={cx('section')}>
                 <div className={cx('grid', 'wide')}>
                     <nav className={cx('section-cate')}>
@@ -97,12 +120,12 @@ function Home() {
                         </Link>
                     </nav>
                     <div className={cx('row')}>
-                        {products.map((item, index) => (
+                        {toolers.map((item, index) => (
                             <div
                                 key={index}
                                 className={cx('col', 'l-2-4', 'm-4', 's-6')}
                             >
-                                <ProductCart key={index} product={item} />
+                                <ProductCard key={index} product={item} />
                             </div>
                         ))}
                     </div>

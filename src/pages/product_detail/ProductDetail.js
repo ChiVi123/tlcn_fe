@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faChevronLeft,
@@ -13,19 +13,21 @@ import parser from 'html-react-parser';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { comments } from '~/utils/constant';
-import { ProductCart, Title } from '~/components';
+import { ProductCard, Title } from '~/components';
 import { cartActions, cartSelector } from '~/redux';
 import * as services from '~/services/services';
 
 import { cx, context, form } from './constant';
-import { Images, Rating, CheckBox } from './components';
+import { Images, Rating, CheckBox, Comments } from './components';
+
+import { InputQuantity } from '../components';
 
 function ProductDetail() {
     const [translateXRelation, setTranslateXRelation] = useState(0);
     const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
 
-    const { register, watch, setValue, handleSubmit } = useForm({
+    const { register, control, handleSubmit } = useForm({
         defaultValues: {
             quantity: 1,
         },
@@ -34,7 +36,6 @@ function ProductDetail() {
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const quantityInput = watch(form.quantity, 1);
     const cart = useSelector(cartSelector.getCart);
 
     useEffect(() => {
@@ -60,44 +61,43 @@ function ProductDetail() {
     const handleNextRelation = () => {
         setTranslateXRelation(translateXRelation - 240);
     };
-    const handleQuantity = ({ target: { value } }) => {
-        if (Number.isInteger(value)) {
-            setValue(form.quantity, value);
-            return;
-        }
-
-        const text = value.trim();
-
-        if (!text) {
-            setValue(form.quantity, '');
-            return;
-        }
-
-        setValue(form.quantity, parseInt(text, 10));
-    };
-    const handleDecreaseQuantity = (event) => {
-        event.preventDefault();
-        if (quantityInput > 1) {
-            setValue(form.quantity, quantityInput - 1);
-        }
-    };
-    const handleIncreaseQuantity = (event) => {
-        event.preventDefault();
-        setValue('quantity', quantityInput + 1);
-    };
     const onSubmit = (data) => {
         const existProduct = cart.items.find((item) => item.productId === id);
+        const option = product.options.find(
+            (item) => item.value === data.option,
+        );
 
-        if (data.quantity > 0 && !existProduct) {
-            dispatch(
-                cartActions.addProduct({
-                    ...data,
-                    productId: id,
-                    name: product?.name,
-                    image: product?.images[0],
-                    price: priceSaleVN(product?.price, product?.sale),
-                }),
+        if (
+            (option && data.quantity > option.stock) ||
+            data.quantity > product.quantity
+        ) {
+            toast.error(
+                `Sản phẩm không thể vượt quá ${
+                    option?.stock || product.quantity
+                }`,
             );
+            return;
+        }
+
+        if (!existProduct) {
+            console.log({
+                ...data,
+                productId: id,
+                name: product?.name,
+                image: product?.images[0],
+                price: priceSaleVN(product?.price, product?.sale),
+            });
+            // dispatch(
+            //     cartActions.addProduct({
+            //         ...data,
+            //         productId: id,
+            //         name: product?.name,
+            //         image: product?.images[0],
+            //         price: priceSaleVN(product?.price, product?.sale),
+            //         quantity: parseInt(data.quantity),
+            //     }),
+            // );
+
             toast.success('Đã thêm vào vỏ hàng');
         } else {
             toast.error('Không thể thêm vào vỏ hàng');
@@ -181,7 +181,7 @@ function ProductDetail() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {/* Options */}
                             <div className={cx('section-right__group')}>
-                                {product?.options && (
+                                {!!product?.options?.length && (
                                     <CheckBox
                                         options={product?.options}
                                         register={register}
@@ -194,34 +194,18 @@ function ProductDetail() {
                                 <span className={cx('section-title')}>
                                     {context.quantity}
                                 </span>
-                                <div className={cx('quantity')}>
-                                    <button
-                                        className={cx(
-                                            'btn-input',
-                                            'btn-input--decrease',
-                                        )}
-                                        onClick={handleDecreaseQuantity}
-                                    >
-                                        –
-                                    </button>
-                                    <input
-                                        type={'number'}
-                                        inputMode={'numberic'}
-                                        value={quantityInput}
-                                        onChange={handleQuantity}
-                                        className={cx('input-quantity')}
-                                        {...register(form.quantity)}
-                                    />
-                                    <button
-                                        className={cx(
-                                            'btn-input',
-                                            'btn-input--increase',
-                                        )}
-                                        onClick={handleIncreaseQuantity}
-                                    >
-                                        +
-                                    </button>
-                                </div>
+
+                                <Controller
+                                    control={control}
+                                    name={form.quantity}
+                                    render={({ field: { onChange } }) => (
+                                        <InputQuantity
+                                            onChange={(value) =>
+                                                onChange(value)
+                                            }
+                                        />
+                                    )}
+                                />
                             </div>
 
                             {/* Action */}
@@ -258,28 +242,7 @@ function ProductDetail() {
                         </Title>
                     </div>
 
-                    <ul className={cx('comments')}>
-                        {comments.map((item, index) => (
-                            <li key={index} className={cx('comment')}>
-                                <img
-                                    src={item.img}
-                                    alt={item.userName}
-                                    className={cx('avatar')}
-                                />
-                                <div className={cx('comment-right-side')}>
-                                    <span className={cx('user-name')}>
-                                        {item.userName}
-                                    </span>
-                                    <span className={cx('created-at')}>
-                                        {item.createdAt}
-                                    </span>
-                                    <p className={cx('comment-content')}>
-                                        {item.content}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    <Comments comments={comments} />
                 </div>
 
                 {/* Relation */}
@@ -316,7 +279,7 @@ function ProductDetail() {
                                                 's-6',
                                             )}
                                         >
-                                            <ProductCart product={item} />
+                                            <ProductCard product={item} />
                                         </li>
                                     ))}
                             </ul>

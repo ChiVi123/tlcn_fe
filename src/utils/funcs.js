@@ -1,5 +1,5 @@
-export function currencyVN(number) {
-    return number.toLocaleString('vi', {
+export function currencyVN(value) {
+    return value.toLocaleString('vi', {
         style: 'currency',
         currency: 'VND',
     });

@@ -1,0 +1,35 @@
+.comments {
+    padding: 0 2rem 1rem;
+}
+
+.comment {
+    display: flex;
+    margin-bottom: 1rem;
+
+    &-right-side {
+        max-width: 90%;
+    }
+}
+
+.user-name {
+    display: block;
+    color: var(--primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.avatar {
+    height: 6rem;
+    margin-top: 0.6rem;
+    margin-right: 1.2rem;
+}
+
+.created-at {
+    color: #acacac;
+    font-size: 1.4rem;
+}
+
+.comment-content {
+    color: var(--text-color);
+    font-size: 1.6rem;
+}

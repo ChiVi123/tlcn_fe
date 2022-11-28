@@ -72,7 +72,8 @@ function ProductForm() {
                 setValue('name', resultProduct.name || '');
                 setValue('price', resultProduct.price || 0);
                 setValue('sale', resultProduct.sale || 0);
-                setValue('category', resultProduct.category || '');
+                setValue('category', resultProduct['category_id'] || '');
+                setValue('quantity', resultProduct.quantity);
 
                 resultProduct.options.map((item, index) => {
                     insert(index, { value: item.value, stock: item.stock });
@@ -82,13 +83,18 @@ function ProductForm() {
                     return 0;
                 });
 
-                setValue('tags', resultProduct.tags || []);
+                const newTags = resultProduct?.tags.map((item) => ({
+                    value: item,
+                    label: item,
+                }));
+
+                setValue('tags', newTags.length > 0 ? newTags : []);
                 setValue('summary', resultProduct.summary || []);
                 setValue('description', resultProduct.description || '');
                 setValue('images', resultProduct.images || []);
             }
 
-            setProduct(resultProduct);
+            setProduct({ ...resultProduct, state: resultProduct?.state || '' });
             setCategories(resultCategories);
         };
 
@@ -103,21 +109,13 @@ function ProductForm() {
         const newTags = data.tags.map((item) => item.value);
         const newSlugify = slugify(data.name);
         const formData = new FormData();
-        const formDataOption = new FormData();
 
-        formData.append('name', data.name);
-        formData.append('slugify', newSlugify);
-        formData.append('price', data.price);
-        formData.append('sale', newSale);
-        formData.append('category', data.category);
-        formData.append('tags', newTags);
-        formData.append('summary', data.summary);
-        formData.append('description', data.description);
-
-        if (data.images) {
-            data.images.forEach((image) => {
-                formData.append('images', image);
-            });
+        if (data.images.length > 0) {
+            if (!data.images[0]?.url) {
+                data.images.forEach((image) => {
+                    formData.append('url', image);
+                });
+            }
         }
 
         data.options.forEach((option) => {
@@ -125,34 +123,77 @@ function ProductForm() {
             data.quantity += option.stock;
         });
 
-        Swal.fire({
-            title: 'Tiến hành thêm sản phẩm',
-            didOpen: async () => {
-                Swal.showLoading();
-                const result = await services.addProduct(formData);
+        const newData = {
+            name: data.name,
+            slugify: newSlugify,
+            price: data.price,
+            sale: newSale,
+            category: data.category,
+            quantity: data.quantity,
+            tags: newTags,
+            summary: data.summary,
+            description: data.description,
+            state: product.state,
+        };
 
-                if (result.isSuccess === 'true') {
-                    data.options.forEach(async (item) => {
-                        formDataOption.append('value', item.value);
-                        formDataOption.append('stock', item.stock);
+        if (id) {
+            Swal.fire({
+                title: 'Chỉnh sửa sản phẩm',
+                didOpen: async () => {
+                    Swal.showLoading();
+                    const result = await services.editProduct(id, newData);
+                    if (result.isSuccess === 'true') {
+                        data.options.forEach(async (item) => {
+                            await services.addOptionsProduct(
+                                result.data.id,
+                                item,
+                            );
+                        });
+                        if (data.images.length > 0) {
+                            if (!data.images[0]?.url) {
+                                await services.addImagesProduct(
+                                    result.data.id,
+                                    formData,
+                                );
+                            }
+                        }
+                        toast.success('Chỉnh sửa sản phẩm thành công');
+                    } else {
+                        toast.error('Chỉnh sửa sản phẩm thất bại');
+                    }
+                    Swal.close();
+                },
+            });
+        } else {
+            Swal.fire({
+                title: 'Thêm sản phẩm',
+                didOpen: async () => {
+                    Swal.showLoading();
 
-                        await services.addOptionsProduct(
-                            formDataOption,
+                    const result = await services.addProduct(newData);
+
+                    if (result.isSuccess === 'true') {
+                        data.options.forEach(async (item) => {
+                            await services.addOptionsProduct(
+                                result.data.id,
+                                item,
+                            );
+                        });
+
+                        await services.addImagesProduct(
                             result.data.id,
+                            formData,
                         );
 
-                        formDataOption.delete('value');
-                        formDataOption.delete('stock');
-                    });
+                        toast.success('Thêm sản phẩm thành công');
+                    } else {
+                        toast.error('Thêm sản phẩm thất bại');
+                    }
 
-                    toast.success('Thêm sản phẩm thành công');
-                } else {
-                    toast.error('Thêm sản phẩm thất bại');
-                }
-
-                Swal.close();
-            },
-        });
+                    Swal.close();
+                },
+            });
+        }
     };
 
     return (
@@ -250,7 +291,7 @@ function ProductForm() {
                                     <FormGroup
                                         classes={cx('col', 'l-12')}
                                         name={`options.${index}.value`}
-                                        label={`Select ${index}`}
+                                        label={`Tùy chọn ${index}`}
                                     >
                                         <Input
                                             type={'text'}
@@ -420,7 +461,7 @@ function ProductForm() {
                     style={{ marginTop: '1.4rem' }}
                 >
                     <ButtonCustomize isEdit={true}>
-                        {context.addBtn}
+                        {id ? context.titleEdit : context.addBtn}
                     </ButtonCustomize>
                 </div>
             </Form>
