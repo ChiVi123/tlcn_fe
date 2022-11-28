@@ -27,7 +27,7 @@ function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
 
-    const { register, control, handleSubmit } = useForm({
+    const { control, handleSubmit } = useForm({
         defaultValues: {
             quantity: 1,
         },
@@ -63,40 +63,18 @@ function ProductDetail() {
     };
     const onSubmit = (data) => {
         const existProduct = cart.items.find((item) => item.productId === id);
-        const option = product.options.find(
-            (item) => item.value === data.option,
-        );
-
-        if (
-            (option && data.quantity > option.stock) ||
-            data.quantity > product.quantity
-        ) {
-            toast.error(
-                `Sản phẩm không thể vượt quá ${
-                    option?.stock || product.quantity
-                }`,
-            );
-            return;
-        }
 
         if (!existProduct) {
-            console.log({
-                ...data,
-                productId: id,
-                name: product?.name,
-                image: product?.images[0],
-                price: priceSaleVN(product?.price, product?.sale),
-            });
-            // dispatch(
-            //     cartActions.addProduct({
-            //         ...data,
-            //         productId: id,
-            //         name: product?.name,
-            //         image: product?.images[0],
-            //         price: priceSaleVN(product?.price, product?.sale),
-            //         quantity: parseInt(data.quantity),
-            //     }),
-            // );
+            dispatch(
+                cartActions.addProduct({
+                    ...data,
+                    productId: id,
+                    name: product?.name,
+                    image: product?.images[0],
+                    price: priceSaleVN(product?.price, product?.sale),
+                    quantity: parseInt(data.quantity),
+                }),
+            );
 
             toast.success('Đã thêm vào vỏ hàng');
         } else {
@@ -182,9 +160,17 @@ function ProductDetail() {
                             {/* Options */}
                             <div className={cx('section-right__group')}>
                                 {!!product?.options?.length && (
-                                    <CheckBox
-                                        options={product?.options}
-                                        register={register}
+                                    <Controller
+                                        control={control}
+                                        name={'option'}
+                                        render={({ field: { onChange } }) => (
+                                            <CheckBox
+                                                options={product?.options}
+                                                onChange={(value) =>
+                                                    onChange(value)
+                                                }
+                                            />
+                                        )}
                                     />
                                 )}
                             </div>

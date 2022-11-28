@@ -48,3 +48,19 @@
     border-top: 0.1rem solid #ebebeb;
     border-bottom: 0.1rem solid #ebebeb;
 }
+
+.wrapper.small {
+    justify-content: center;
+    margin-top: 0.4rem;
+
+    .button {
+        --size-quantity: 2.8rem;
+        font-size: 1.4rem;
+        font-weight: 400;
+    }
+
+    .input-quantity {
+        height: 2.8rem;
+        width: 3.6rem;
+    }
+}

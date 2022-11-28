@@ -1,34 +1,43 @@
-import classNames from 'classnames/bind';
-import { Fragment } from 'react';
-import styles from './CheckBox.module.scss';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const cx = classNames.bind(styles);
+import { cx, context } from './constant';
 
-function CheckBox({ options, register }) {
+function CheckBox({ options, onChange }) {
+    const [checked, setChecked] = useState({ index: 0, value: {} });
+
+    const handleClick = (index, option) => {
+        setChecked({ index, value: option });
+
+        if (onChange) {
+            onChange(option);
+        }
+    };
+
     return (
-        <Fragment>
-            <span className={cx('section-title')}>Phân loại</span>
+        <>
+            <span className={cx('section-title')}>{context.title}</span>
             <ul className={cx('options')}>
                 {options.map((option, index) => (
-                    <li key={index} className={cx('options-item')}>
-                        <input
-                            type={'radio'}
-                            id={option.value}
-                            {...register('option')}
-                            value={option.value}
-                            defaultChecked={!index}
-                        />
-                        <label
+                    <li key={index} className={cx('option')}>
+                        <span
                             htmlFor={option.value}
-                            className={cx('options-item__label')}
+                            className={cx('option__label', {
+                                'option--checked': checked.index === index,
+                            })}
+                            onClick={() => handleClick(index, option)}
                         >
                             {option.value}
-                        </label>
+                        </span>
                     </li>
                 ))}
             </ul>
-        </Fragment>
+        </>
     );
 }
+
+CheckBox.propTypes = {
+    options: PropTypes.array,
+};
 
 export default CheckBox;

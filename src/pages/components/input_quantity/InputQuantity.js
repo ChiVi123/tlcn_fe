@@ -6,7 +6,7 @@ import styles from './InputQuantity.module.scss';
 
 const cx = classNames.bind(styles);
 
-function InputQuantity({ startNumber, step, max, min, onChange }) {
+function InputQuantity({ startNumber, step, max, min, small, onChange }) {
     const [quantity, setQuantity] = useState(startNumber);
 
     // Handle event
@@ -46,7 +46,11 @@ function InputQuantity({ startNumber, step, max, min, onChange }) {
     };
 
     return (
-        <div className={cx('wrapper')}>
+        <div
+            className={cx('wrapper', {
+                small,
+            })}
+        >
             <button
                 className={cx('button', 'button--decrease')}
                 onClick={handleDecrease}

@@ -10,7 +10,7 @@
     font-weight: 600;
 }
 
-.options-item {
+.option {
     & ~ & {
         margin-left: 0.8rem;
     }
@@ -28,11 +28,7 @@
         cursor: pointer;
     }
 
-    input {
-        display: none;
-    }
-
-    input:checked ~ &__label {
+    &--checked {
         border: 0.1rem solid #e6484a;
     }
 }
