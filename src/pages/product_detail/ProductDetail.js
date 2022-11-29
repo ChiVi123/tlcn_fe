@@ -1,10 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faChevronLeft,
-    faChevronRight,
-    faTag,
-} from '@fortawesome/free-solid-svg-icons';
+import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,10 +16,9 @@ import * as services from '~/services/services';
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
 
-import { InputQuantity } from '../components';
+import { InputQuantity, Slick } from '../components';
 
 function ProductDetail() {
-    const [translateXRelation, setTranslateXRelation] = useState(0);
     const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
 
@@ -41,30 +36,23 @@ function ProductDetail() {
     useEffect(() => {
         const fetchApi = async (id) => {
             const result = await services.getProduct(id);
+            setProduct(result);
+
             const resultRelation = await services.getProductsByCategory(
                 result.category_id,
             );
-
-            setProduct(result);
             setProductsRelation(resultRelation.list);
         };
 
         fetchApi(id);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [id]);
 
     // Handle event
-    const handlePrevRelation = () => {
-        setTranslateXRelation(translateXRelation + 240);
-    };
-    const handleNextRelation = () => {
-        setTranslateXRelation(translateXRelation - 240);
-    };
+
     const onSubmit = (data) => {
         const existProduct = cart.items.find((item) => item.productId === id);
 
-        if (!existProduct) {
+        if (data.quantity && !existProduct) {
             dispatch(
                 cartActions.addProduct({
                     ...data,
@@ -72,7 +60,6 @@ function ProductDetail() {
                     name: product?.name,
                     image: product?.images[0],
                     price: priceSaleVN(product?.price, product?.sale),
-                    quantity: parseInt(data.quantity),
                 }),
             );
 
@@ -237,45 +224,14 @@ function ProductDetail() {
                         <Title as='h2' line>
                             {context.relation}
                         </Title>
-                        <div className={cx('relation-wrapper')}>
-                            <button
-                                onClick={handlePrevRelation}
-                                className={cx('btn-arrow', 'btn-arrow--left')}
-                            >
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                            </button>
-                            <ul
-                                style={{
-                                    transform: `translateX(${translateXRelation}px)`,
-                                }}
-                                className={cx(
-                                    'relations',
-                                    'row',
-                                    'row--nowrap',
-                                )}
-                            >
-                                {productsRelation.length > 0 &&
-                                    productsRelation.map((item, index) => (
-                                        <li
-                                            key={index}
-                                            className={cx(
-                                                'col',
-                                                'l-2-4',
-                                                'm-3',
-                                                's-6',
-                                            )}
-                                        >
-                                            <ProductCard product={item} />
-                                        </li>
-                                    ))}
-                            </ul>
-                            <button
-                                onClick={handleNextRelation}
-                                className={cx('btn-arrow', 'btn-arrow--right')}
-                            >
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </button>
-                        </div>
+
+                        {!!productsRelation.length && (
+                            <Slick
+                                list={productsRelation}
+                                component={ProductCard}
+                                nameProp={'product'}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

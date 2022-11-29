@@ -57,6 +57,13 @@ function CartItem({ product }) {
                     small
                     onChange={(value) => handleChange(value)}
                 />
+                <span
+                    className={cxCartItem({
+                        'invalid-message': !product.quantity,
+                    })}
+                >
+                    {!product.quantity && context.errorMessage}
+                </span>
             </div>
         </li>
     );

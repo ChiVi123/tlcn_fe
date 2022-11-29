@@ -44,6 +44,15 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
 
         setQuantity(newValue);
     };
+    const handleBlur = ({ target: { value } }) => {
+        if (!value) {
+            setQuantity(1);
+        }
+
+        if (onChange) {
+            onChange(1);
+        }
+    };
 
     return (
         <div
@@ -62,6 +71,7 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
                 className={cx('input-quantity')}
                 value={quantity}
                 onChange={handleChange}
+                onBlur={handleBlur}
             />
             <button
                 className={cx('button', 'button--increase')}
@@ -74,7 +84,7 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
 }
 
 InputQuantity.propTypes = {
-    startNumber: PropTypes.number,
+    startNumber: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     step: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,

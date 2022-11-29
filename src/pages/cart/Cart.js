@@ -27,7 +27,7 @@ function Cart() {
         <Wrapper>
             <div className={cxCart('grid', 'wide')}>
                 <Section>
-                    {cart.items.length > 0 ? (
+                    {cart.items.length ? (
                         <div className={cxCart('row')}>
                             <div
                                 className={cxCart('col', 'l-9', 'm-12', 's-12')}
@@ -77,7 +77,7 @@ function Cart() {
                         </div>
                     ) : (
                         <Title as='h1' center>
-                            Vỏ hàng rỗng
+                            {context.emptyCart}
                         </Title>
                     )}
                 </Section>

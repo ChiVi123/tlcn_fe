@@ -31,19 +31,20 @@ function Home() {
     useEffect(() => {
         const fetchApi = async (page, size) => {
             const result = await services.getProducts(page, size);
+            setProducts(result.list);
+
             const resultMicrocontrollers = await services.getProductsByCategory(
                 '6377c780e5faa15251783671',
                 page,
                 size,
             );
+            setMicrocontrollers(resultMicrocontrollers.list);
+
             const resultToolers = await services.getProductsByCategory(
                 '6377c803e5faa15251783677',
                 page,
                 size,
             );
-
-            setProducts(result.list);
-            setMicrocontrollers(resultMicrocontrollers.list);
             setToolers(resultToolers.list);
         };
 

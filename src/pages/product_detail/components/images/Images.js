@@ -1,10 +1,6 @@
-import {
-    faChevronLeft,
-    faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
+import { Slick } from '~/pages/components';
 
 import styles from './Images.module.scss';
 
@@ -12,11 +8,18 @@ const cx = classNames.bind(styles);
 
 function Images({ images }) {
     const [indexSelect, setIndexSelect] = useState(0);
-    const [translateX, setTranslateX] = useState(0);
 
     const handleSelect = (index) => setIndexSelect(index);
-    const handlePrev = () => setTranslateX(translateX + 100);
-    const handleNext = () => setTranslateX(translateX - 100);
+
+    const Image = ({ image }) => {
+        return (
+            <img
+                className={cx('product-img')}
+                src={image?.url}
+                alt={image?.id_image}
+            />
+        );
+    };
 
     return (
         <>
@@ -28,40 +31,16 @@ function Images({ images }) {
                     }}
                 ></div>
             </div>
-            <div className={cx('img-list-wrapper')}>
-                <button
-                    className={cx('btn-arrow', 'btn-arrow--left')}
-                    onClick={handlePrev}
-                >
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                </button>
-                <ul
-                    className={cx('img-list')}
-                    style={{
-                        transform: `translateX(${translateX}px)`,
-                    }}
-                >
-                    {images.map((item, index) => (
-                        <li
-                            key={index}
-                            className={cx('img-item')}
-                            onClick={() => handleSelect(index)}
-                        >
-                            <img
-                                src={item.url}
-                                className={cx('product-img')}
-                                alt={item['id_image']}
-                            />
-                        </li>
-                    ))}
-                </ul>
-                <button
-                    className={cx('btn-arrow', 'btn-arrow--right')}
-                    onClick={handleNext}
-                >
-                    <FontAwesomeIcon icon={faChevronRight} />
-                </button>
-            </div>
+
+            <Slick
+                list={images}
+                component={Image}
+                nameProp={'image'}
+                large={'3'}
+                medium={'6'}
+                small={'5'}
+                onClick={({ index }) => handleSelect(index)}
+            />
         </>
     );
 }

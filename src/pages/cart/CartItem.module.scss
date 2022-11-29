@@ -9,7 +9,7 @@
     }
 
     &__name {
-        width: 90%;
+        width: 41.2rem;
         color: #242424;
         font-size: 1.6rem;
 
@@ -47,6 +47,14 @@
     }
 }
 
+.invalid-message {
+    display: block;
+    margin: 1rem 0;
+    color: #a94442;
+    font-size: 1.2rem;
+    text-align: right;
+}
+
 // Responsive
 @media screen and (max-width: 1200px) {
 }
@@ -65,6 +73,8 @@
         &--mobile {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            width: 100%;
         }
     }
 }

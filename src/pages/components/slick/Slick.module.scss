@@ -1,0 +1,68 @@
+.slick {
+    --padding-side: 1rem;
+    --theme-img-list: #e5e5e5;
+
+    margin-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.list {
+    display: flex;
+    transition: all 0.45s ease;
+}
+
+.button {
+    --width-btn: 3.2rem;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--width-btn);
+    height: 5.6rem;
+
+    border: 0.1rem solid #f1f5f6;
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    box-shadow: 0 7px 10px 0 #488bd833;
+    opacity: 0;
+
+    color: #878fa0;
+
+    transition: all 0.45s ease;
+    cursor: pointer;
+    z-index: 1;
+
+    &--previous {
+        left: calc(0px - var(--width-btn));
+    }
+
+    &--next {
+        right: calc(0px - var(--width-btn));
+    }
+
+    &--disable {
+        pointer-events: none;
+    }
+}
+
+.slick:hover .button--previous:not(.button--disable) {
+    left: 0;
+    opacity: 1;
+}
+
+.slick:hover .button--next:not(.button--disable) {
+    right: 0;
+    opacity: 1;
+}
+
+.slick:hover .button--previous.button--disable {
+    left: 0;
+    opacity: 0.4;
+}
+
+.slick:hover .button--next.button--disable {
+    right: 0;
+    opacity: 0.4;
+}
