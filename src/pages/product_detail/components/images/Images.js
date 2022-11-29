@@ -27,7 +27,7 @@ function Images({ images }) {
                 <div
                     className={cx('product-img-select')}
                     style={{
-                        backgroundImage: `url(${images[indexSelect].url})`,
+                        backgroundImage: `url(${images[indexSelect]?.url})`,
                     }}
                 ></div>
             </div>
@@ -36,9 +36,9 @@ function Images({ images }) {
                 list={images}
                 component={Image}
                 nameProp={'image'}
-                large={'3'}
-                medium={'6'}
-                small={'5'}
+                large={''}
+                medium={''}
+                small={''}
                 onClick={({ index }) => handleSelect(index)}
             />
         </>

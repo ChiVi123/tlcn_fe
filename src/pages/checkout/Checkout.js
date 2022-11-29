@@ -59,11 +59,12 @@ function Checkout() {
     useEffect(() => {
         const fetchApi = async () => {
             const resultProvinces = await servicesGHN.getProvince();
-            const resultDistricts = await servicesGHN.getDistrict(214);
-            const resultWards = await servicesGHN.getWard(1560);
-
             setProvinces(resultProvinces);
+
+            const resultDistricts = await servicesGHN.getDistrict(214);
             setDistricts(resultDistricts);
+
+            const resultWards = await servicesGHN.getWard(1560);
             setWards(resultWards);
         };
 

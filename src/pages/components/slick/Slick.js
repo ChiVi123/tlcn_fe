@@ -27,6 +27,7 @@ function Slick({ list, component, nameProp, onClick, large, medium, small }) {
             const item = itemElement.current.offsetWidth;
             const list = listElement.current.offsetWidth;
             const listViewPort = item * itemCount - list;
+
             return {
                 ...prev,
                 item,
@@ -39,9 +40,6 @@ function Slick({ list, component, nameProp, onClick, large, medium, small }) {
         setTranslateX(translateX + offsetWidth.item);
     };
     const handleNext = () => {
-        console.log(offsetWidth.item);
-        console.log(offsetWidth.listViewPort);
-
         setTranslateX(translateX - offsetWidth.item);
     };
     const handleClick = ({ item, index }) => {

@@ -66,3 +66,23 @@
     right: 0;
     opacity: 0.4;
 }
+
+// Responsive
+@media screen and (max-width: 1200px) {
+}
+
+/* Mobile, Tablet */
+@media screen and (max-width: 1023px) {
+    .slick {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+}
+
+/* Mobile */
+@media screen and (max-width: 739px) {
+}
