@@ -1,15 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
 import * as services from '~/services/services';
+import { userActions } from '~/redux';
 
 import { cx, context, placeholder, schema } from './constant';
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { userActions } from '~/redux';
 
 function Register() {
     const {
@@ -25,14 +25,14 @@ function Register() {
 
     const handleOnSubmit = async (data) => {
         const { name, email, password } = data;
-        const user = await services.register({ name, email, password });
+        const user = await services.registerSendMail({ name, email, password });
 
-        if (user) {
+        if (user?.isSuccess === 'true') {
             toast.success('Tạo tài khoản thành công');
-            dispatch(userActions.addUser(user));
-            navigate(pathNames.home);
+            dispatch(userActions.addUser({ name, email, password }));
+            navigate(pathNames.checkOtpRegister);
         } else {
-            toast.success('Tạo tài khoản thất bại');
+            toast.error('Tạo tài khoản thất bại');
         }
     };
 

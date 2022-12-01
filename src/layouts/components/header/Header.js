@@ -19,11 +19,7 @@ import {
 
 import { cx, actions, navItems, topbarsLeft, context } from './constant';
 import Menu from './components/menu/Menu';
-import {
-    TopbarRightAdmin,
-    TopbarRightLogin,
-    TopbarRightLogout,
-} from './components/topbar_right';
+import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
@@ -39,11 +35,7 @@ function Header() {
     const handleClickMenu = () => dispatch(modalActions.open());
 
     if (user.email) {
-        if (user?.role === 'role_admin') {
-            TopbarRight = TopbarRightAdmin;
-        } else {
-            TopbarRight = TopbarRightLogin;
-        }
+        TopbarRight = TopbarRightLogin;
     }
 
     return (

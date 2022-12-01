@@ -31,7 +31,7 @@ function Login() {
             dispatch(userActions.addUser(user));
             navigate(pathNames.home);
         } else {
-            toast.error('Something wrong, email or password incorrect');
+            toast.error('Email hoặc mật khẩu không đúng');
         }
     };
 
@@ -85,7 +85,7 @@ function Login() {
                 </button>
                 <Link
                     className={cx('link-forgot-password')}
-                    to={pathNames.forgotPassword}
+                    to={pathNames.sendOtp}
                 >
                     {context.forgotPass}
                 </Link>

@@ -41,7 +41,13 @@
 
     &:hover {
         background-color: #f0f1f5;
+        cursor: pointer;
     }
+}
+
+button.link {
+    text-align: left;
+    border: none;
 }
 
 .font-icon {

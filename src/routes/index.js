@@ -12,6 +12,11 @@ import {
     Checkout,
     Profile,
     Search,
+    ResetPassword,
+    SendOtp,
+    CheckOtp,
+    CheckOtpRegister,
+    ChangePassword,
 } from '~/pages';
 import {
     AdminOrder,
@@ -19,6 +24,7 @@ import {
     Categories,
     CategoryForm,
     Dashboard,
+    LoginAdmin,
     ProductForm,
     Products,
     Users,
@@ -28,9 +34,14 @@ const pathNames = {
     home: '/',
     product: '/product/:id',
     login: '/login',
+    loginAdmin: '/admin/login',
     register: '/register',
     search: '/search/:id',
     forgotPassword: '/forgot-password',
+    resetPassword: '/reset-password',
+    sendOtp: '/send-otp',
+    checkOtp: '/check-otp',
+    checkOtpRegister: '/check-otp-register',
     sales: '/sales',
     any: '/*',
 
@@ -41,6 +52,7 @@ const pathNames = {
     orders: '/orders',
     checkout: '/checkout',
     profile: '/profile',
+    changePassword: '/change-password',
 
     //admin
     admin: 'admin/*',
@@ -60,6 +72,15 @@ const publicRoutes = [
     { path: pathNames.home, component: Home, layout: NotBreadCrumb },
     { path: pathNames.product, component: ProductDetail },
     { path: pathNames.login, component: Login },
+    { path: pathNames.resetPassword, component: ResetPassword },
+    { path: pathNames.sendOtp, component: SendOtp },
+    { path: pathNames.checkOtp, component: CheckOtp },
+    { path: pathNames.checkOtpRegister, component: CheckOtpRegister },
+    {
+        path: pathNames.loginAdmin,
+        component: LoginAdmin,
+        layout: null,
+    },
     { path: pathNames.register, component: Register },
     { path: pathNames.any, component: PageNotFound, layout: null },
 ];
@@ -77,6 +98,7 @@ const privateRoutes = [
     { path: pathNames.checkout, component: Checkout, layout: null },
     { path: pathNames.profile, component: Profile },
     { path: pathNames.search, component: Search },
+    { path: pathNames.changePassword, component: ChangePassword },
 ];
 
 // admin

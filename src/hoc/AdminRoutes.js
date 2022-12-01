@@ -10,7 +10,7 @@ function AdminRoutes() {
     return user.role === 'role_admin' ? (
         <Outlet />
     ) : (
-        <Navigate to={pathNames.home} />
+        <Navigate to={pathNames.loginAdmin} />
     );
 }
 

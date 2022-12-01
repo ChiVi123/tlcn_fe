@@ -15,7 +15,6 @@ const context = {
     messageSignIn: 'Bạn không có tài khoản. Đăng ký',
     createAcc: 'Tại đây',
 };
-
 const placeholder = {
     name: 'Nhập họ và tên của bạn',
     email: 'Nhập email của bạn',
@@ -24,14 +23,29 @@ const placeholder = {
     messageSignIn: 'Bạn không có tài khoản. Đăng ký',
     createAcc: 'Tại đây',
 };
-
+const messageErrors = {
+    nameRequired: 'Nhập họ và tên',
+    emailRequired: 'Nhập email',
+    email: 'Email không hợp lệ',
+    passwordRequired: 'Nhập mật khẩu',
+    passwordComfirmRequired: 'Nhập mật khẩu',
+    leastCharater: 'Tối thiểu 8 ký tự',
+    retypePassword: 'Nhập lại mật khẩu chưa chính xác',
+};
 const schema = yup.object({
-    name: yup.string().trim().required(),
-    email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
+    name: yup.string().trim().required(messageErrors.nameRequired),
+    email: yup
+        .string()
+        .email(messageErrors.email)
+        .required(messageErrors.emailRequired),
+    password: yup
+        .string()
+        .min(8, messageErrors.leastCharater)
+        .required(messageErrors.passwordRequired),
     passwordComfirm: yup
         .string()
-        .oneOf([yup.ref('password'), null], 'Password must match'),
+        .required(messageErrors.passwordComfirmRequired)
+        .oneOf([yup.ref('password'), null], messageErrors.retypePassword),
 });
 
 export { cx, context, placeholder, schema };

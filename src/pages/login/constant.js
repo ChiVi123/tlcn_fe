@@ -43,8 +43,8 @@ const schema = yup.object({
 });
 
 const defaultValues = {
-    email: 'admin@gmail.com',
-    password: 'admin123',
+    email: 'newuser2@gmail.com',
+    password: '123456789',
 };
 
 export { cx, context, form, schema, defaultValues };

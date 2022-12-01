@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faInfo,
-    // faAddressBook,
     faArrowRightFromBracket,
     faTable,
 } from '@fortawesome/free-solid-svg-icons';

@@ -1,16 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { imgLogo } from '~/assets/images/logo';
 import { Title } from '~/components';
-import { userSelector } from '~/redux';
+import { userActions, userSelector } from '~/redux';
 import { pathNames } from '~/routes';
 
 import { cx, sidebarItems } from './constant';
 
 function Sidebar() {
     const user = useSelector(userSelector.getUser);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(userActions.resetUser());
+        navigate('/admin/login');
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -42,6 +51,15 @@ function Sidebar() {
                         </NavLink>
                     </li>
                 ))}
+                <li key={sidebarItems.length} className={cx('item')}>
+                    <button className={cx('link')} onClick={handleLogout}>
+                        <FontAwesomeIcon
+                            icon={faArrowRightFromBracket}
+                            className={cx('font-icon')}
+                        />
+                        <span className={cx('context')}>Logout</span>
+                    </button>
+                </li>
             </ul>
         </div>
     );

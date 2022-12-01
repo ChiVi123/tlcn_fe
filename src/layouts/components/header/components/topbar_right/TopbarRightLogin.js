@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faInfo,
-    // faAddressBook,
     faArrowRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
@@ -25,12 +24,6 @@ function TopbarRightLogin({ topbarSection, topbarItem, btn }) {
                     <span>Thông tin tài khoản</span>
                 </Button>
             </li>
-            {/* <li className={topbarItem}>
-                <Button className={btn} reset={true} to={'/addresses'}>
-                    <FontAwesomeIcon icon={faAddressBook} />
-                    <span>Sổ địa chỉ</span>
-                </Button>
-            </li> */}
             <li className={topbarItem}>
                 <Button className={btn} reset={true} onClick={handleLogout}>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} />

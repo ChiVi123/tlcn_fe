@@ -1,5 +1,6 @@
 import * as request from '~/utils/request';
 
+// Auth
 export const login = async (data) => {
     try {
         const response = await request.post('auth/login', data);
@@ -18,6 +19,46 @@ export const register = async (data) => {
     }
 };
 
+export const registerSendMail = async (data) => {
+    try {
+        const response = await request.post('auth/registersendmail', data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Otp
+export const verifyOtp = async (data) => {
+    try {
+        const response = await request.post('auth/verify', data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getOtpReset = async (data) => {
+    try {
+        const response = await request.post(
+            `auth/getotpreset?email=${data.email}`,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getOtp = async ({ email }) => {
+    try {
+        const response = await request.post(`auth/getotp?email=${email}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// User
 export const getUser = async (id) => {
     try {
         const response = await request.get(`users/${id}`);
@@ -41,6 +82,15 @@ export const uploadAvatar = async (id, data) => {
         const response = await request.post(`users/avatar/${id}`, data, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const resetPassword = async (id, data) => {
+    try {
+        const response = await request.put(`users/resetpassword/${id}`, data);
         return response;
     } catch (error) {
         console.log(error);
@@ -193,6 +243,15 @@ export const updateImageCategory = async (id, data) => {
 export const getUsers = async () => {
     try {
         const response = await request.get('admin/manage/users');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const changePassword = async (id, data) => {
+    try {
+        const response = await request.put(`users/password/${id}`, data);
         return response.data;
     } catch (error) {
         console.log(error);

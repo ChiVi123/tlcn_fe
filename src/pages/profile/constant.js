@@ -11,6 +11,7 @@ export const context = {
     avataButton: 'Thay đôi ảnh đại diện',
     email: 'Email',
     addressesButton: 'Sổ địa chỉ',
+    chagnePasswordButton: 'Thay đổi mật khẩu',
     editButton: 'Lưu thay đổi',
 };
 

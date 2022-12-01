@@ -13,6 +13,7 @@ import * as services from '~/services/services';
 import { userActions } from '~/redux';
 
 import { context, cx, schema } from './constant';
+import { pathNames } from '~/routes';
 
 function Profile() {
     const user = useSelector(userSelector.getUser);
@@ -192,6 +193,15 @@ function Profile() {
                                     className={cx('input', 'disable')}
                                     {...register('email')}
                                 />
+                            </div>
+
+                            <div className={cx('group')}>
+                                <Button
+                                    to={pathNames.changePassword}
+                                    className={cx('btn')}
+                                >
+                                    {context.chagnePasswordButton}
+                                </Button>
                             </div>
 
                             <div className={cx('group')}>
