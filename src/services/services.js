@@ -280,3 +280,22 @@ export const changePassword = async (id, data) => {
         console.log(error);
     }
 };
+
+// Cart
+export const getCartByToken = async () => {
+    try {
+        const response = await request.get('cart');
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addCart = async (data) => {
+    try {
+        const response = await request.post('cart', data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};

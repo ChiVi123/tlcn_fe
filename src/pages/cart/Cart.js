@@ -1,33 +1,49 @@
-import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Button, Section, Title, Wrapper } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { pathNames } from '~/routes';
-import { cartActions, cartSelector } from '~/redux';
+import { cartActions } from '~/redux';
+import * as services from '~/services/services';
 
 import { cxCart, context } from './constant';
 import CartItem from './CartItem';
 
 function Cart() {
-    const cart = useSelector(cartSelector.getCart);
+    const [cart, setCart] = useState({});
+    // const cart = useSelector(cartSelector.getCart);
     const dispatch = useDispatch();
 
-    const total = useMemo(() => {
-        return cart.items.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price * currentValue.quantity;
-        }, 0);
-    }, [cart.items]);
+    // const total = useMemo(() => {
+    //     return cart.items.reduce((accumulator, currentValue) => {
+    //         return accumulator + currentValue.price * currentValue.quantity;
+    //     }, 0);
+    // }, [cart.items]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await services.getCartByToken();
+
+            if (result.message === 'Get cart success') {
+                setCart(result.data);
+            }
+        };
+
+        fetchApi();
+    }, []);
 
     const handleReset = () => {
         dispatch(cartActions.resetCart());
     };
 
+    console.log(cart);
+
     return (
         <Wrapper>
             <div className={cxCart('grid', 'wide')}>
                 <Section>
-                    {cart.items.length ? (
+                    {cart.items?.length ? (
                         <div className={cxCart('row')}>
                             <div
                                 className={cxCart('col', 'l-9', 'm-12', 's-12')}
@@ -54,7 +70,7 @@ function Cart() {
                                             {context.total}
                                         </span>
                                         <span className={cxCart('price')}>
-                                            {currencyVN(total)}
+                                            {currencyVN(cart.totalPrice)}
                                         </span>
                                     </div>
                                     <div className={cxCart('section-btn')}>

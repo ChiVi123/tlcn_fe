@@ -23,6 +23,7 @@ import { cartSelector, userSelector } from '~/redux';
 
 // Local
 import { context, cx, schema } from './constant';
+import { ChoosePayment } from './components';
 
 function Checkout() {
     // Hooks
@@ -53,6 +54,7 @@ function Checkout() {
             email: user.email,
             phone: '',
             note: '',
+            payment: 'cod',
         },
     });
     // - useEffect
@@ -100,21 +102,26 @@ function Checkout() {
     }, [watch]);
 
     const handleOnSubmit = (data) => {
-        const { address, province, district, ward } = data;
+        const { province, district, ward, ...rest } = data;
 
+        const newProvince = province.label;
+        const newDstrict = district.label;
+        const newWard = ward.label;
         const newCart = { ...cart, total };
 
         console.log({
-            ...data,
-            address: `${address}, ${ward.label}, ${district.label}, ${province.label}`,
+            ...rest,
             newCart,
+            newProvince,
+            newDstrict,
+            newWard,
         });
     };
 
     return (
         <div className={cx('grid', 'wide')}>
             <Form onSubmit={handleSubmit(handleOnSubmit)}>
-                <div className={cx('col', 'l-7', 'm-12', 's-12')}>
+                <div className={cx('col', 'l-3', 'm-12', 's-12')}>
                     {/* Logo */}
                     <Button to={pathNames.home} className={cx('logo')} reset>
                         <img
@@ -128,7 +135,7 @@ function Checkout() {
                     <div className={cx('row')}>
                         {/* Email */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-6', 's-12')}
+                            classes={cx('col', 'l-12', 'm-6', 's-12')}
                             name={'email'}
                             errors={errors}
                         >
@@ -144,7 +151,7 @@ function Checkout() {
 
                         {/* Name */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-6', 's-12')}
+                            classes={cx('col', 'l-12', 'm-6', 's-12')}
                             name={'name'}
                             errors={errors}
                         >
@@ -159,7 +166,7 @@ function Checkout() {
 
                         {/* Phone */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-6', 's-12')}
+                            classes={cx('col', 'l-12', 'm-6', 's-12')}
                             name={'phone'}
                             errors={errors}
                         >
@@ -174,7 +181,7 @@ function Checkout() {
 
                         {/* Address */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-6', 's-12')}
+                            classes={cx('col', 'l-12', 'm-6', 's-12')}
                             name={'address'}
                             errors={errors}
                         >
@@ -189,7 +196,7 @@ function Checkout() {
 
                         {/* Provinces */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            classes={cx('col', 'l-12', 'm-4', 's-12')}
                             name={'province'}
                             errors={errors}
                         >
@@ -205,7 +212,7 @@ function Checkout() {
 
                         {/* Districts */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            classes={cx('col', 'l-12', 'm-4', 's-12')}
                             name={'district'}
                             errors={errors}
                         >
@@ -221,7 +228,7 @@ function Checkout() {
 
                         {/* Wards */}
                         <FormGroup
-                            classes={cx('col', 'l-6', 'm-4', 's-12')}
+                            classes={cx('col', 'l-12', 'm-4', 's-12')}
                             name={'ward'}
                             errors={errors}
                         >
@@ -248,6 +255,20 @@ function Checkout() {
                                 placeholder={'Ghi chú'}
                             />
                         </FormGroup>
+                    </div>
+                </div>
+
+                <div className={cx('col', 'l-4')}>
+                    <div className={cx('container')}>
+                        <div className={cx('row', 'section')}>
+                            <div className={cx('col', 'l-12')}>
+                                <Title as='h1' classNames={cx('title')}>
+                                    {context.titlePayment}
+                                </Title>
+                            </div>
+                        </div>
+
+                        <ChoosePayment register={register} />
                     </div>
                 </div>
 

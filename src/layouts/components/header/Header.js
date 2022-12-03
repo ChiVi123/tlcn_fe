@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
+import * as services from '~/services/services';
+
 import {
     cartSelector,
     userSelector,
@@ -23,12 +25,25 @@ import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
+    const [totalProduct, setTotalProduct] = useState(0);
 
     let TopbarRight = TopbarRightLogout;
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
     const productQuantity = useSelector(cartSelector.getProductQuantity);
     const categories = useSelector(categoriesSelector.getAllcategory);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await services.getCartByToken();
+
+            if (result.message === 'Get cart success') {
+                setTotalProduct(result.data.totalProduct);
+            }
+        };
+
+        fetchApi();
+    }, []);
 
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
@@ -137,7 +152,7 @@ function Header() {
                                             )}
                                         >
                                             {item.context === 'Sẩn phẩm'
-                                                ? `(${productQuantity}) ${item.context}`
+                                                ? `(${totalProduct}) ${item.context}`
                                                 : item.context}
                                         </span>
                                         <span

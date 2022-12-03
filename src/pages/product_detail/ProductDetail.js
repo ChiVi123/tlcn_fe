@@ -3,14 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import parser from 'html-react-parser';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { comments } from '~/utils/constant';
 import { ProductCard, Title } from '~/components';
-import { cartActions, cartSelector } from '~/redux';
 import * as services from '~/services/services';
 
 import { cx, context, form } from './constant';
@@ -21,17 +19,12 @@ import { InputQuantity, Slick } from '../components';
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
-
     const { control, handleSubmit } = useForm({
         defaultValues: {
             quantity: 1,
         },
     });
-
     const { id } = useParams();
-    const dispatch = useDispatch();
-
-    const cart = useSelector(cartSelector.getCart);
 
     useEffect(() => {
         const fetchApi = async (id) => {
@@ -48,21 +41,19 @@ function ProductDetail() {
     }, [id]);
 
     // Handle event
+    const onSubmit = async (data) => {
+        const {
+            quantity,
+            option: { id: productOptionId, value },
+        } = data;
+        const result = await services.addCart({
+            producId: id,
+            productOptionId,
+            value,
+            quantity,
+        });
 
-    const onSubmit = (data) => {
-        const existProduct = cart.items.find((item) => item.productId === id);
-
-        if (data.quantity && !existProduct) {
-            dispatch(
-                cartActions.addProduct({
-                    ...data,
-                    productId: id,
-                    name: product?.name,
-                    image: product?.images[0],
-                    price: priceSaleVN(product?.price, product?.sale),
-                }),
-            );
-
+        if (result.isSuccess === 'true') {
             toast.success('Đã thêm vào vỏ hàng');
         } else {
             toast.error('Không thể thêm vào vỏ hàng');

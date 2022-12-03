@@ -8,6 +8,7 @@ export const cx = classNames.bind(styles);
 export const context = {
     title: 'Đơn hàng (',
     titleCounter: ') sản phẩm',
+    titlePayment: 'Chọn phương thức thanh toán',
     email: 'Email',
     name: 'Họ và tên',
     phone: 'Số điện thoại',
@@ -37,7 +38,7 @@ export const schema = yup.object({
     phone: yup.string().trim().required('Số điện thoại đang trống'),
     note: yup.string().trim(),
     address: yup.string().trim().required('Địa chỉ đang trống'),
-    province: yup.string().required('Chọn tỉnh thành'),
-    district: yup.string().required('Chọn quận, huyện'),
-    ward: yup.string().required('Chọn xã'),
+    province: yup.object().required('Chọn tỉnh thành'),
+    district: yup.object().required('Chọn quận, huyện'),
+    ward: yup.object().required('Chọn xã'),
 });

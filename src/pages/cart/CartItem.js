@@ -26,7 +26,7 @@ function CartItem({ product }) {
         <li className={cxCartItem('cart-item')}>
             <div className={cxCartItem('col', 'l-3', 'm-2', 's-3')}>
                 <img
-                    src={product.image.url}
+                    src={product.image[0].url}
                     alt={product.name}
                     className={cxCartItem('cart-item__image')}
                 />
