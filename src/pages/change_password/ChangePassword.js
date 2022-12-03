@@ -33,7 +33,7 @@ function ChangePassword() {
 
         console.log(result);
 
-        if (result?.data) {
+        if (result?.message === 'Change password success') {
             toast.success('Thay đổi mật khẩu thành công');
             navigate('/profile');
         } else {
@@ -57,7 +57,7 @@ function ChangePassword() {
                 >
                     <Input
                         name={'oldPassword'}
-                        type={'text'}
+                        type={'password'}
                         register={register}
                         errors={errors}
                     />
@@ -72,7 +72,7 @@ function ChangePassword() {
                 >
                     <Input
                         name={'newPassword'}
-                        type={'text'}
+                        type={'password'}
                         register={register}
                         errors={errors}
                     />

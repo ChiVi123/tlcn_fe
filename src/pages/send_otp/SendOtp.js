@@ -39,6 +39,9 @@ function SendOtp() {
             <Title as='h1' line center={true} classNames={cx('title')}>
                 {context.title}
             </Title>
+            <Title as='h3' center={true} classNames={cx('title')}>
+                {context.subTitle}
+            </Title>
 
             <Form onSubmit={handleSubmit(handleOnSubmit)}>
                 <FormGroup

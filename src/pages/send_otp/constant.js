@@ -10,6 +10,8 @@ const errorMessage = {
 export const cx = classNames.bind(styles);
 export const context = {
     title: 'Gửi OTP',
+    subTitle:
+        'Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email.',
     emailLabel: 'Nhập email',
     button: 'Gửi otp',
 };

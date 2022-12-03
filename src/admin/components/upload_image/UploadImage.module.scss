@@ -67,7 +67,10 @@
 }
 
 .image-preview {
-    padding: 0.4rem 0.2rem;
+    --padding-horizontal: 0.4rem;
+
+    padding-top: var(--padding-horizontal);
+    padding-bottom: var(--padding-horizontal);
     margin: 0.4rem 0;
     background-color: #fff;
 }
@@ -76,12 +79,12 @@
     display: flex;
     align-items: center;
     min-height: 18.8rem;
+    border: 0.1rem solid #c7cacd;
+    border-radius: 0.4rem;
 }
 
 .image {
     max-width: 100%;
-    border: 0.1rem solid #c7cacd;
-    border-radius: 0.4rem;
 }
 
 .delete {

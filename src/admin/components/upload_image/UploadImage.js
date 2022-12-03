@@ -1,40 +1,94 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { faXmark, faImage } from '@fortawesome/free-solid-svg-icons';
 
 import { imgCloudUpload } from '~/assets/images/statics';
-import { cx, context } from './constant';
+import { ButtonCustomize } from '~/admin/components';
+import * as services from '~/services/services';
 
-function UploadImage({ onChange, value = [], isMultiple, colBase }) {
+import { cx, context } from './constant';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
     // Hooks
     // - useState
     const [dragover, setDragOver] = useState(false);
     const [files, setFiles] = useState(value);
-
+    const [filesAddition, setFilesAddition] = useState([]);
+    // constant
+    const navigate = useNavigate();
     // - useEffect
     useEffect(() => {
         return () =>
-            files.forEach((item) => {
-                if (typeof item !== 'string') {
-                    URL.revokeObjectURL(item.preview);
-                }
+            filesAddition.forEach((item) => {
+                URL.revokeObjectURL(item.preview);
             });
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [files]);
+    }, [filesAddition]);
 
     // Handle event
     const handleDragEnter = () => setDragOver(true);
     const handleDragLeave = () => setDragOver(false);
     const handleDrop = () => setDragOver(false);
-    const handleOnChange = (event) => {
-        const multipleFile = [...event.target.files];
+    const handleOnChange = ({ target: { files } }) => {
+        const multipleFile = [...files];
 
         multipleFile.map((item) => (item.preview = URL.createObjectURL(item)));
 
-        setFiles(multipleFile);
+        setFilesAddition(multipleFile);
 
         if (onChange) {
             onChange(multipleFile);
         }
+    };
+    const handleAddImages = (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+
+        filesAddition.forEach((item) => {
+            if (item.preview) {
+                formData.append('url', item);
+            }
+        });
+
+        Swal.fire({
+            title: 'Thêm ảnh',
+            didOpen: async () => {
+                Swal.showLoading();
+                const result = await services.addImagesProduct(id, formData);
+
+                console.log(result);
+
+                if (result.isSuccess === 'true') {
+                    toast.success('Thêm ảnh thành công');
+                    setFiles(result.data);
+                    setFilesAddition([]);
+                } else {
+                    toast.error('Thêm ảnh thất bại');
+                }
+
+                Swal.close();
+            },
+        });
+    };
+    const handleDeleteImage = ({ id_image }) => {
+        Swal.fire({
+            title: 'Xóa ảnh',
+            didOpen: async () => {
+                Swal.showLoading();
+                const result = await services.deleteImageProduct(id, id_image);
+
+                if (result.isSuccess === 'true') {
+                    toast.success('Xóa ảnh thành công');
+                } else {
+                    toast.error('Xóa ảnh thất bại');
+                }
+
+                navigate(0);
+                Swal.close();
+            },
+        });
     };
 
     return (
@@ -62,13 +116,13 @@ function UploadImage({ onChange, value = [], isMultiple, colBase }) {
                 <span className={cx('topic')}>{context.dragNDrop}</span>
             </div>
 
-            <ul
+            <div
                 className={cx('images-preview', {
-                    'images-preview--empty': !(files.length > 0),
+                    'images-preview--empty': !files.length,
                 })}
             >
-                <div className={cx('row')}>
-                    {files.length > 0 &&
+                <ul className={cx('row')}>
+                    {!!files.length &&
                         files.map((item, index) => (
                             <li
                                 key={index}
@@ -77,14 +131,67 @@ function UploadImage({ onChange, value = [], isMultiple, colBase }) {
                                 <div className={cx('wrapper-image')}>
                                     <img
                                         className={cx('image')}
-                                        src={item?.preview || item?.url || item}
-                                        alt={item?.name || `image ${index}`}
+                                        src={item?.url || item}
+                                        alt={item?.name || `response-${index}`}
                                     />
                                 </div>
+                                <ButtonCustomize
+                                    isDelete={true}
+                                    fullWidth
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        handleDeleteImage(item);
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </ButtonCustomize>
                             </li>
                         ))}
+                </ul>
+            </div>
+
+            <div
+                className={cx('images-preview', {
+                    'images-preview--empty': !filesAddition.length,
+                })}
+            >
+                <ul className={cx('row')}>
+                    {filesAddition.map((item, index) => (
+                        <li
+                            key={index}
+                            className={cx('image-preview', 'col', colBase)}
+                        >
+                            <div className={cx('wrapper-image')}>
+                                <img
+                                    className={cx('image')}
+                                    src={item.preview}
+                                    alt={`upload-${index}`}
+                                />
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {id && (
+                <div
+                    style={{
+                        width: '80rem',
+                        margin: '0 auto',
+                        padding: '0 1rem',
+                    }}
+                >
+                    {!!filesAddition.length && (
+                        <ButtonCustomize
+                            isEdit={true}
+                            fullWidth
+                            onClick={handleAddImages}
+                        >
+                            <FontAwesomeIcon icon={faImage} />
+                        </ButtonCustomize>
+                    )}
                 </div>
-            </ul>
+            )}
         </div>
     );
 }

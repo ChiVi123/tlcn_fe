@@ -11,8 +11,6 @@ const minField = 8;
 export const cx = classNames.bind(styles);
 export const context = {
     title: 'Đặt lại mật khẩu',
-    subTitle:
-        'Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email.',
     passwordLabel: 'Nhập mật khẩu mới',
     button: 'Lấy lại mật khẩu',
 };

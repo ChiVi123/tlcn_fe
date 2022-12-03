@@ -7,7 +7,7 @@ import { createOption, components } from './constant';
 function FormCreateTable({ name, control, placeholder, defaultValue = [] }) {
     const [inputValue, setInputValue] = useState('');
     const [valueSelect, setValueSelect] = useState(
-        defaultValue.map((item) => createOption(item)),
+        defaultValue.map((item, index) => createOption(item, index)),
     );
 
     const handleOnChange = (value, onChange) => {
@@ -24,11 +24,17 @@ function FormCreateTable({ name, control, placeholder, defaultValue = [] }) {
             case 'Tab':
                 event.preventDefault();
 
-                setValueSelect([...valueSelect, createOption(inputValue)]);
+                setValueSelect([
+                    ...valueSelect,
+                    createOption(inputValue, valueSelect.length),
+                ]);
                 setInputValue('');
 
                 if (onChange) {
-                    onChange([...valueSelect, createOption(inputValue)]);
+                    onChange([
+                        ...valueSelect,
+                        createOption(inputValue, valueSelect.length),
+                    ]);
                 }
 
                 break;

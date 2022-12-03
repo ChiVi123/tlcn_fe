@@ -1,10 +1,10 @@
 import { Controller } from 'react-hook-form';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 function FormSelect({ name, control, options, label, value, defaultValue }) {
-    const [inputValue, setinputValue] = useState(defaultValue);
+    // const [inputValue, setinputValue] = useState(defaultValue);
 
     const Option = ({ children, ...props }) => {
         const { data } = props;
@@ -17,9 +17,9 @@ function FormSelect({ name, control, options, label, value, defaultValue }) {
         );
     };
 
-    const handleFocus = () => {
-        setinputValue('');
-    };
+    // const handleFocus = () => {
+    //     setinputValue('');
+    // };
 
     return (
         <Controller
@@ -33,10 +33,10 @@ function FormSelect({ name, control, options, label, value, defaultValue }) {
                     }}
                     getOptionLabel={(option) => option[label]}
                     onChange={(option) => onChange(option[value])}
-                    defaultInputValue={defaultValue}
-                    // defaultValue={defaultValue}
-                    onFocus={handleFocus}
-                    inputValue={inputValue}
+                    // defaultInputValue={defaultValue}
+                    defaultValue={defaultValue[label] ? defaultValue : ''}
+                    // onFocus={handleFocus}
+                    // inputValue={inputValue}
                 />
             )}
         />

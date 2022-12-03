@@ -163,6 +163,17 @@ export const addImagesProduct = async (id, data) => {
     }
 };
 
+export const deleteImageProduct = async (id, idImage) => {
+    try {
+        const response = await request.requestDelete(
+            `products/deleteimage/${id}/${idImage}`,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const addOptionsProduct = async (id, data) => {
     try {
         const response = await request.post(
@@ -174,6 +185,18 @@ export const addOptionsProduct = async (id, data) => {
         console.log(error);
     }
 };
+
+// export const editOptionsProduct = async (id, data) => {
+//     try {
+//         const response = await request.post(
+//             `manage/products/option/${id}`,
+//             data,
+//         );
+//         return response;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 // Cateogry/Categories
 export const getCategories = async () => {
@@ -252,7 +275,7 @@ export const getUsers = async () => {
 export const changePassword = async (id, data) => {
     try {
         const response = await request.put(`users/password/${id}`, data);
-        return response.data;
+        return response;
     } catch (error) {
         console.log(error);
     }

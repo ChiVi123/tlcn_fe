@@ -45,3 +45,8 @@ export const put = async (path, options = {}, configs = {}) => {
     const response = await requestApi.put(path, options, configs);
     return response.data;
 };
+
+export const requestDelete = async (path, options = {}, configs = {}) => {
+    const response = await requestApi.delete(path, options, configs);
+    return response.data;
+};

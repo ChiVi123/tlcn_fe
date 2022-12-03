@@ -42,9 +42,6 @@ function ResetPassword() {
             <Title as='h1' line center={true} classNames={cx('title')}>
                 {context.title}
             </Title>
-            <Title as='h3' center={true} classNames={cx('title')}>
-                {context.subTitle}
-            </Title>
 
             <Form onSubmit={handleSubmit(handleOnSubmit)}>
                 <FormGroup
@@ -56,7 +53,7 @@ function ResetPassword() {
                 >
                     <Input
                         name={form.password}
-                        type={'text'}
+                        type={'password'}
                         register={register}
                         errors={errors}
                     />
