@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Button, Section, Title, Wrapper } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { pathNames } from '~/routes';
-import { cartActions } from '~/redux';
 import * as services from '~/services/services';
 
 import { cxCart, context } from './constant';
@@ -12,14 +10,6 @@ import CartItem from './CartItem';
 
 function Cart() {
     const [cart, setCart] = useState({});
-    // const cart = useSelector(cartSelector.getCart);
-    const dispatch = useDispatch();
-
-    // const total = useMemo(() => {
-    //     return cart.items.reduce((accumulator, currentValue) => {
-    //         return accumulator + currentValue.price * currentValue.quantity;
-    //     }, 0);
-    // }, [cart.items]);
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -32,12 +22,6 @@ function Cart() {
 
         fetchApi();
     }, []);
-
-    const handleReset = () => {
-        dispatch(cartActions.resetCart());
-    };
-
-    console.log(cart);
 
     return (
         <Wrapper>
@@ -83,9 +67,6 @@ function Cart() {
                                         </Button>
                                         <Button fullWidth to={pathNames.home}>
                                             {context.keepShopping}
-                                        </Button>
-                                        <Button onClick={handleReset} fullWidth>
-                                            Reset
                                         </Button>
                                     </div>
                                 </div>

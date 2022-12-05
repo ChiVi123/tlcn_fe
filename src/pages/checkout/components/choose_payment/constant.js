@@ -6,5 +6,5 @@ import styles from './ChoosePayment.module.scss';
 export const cx = classNames.bind(styles);
 export const payments = [
     { value: 'cod', name: 'COD', icon: faMoneyBill },
-    { value: 'payment', name: 'Paypal', icon: faCcPaypal },
+    { value: 'paypal', name: 'Paypal', icon: faCcPaypal },
 ];

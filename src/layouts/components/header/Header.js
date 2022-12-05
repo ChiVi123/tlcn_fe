@@ -37,7 +37,7 @@ function Header() {
         const fetchApi = async () => {
             const result = await services.getCartByToken();
 
-            if (result.message === 'Get cart success') {
+            if (result?.message === 'Get cart success') {
                 setTotalProduct(result.data.totalProduct);
             }
         };

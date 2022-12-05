@@ -19,7 +19,7 @@ import { InputQuantity, Slick } from '../components';
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
     const [product, setProduct] = useState({});
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
             quantity: 1,
         },
@@ -30,15 +30,18 @@ function ProductDetail() {
         const fetchApi = async (id) => {
             const result = await services.getProduct(id);
             setProduct(result);
+            setValue('option', result.options[0]);
 
             const resultRelation = await services.getProductsByCategory(
                 result.category_id,
+                0,
+                10,
             );
             setProductsRelation(resultRelation.list);
         };
 
         fetchApi(id);
-    }, [id]);
+    }, [id, setValue]);
 
     // Handle event
     const onSubmit = async (data) => {
@@ -54,9 +57,9 @@ function ProductDetail() {
         });
 
         if (result.isSuccess === 'true') {
-            toast.success('Đã thêm vào vỏ hàng');
+            toast.success('Đã thêm vào giỏ hàng');
         } else {
-            toast.error('Không thể thêm vào vỏ hàng');
+            toast.error('Không thể thêm vào giỏ hàng');
         }
     };
 

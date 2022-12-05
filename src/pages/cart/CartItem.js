@@ -1,25 +1,24 @@
-import { useDispatch } from 'react-redux';
-
-import { cartActions } from '~/redux';
 import { currencyVN } from '~/utils/funcs';
+import * as services from '~/services/services';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function CartItem({ product }) {
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Handle event
-    const handleChange = (value) => {
-        dispatch(
-            cartActions.changeQuantityProduct({
-                id: product.productId,
-                quantity: value,
-            }),
-        );
-    };
-    const handleDelete = (id) => {
-        dispatch(cartActions.removeProduct(id));
+    const handleChange = (value) => {};
+    const handleDelete = async (id) => {
+        const result = await services.deleteCart(id);
+
+        if (result?.message === `Delete item ${id} in cart success`) {
+            navigate(0);
+        } else {
+            toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
+        }
     };
 
     return (
@@ -39,7 +38,7 @@ function CartItem({ product }) {
                         </h3>
                         <span
                             className={cxCartItem('delete-text')}
-                            onClick={() => handleDelete(product.productId)}
+                            onClick={() => handleDelete(product.itemId)}
                         >
                             {context.delete}
                         </span>

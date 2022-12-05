@@ -1,10 +1,11 @@
 // Library
 import { useSelector } from 'react-redux';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
 
 // Common
 import {
@@ -19,7 +20,8 @@ import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import { currencyVN } from '~/utils/funcs';
 import * as servicesGHN from '~/services/servicesGHN';
-import { cartSelector, userSelector } from '~/redux';
+import * as services from '~/services/services';
+import { userSelector } from '~/redux';
 
 // Local
 import { context, cx, schema } from './constant';
@@ -27,18 +29,13 @@ import { ChoosePayment } from './components';
 
 function Checkout() {
     // Hooks
-    const cart = useSelector(cartSelector.getCart);
     const user = useSelector(userSelector.getUser);
+
     // - useState
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
-
-    const total = useMemo(() => {
-        return cart.items.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price * currentValue.quantity;
-        }, 0);
-    }, [cart.items]);
+    const [cart, setCart] = useState();
 
     // - useForm
     const {
@@ -60,6 +57,9 @@ function Checkout() {
     // - useEffect
     useEffect(() => {
         const fetchApi = async () => {
+            const resultCart = await services.getCartByToken();
+            setCart(resultCart.data);
+
             const resultProvinces = await servicesGHN.getProvince();
             setProvinces(resultProvinces);
 
@@ -101,21 +101,28 @@ function Checkout() {
         return () => subscription.unsubscribe();
     }, [watch]);
 
-    const handleOnSubmit = (data) => {
-        const { province, district, ward, ...rest } = data;
-
-        const newProvince = province.label;
-        const newDstrict = district.label;
-        const newWard = ward.label;
-        const newCart = { ...cart, total };
-
-        console.log({
+    const handleOnSubmit = async (data) => {
+        const { province, district, ward, payment, ...rest } = data;
+        const { id: cartId } = cart;
+        const newData = {
             ...rest,
-            newCart,
-            newProvince,
-            newDstrict,
-            newWard,
+            province: province.label,
+            district: district.label,
+            ward: ward.label,
+            payment,
+        };
+
+        const result = await services.postPayment({
+            cartId,
+            type: payment,
+            data: newData,
         });
+
+        if (result?.message === 'Payment init complete') {
+            window.open(result.data);
+        } else {
+            toast.error('Thanh toán thất bại');
+        }
     };
 
     return (
@@ -278,7 +285,7 @@ function Checkout() {
                             <div className={cx('col', 'l-12')}>
                                 <Title as='h1' classNames={cx('title')}>
                                     {context.title}
-                                    {cart.items.length}
+                                    {cart?.items?.length}
                                     {context.titleCounter}
                                 </Title>
                             </div>
@@ -288,29 +295,32 @@ function Checkout() {
                         <div className={cx('row', 'section')}>
                             <div className={cx('col', 'l-12', 'm-12', 's-12')}>
                                 <ul className={cx('products')}>
-                                    {cart.items.map((item, index) => (
-                                        <li
-                                            key={index}
-                                            className={cx('product')}
-                                        >
-                                            <span className={cx('quantity')}>
-                                                {item.quantity}
-                                            </span>
-                                            <div className={cx('info')}>
-                                                <img
-                                                    src={item.image.url}
-                                                    alt={item.name}
-                                                    className={cx('img')}
-                                                />
-                                                <Title as='h3'>
-                                                    {item.name}
-                                                </Title>
-                                            </div>
-                                            <span className={cx('text')}>
-                                                {currencyVN(item.price)}
-                                            </span>
-                                        </li>
-                                    ))}
+                                    {!!cart?.items.length &&
+                                        cart.items.map((item, index) => (
+                                            <li
+                                                key={index}
+                                                className={cx('product')}
+                                            >
+                                                <span
+                                                    className={cx('quantity')}
+                                                >
+                                                    {item.quantity}
+                                                </span>
+                                                <div className={cx('info')}>
+                                                    <img
+                                                        src={item.image[0].url}
+                                                        alt={item.name}
+                                                        className={cx('img')}
+                                                    />
+                                                    <Title as='h3'>
+                                                        {item.name}
+                                                    </Title>
+                                                </div>
+                                                <span className={cx('text')}>
+                                                    {currencyVN(item.subPrice)}
+                                                </span>
+                                            </li>
+                                        ))}
                                 </ul>
                             </div>
                         </div>
@@ -323,7 +333,8 @@ function Checkout() {
                                         {context.tempCalc}
                                     </span>
                                     <span className={cx('text')}>
-                                        {currencyVN(total)}
+                                        {cart?.totalPrice &&
+                                            currencyVN(cart?.totalPrice)}
                                     </span>
                                 </div>
                             </div>
@@ -349,7 +360,8 @@ function Checkout() {
                                             'large-text--blue',
                                         )}
                                     >
-                                        {currencyVN(total)}
+                                        {cart?.totalPrice &&
+                                            currencyVN(cart?.totalPrice)}
                                     </span>
                                 </div>
                             </div>

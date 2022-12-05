@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { cx, context } from './constant';
 
-function CheckBox({ options, onChange }) {
-    const [checked, setChecked] = useState({ index: 0, value: {} });
+function CheckBox({ options, onChange, value }) {
+    const [checked, setChecked] = useState({ index: 0, value });
 
     const handleClick = (index, option) => {
         setChecked({ index, value: option });

@@ -7,7 +7,7 @@ export const cxCartItem = classNames.bind(stylesCartItem);
 
 export const context = {
     title: 'Giỏ hàng',
-    emptyCart: 'Vỏ hàng rỗng',
+    emptyCart: 'Giỏ hàng rỗng',
     product: 'Sản phẩm',
     total: 'Thành tiền:',
     buyNow: 'Thanh toán ngay',

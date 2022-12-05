@@ -19,7 +19,7 @@ export const context = {
     tempCalc: 'Tạm tính',
     feeShip: 'Phí vận chuyển',
     priceTotal: 'Tổng tiền',
-    backToCart: 'Quay về vỏ hàng',
+    backToCart: 'Quay về giỏ hàng',
     order: 'Đặt hàng',
 };
 

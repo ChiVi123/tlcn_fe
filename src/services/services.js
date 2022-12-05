@@ -299,3 +299,22 @@ export const addCart = async (data) => {
         console.log(error);
     }
 };
+
+export const deleteCart = async (itemCartId) => {
+    try {
+        const response = await request.requestDelete(`cart/${itemCartId}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Payment
+export const postPayment = async ({ cartId, type, data }) => {
+    try {
+        const response = await request.post(`checkout/${type}/${cartId}`, data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};

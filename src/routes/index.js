@@ -17,6 +17,7 @@ import {
     CheckOtp,
     CheckOtpRegister,
     ChangePassword,
+    NotifyOrder,
 } from '~/pages';
 import {
     AdminOrder,
@@ -53,6 +54,7 @@ const pathNames = {
     checkout: '/checkout',
     profile: '/profile',
     changePassword: '/change-password',
+    notifyOrder: '/redirect/payment',
 
     //admin
     admin: 'admin/*',
@@ -99,6 +101,7 @@ const privateRoutes = [
     { path: pathNames.profile, component: Profile },
     { path: pathNames.search, component: Search },
     { path: pathNames.changePassword, component: ChangePassword },
+    { path: pathNames.notifyOrder, component: NotifyOrder, layout: null },
 ];
 
 // admin
