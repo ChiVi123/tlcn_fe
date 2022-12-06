@@ -1,16 +1,19 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { currencyVN } from '~/utils/funcs';
+import { toast } from 'react-toastify';
+
 import * as services from '~/services/services';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 function CartItem({ product }) {
     const navigate = useNavigate();
 
     // Handle event
-    const handleChange = (value) => {};
+    const handleChange = (isAddition) => {
+        console.log(isAddition);
+    };
     const handleDelete = async (id) => {
         const result = await services.deleteCart(id);
 
@@ -20,6 +23,8 @@ function CartItem({ product }) {
             toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
         }
     };
+
+    console.log(product);
 
     return (
         <li className={cxCartItem('cart-item')}>
@@ -33,9 +38,14 @@ function CartItem({ product }) {
             <div className={cxCartItem('col', 'l-7', 'm-8', 's-6')}>
                 <div className={cxCartItem('cart-item__info')}>
                     <div className={cxCartItem('cart-item--mobile')}>
-                        <h3 className={cxCartItem('cart-item__name')}>
-                            {product.name}
-                        </h3>
+                        <Link
+                            to={`/product/${product.productid}`}
+                            style={{ textDecoration: 'none' }}
+                        >
+                            <h3 className={cxCartItem('cart-item__name')}>
+                                {product.name}
+                            </h3>
+                        </Link>
                         <span
                             className={cxCartItem('delete-text')}
                             onClick={() => handleDelete(product.itemId)}
@@ -54,7 +64,7 @@ function CartItem({ product }) {
                 <InputQuantity
                     startNumber={product.quantity}
                     small
-                    onChange={(value) => handleChange(value)}
+                    onSpecial={(isAddition) => handleChange(isAddition)}
                 />
                 <span
                     className={cxCartItem({

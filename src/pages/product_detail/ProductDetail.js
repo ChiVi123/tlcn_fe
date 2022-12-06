@@ -2,22 +2,26 @@ import { Controller, useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import parser from 'html-react-parser';
+import { useSelector } from 'react-redux';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { comments } from '~/utils/constant';
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
+import { userSelector } from '~/redux';
+import { pathNames } from '~/routes';
 
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
-
+import './ProductDetail.scss';
 import { InputQuantity, Slick } from '../components';
 
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
+    const [isReview, setIsReview] = useState(false);
     const [product, setProduct] = useState({});
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
@@ -25,6 +29,8 @@ function ProductDetail() {
         },
     });
     const { id } = useParams();
+    const navigate = useNavigate();
+    const userId = useSelector(userSelector.getUserId);
 
     useEffect(() => {
         const fetchApi = async (id) => {
@@ -45,6 +51,10 @@ function ProductDetail() {
 
     // Handle event
     const onSubmit = async (data) => {
+        if (!userId) {
+            navigate(pathNames.login);
+        }
+
         const { quantity, option } = data;
         const result = await services.addCart({
             producId: id,
@@ -77,7 +87,10 @@ function ProductDetail() {
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
-                            <Rating rating={product?.rate} />
+                            <Rating
+                                rating={product?.rate}
+                                setIsReview={setIsReview}
+                            />
                         </div>
 
                         {/* Price */}
@@ -198,6 +211,8 @@ function ProductDetail() {
                     </div>
                 </div>
 
+                {isReview && <div id={'review'}></div>}
+
                 {/* Comment */}
                 <div className={cx('section')}>
                     <div className={cx('section__wrapper')}>
@@ -206,7 +221,7 @@ function ProductDetail() {
                         </Title>
                     </div>
 
-                    <Comments comments={comments} />
+                    <Comments comments={comments} setIsReview={setIsReview} />
                 </div>
 
                 {/* Relation */}

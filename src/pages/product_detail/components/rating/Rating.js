@@ -2,7 +2,7 @@ import StarRatings from 'react-star-ratings';
 
 import { cx, context } from './constant';
 
-function Rating({ rating }) {
+function Rating({ rating, setIsReview }) {
     const color = '#ffc120';
     const maxStars = 5;
 
@@ -15,7 +15,13 @@ function Rating({ rating }) {
                 rating={rating}
                 numberOfStars={maxStars}
             />
-            <span className={cx('rating-title')}>{context.ratingText}</span>
+            <a
+                href={`#review`}
+                style={{ textDecoration: 'none' }}
+                onClick={() => setIsReview(true)}
+            >
+                <span className={cx('rating-title')}>{context.ratingText}</span>
+            </a>
         </>
     );
 }

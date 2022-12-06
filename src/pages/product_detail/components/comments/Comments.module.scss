@@ -1,3 +1,12 @@
+.form-no-gutters {
+    margin-top: 0;
+
+    & > div {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
 .comments {
     padding: 0 2rem 1rem;
 }
@@ -32,4 +41,10 @@
 .comment-content {
     color: var(--text-color);
     font-size: 1.6rem;
+}
+
+.button {
+    margin-left: 1.2rem;
+    margin-bottom: 2rem;
+    text-transform: none;
 }

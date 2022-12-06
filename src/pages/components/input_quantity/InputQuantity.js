@@ -6,7 +6,15 @@ import styles from './InputQuantity.module.scss';
 
 const cx = classNames.bind(styles);
 
-function InputQuantity({ startNumber, step, max, min, small, onChange }) {
+function InputQuantity({
+    startNumber,
+    step,
+    max,
+    min,
+    small,
+    onChange,
+    onSpecial,
+}) {
     const [quantity, setQuantity] = useState(startNumber);
 
     // Handle event
@@ -20,6 +28,10 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
             onChange(result);
         }
 
+        if (onSpecial) {
+            onSpecial(false);
+        }
+
         setQuantity(result);
     };
     const handleIncrease = (event) => {
@@ -30,6 +42,10 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
 
         if (onChange) {
             onChange(result);
+        }
+
+        if (onSpecial) {
+            onSpecial(true);
         }
 
         setQuantity(result);
@@ -72,6 +88,7 @@ function InputQuantity({ startNumber, step, max, min, small, onChange }) {
                 value={quantity}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                disabled={true}
             />
             <button
                 className={cx('button', 'button--increase')}
