@@ -318,3 +318,15 @@ export const postPayment = async ({ cartId, type, data }) => {
         console.log(error);
     }
 };
+
+// Search
+export const searchProducts = async ({ q, page, size }) => {
+    try {
+        const response = await request.get(
+            `products/search/?q=${q}&page=${page}&size=${size}`,
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

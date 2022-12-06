@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
 import * as services from '~/services/services';
-import { userActions } from '~/redux';
+import { userActions, userSelector } from '~/redux';
 
 import { cx, context, schema, defaultValues, form } from './constant';
+import { pathNames } from '~/routes';
 
 function LoginAdmin() {
     const {
@@ -21,12 +23,24 @@ function LoginAdmin() {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector(userSelector.getUser);
+
+    useEffect(() => {
+        if (user.id) {
+            if (user.role === 'role_admin') {
+                navigate('/admin/products');
+            } else {
+                navigate(pathNames.home);
+            }
+        }
+    }, [user, navigate]);
 
     const handleOnSubmit = async (data) => {
-        const user = await services.login(data);
+        const result = await services.login(data);
 
-        if (user) {
-            dispatch(userActions.addUser(user));
+        if (result) {
+            dispatch(userActions.addUser(result));
+            dispatch(userActions.showedToast());
             navigate('/admin/products');
         } else {
             toast.error('Email hoặc mật khẩu không đúng');

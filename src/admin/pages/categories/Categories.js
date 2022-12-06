@@ -19,7 +19,7 @@ function Categories() {
 
     const handleState = (category) => {
         Swal.fire({
-            title: 'Chọn trạng thái cho category',
+            title: 'Chọn trạng thái cho danh mục sản phẩm',
             input: 'radio',
             inputOptions: {
                 enable: 'Enable',

@@ -1,15 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
 import * as services from '~/services/services';
-import { userActions } from '~/redux';
+import { userActions, userSelector } from '~/redux';
 
 import { cx, context, form, schema, defaultValues } from './constant';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 function Login() {
     const {
@@ -20,9 +21,15 @@ function Login() {
         resolver: yupResolver(schema),
         defaultValues,
     });
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const userId = useSelector(userSelector.getUserId);
+
+    useEffect(() => {
+        if (userId) {
+            navigate(pathNames.home);
+        }
+    }, [userId, navigate]);
 
     const handleSubmitData = async (data) => {
         const user = await services.login(data);

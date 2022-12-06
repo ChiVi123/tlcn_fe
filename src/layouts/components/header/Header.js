@@ -6,6 +6,7 @@ import {
     faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
@@ -26,12 +27,14 @@ import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
 function Header() {
     const [dropDown, setDropDown] = useState(false);
     const [totalProduct, setTotalProduct] = useState(0);
+    const [inputSearch, setInputSearch] = useState('');
 
     let TopbarRight = TopbarRightLogout;
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
     const productQuantity = useSelector(cartSelector.getProductQuantity);
     const categories = useSelector(categoriesSelector.getAllcategory);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -45,9 +48,29 @@ function Header() {
         fetchApi();
     }, []);
 
+    // Handle event
+    // - Handle menu
     const handleMouseEnter = () => setDropDown(true);
     const handleMouseLeave = () => setDropDown(false);
     const handleClickMenu = () => dispatch(modalActions.open());
+    // - Handle search
+    const handleChangeSearch = ({ target: { value } }) => setInputSearch(value);
+    const handleClickSearch = () => {
+        navigate({ pathname: pathNames.search, search: `?q=${inputSearch}` });
+    };
+    const handleKeyDown = ({ key }) => {
+        switch (key) {
+            case 'Enter':
+                navigate({
+                    pathname: pathNames.search,
+                    search: `?q=${inputSearch}`,
+                });
+                break;
+
+            default:
+                break;
+        }
+    };
 
     if (user.email) {
         TopbarRight = TopbarRightLogin;
@@ -125,8 +148,14 @@ function Header() {
                             <input
                                 className={cx('input')}
                                 placeholder='Tìm kiếm sản phẩm...'
+                                value={inputSearch}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDown}
                             />
-                            <button className={cx('btn-search')}>
+                            <button
+                                className={cx('btn-search')}
+                                onClick={handleClickSearch}
+                            >
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </div>

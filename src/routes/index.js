@@ -37,7 +37,7 @@ const pathNames = {
     login: '/login',
     loginAdmin: '/admin/login',
     register: '/register',
-    search: '/search/:id',
+    search: '/search',
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
     sendOtp: '/send-otp',
@@ -84,6 +84,7 @@ const publicRoutes = [
         layout: null,
     },
     { path: pathNames.register, component: Register },
+    { path: pathNames.search, component: Search },
     { path: pathNames.any, component: PageNotFound, layout: null },
 ];
 
@@ -99,7 +100,6 @@ const privateRoutes = [
     { path: pathNames.orders, component: Orders },
     { path: pathNames.checkout, component: Checkout, layout: null },
     { path: pathNames.profile, component: Profile },
-    { path: pathNames.search, component: Search },
     { path: pathNames.changePassword, component: ChangePassword },
     { path: pathNames.notifyOrder, component: NotifyOrder, layout: null },
 ];
