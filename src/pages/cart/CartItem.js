@@ -45,7 +45,7 @@ function CartItem({ product }) {
                     </div>
 
                     <span className={cxCartItem('cart-item__price')}>
-                        {currencyVN(product.price)}
+                        {currencyVN(product.subPrice)}
                     </span>
                 </div>
             </div>

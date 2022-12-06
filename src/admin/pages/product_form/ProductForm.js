@@ -64,7 +64,12 @@ function ProductForm() {
                     });
 
                     resultProduct.options.forEach((item, index) => {
-                        insert(index, { value: item.value, stock: item.stock });
+                        insert(index, {
+                            id: item.id,
+                            value: item.value,
+                            stock: item.stock,
+                        });
+                        setValue(`options.${index}.id`, item.id);
                         setValue(`options.${index}.value`, item.value);
                         setValue(`options.${index}.stock`, item.stock);
                     });
@@ -130,7 +135,7 @@ function ProductForm() {
 
                     if (result.isSuccess === 'true') {
                         data.options.forEach(async (item) => {
-                            await services.addOptionsProduct(id, item);
+                            await services.editOptionsProduct(item.id, item);
                         });
 
                         toast.success('Chỉnh sửa sản phẩm thành công');

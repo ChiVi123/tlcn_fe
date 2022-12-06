@@ -45,14 +45,11 @@ function ProductDetail() {
 
     // Handle event
     const onSubmit = async (data) => {
-        const {
-            quantity,
-            option: { id: productOptionId, value },
-        } = data;
+        const { quantity, option } = data;
         const result = await services.addCart({
             producId: id,
-            productOptionId,
-            value,
+            productOptionId: option?.id,
+            value: option?.value,
             quantity,
         });
 

@@ -96,14 +96,16 @@ function Products() {
                 </tbody>
             </table>
 
-            <ButtonPagination
-                nextLabel={'next >'}
-                previousLabel={'< previous'}
-                currentPage={page}
-                rangeDisplay={rangeDisplay}
-                totalPage={totalPage}
-                onClick={(value) => setPage(value)}
-            />
+            {!!products.length && (
+                <ButtonPagination
+                    nextLabel={'next >'}
+                    previousLabel={'< previous'}
+                    currentPage={page}
+                    rangeDisplay={rangeDisplay}
+                    totalPage={totalPage}
+                    onClick={(value) => setPage(value)}
+                />
+            )}
         </>
     );
 }

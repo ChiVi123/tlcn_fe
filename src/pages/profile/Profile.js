@@ -11,9 +11,9 @@ import { userSelector } from '~/redux';
 import { avatarDefault } from '~/assets/images/statics';
 import * as services from '~/services/services';
 import { userActions } from '~/redux';
+import { pathNames } from '~/routes';
 
 import { context, cx, schema } from './constant';
-import { pathNames } from '~/routes';
 
 function Profile() {
     const user = useSelector(userSelector.getUser);
@@ -72,7 +72,7 @@ function Profile() {
         }
 
         Swal.fire({
-            title: 'Wating process update user',
+            title: 'Đang chỉnh sửa thông tin người dùng',
             didOpen: async () => {
                 Swal.showLoading();
 

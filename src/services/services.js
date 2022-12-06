@@ -186,17 +186,17 @@ export const addOptionsProduct = async (id, data) => {
     }
 };
 
-// export const editOptionsProduct = async (id, data) => {
-//     try {
-//         const response = await request.post(
-//             `manage/products/option/${id}`,
-//             data,
-//         );
-//         return response;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
+export const editOptionsProduct = async (id, data) => {
+    try {
+        const response = await request.put(
+            `manage/products/option/${id}`,
+            data,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 // Cateogry/Categories
 export const getCategories = async () => {
@@ -325,6 +325,16 @@ export const searchProducts = async ({ q, page, size }) => {
         const response = await request.get(
             `products/search/?q=${q}&page=${page}&size=${size}`,
         );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Order
+export const adminGetAllOrder = async () => {
+    try {
+        const response = await request.get('admin/manage/orders');
         return response.data;
     } catch (error) {
         throw error;

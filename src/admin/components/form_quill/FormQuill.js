@@ -2,6 +2,8 @@ import { Controller } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
 
+import './FormQuill.scss';
+
 function FormQuill({ name, control, theme, modules, formats }) {
     return (
         <Controller
