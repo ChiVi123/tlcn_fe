@@ -121,6 +121,18 @@ export const getProductsByCategory = async (id, page, size) => {
     }
 };
 
+export const getProductsByState = async ({ page, size }) => {
+    try {
+        const response = await request.get(
+            `products/byState/?page=${page}&size=${size}`,
+        );
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const getProduct = async (id) => {
     try {
         const response = await request.get(`products/${id}`);
@@ -142,6 +154,15 @@ export const addProduct = async (data) => {
 export const editProduct = async (id, data) => {
     try {
         const response = await request.put(`products/update/${id}`, data);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteProduct = async (id) => {
+    try {
+        const response = await request.requestDelete(`products/delete/${id}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -174,7 +195,7 @@ export const deleteImageProduct = async (id, idImage) => {
     }
 };
 
-export const addOptionsProduct = async (id, data) => {
+export const addOptionProduct = async (id, data) => {
     try {
         const response = await request.post(
             `manage/products/option/${id}`,
@@ -186,12 +207,21 @@ export const addOptionsProduct = async (id, data) => {
     }
 };
 
-export const editOptionsProduct = async (id, data) => {
+export const editOptionProduct = async (id, data) => {
     try {
         const response = await request.put(
             `manage/products/option/${id}`,
             data,
         );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteOptionProduct = async (id) => {
+    try {
+        const response = await request.requestDelete(`manage/delete/${id}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -323,7 +353,7 @@ export const postPayment = async ({ cartId, type, data }) => {
 export const searchProducts = async ({ q, page, size }) => {
     try {
         const response = await request.get(
-            `products/search/?q=${q}&page=${page}&size=${size}`,
+            `products/search?q=${q}&page=${page}&size=${size}`,
         );
         return response.data;
     } catch (error) {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
     ButtonCustomize,
@@ -21,6 +22,7 @@ function BasicInput({
     errors,
 }) {
     const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -33,6 +35,19 @@ function BasicInput({
 
         fetchApi();
     }, []);
+
+    const handleDeleteOption = async ({ index, itemId }) => {
+        if (itemId) {
+            const result = await services.deleteOptionProduct(itemId);
+
+            if (result?.message === 'Delete Option successfully ') {
+                navigate(0);
+            }
+        } else {
+            remove(index);
+        }
+    };
+
     return (
         <>
             {/* Product name */}
@@ -153,7 +168,10 @@ function BasicInput({
                                 isDelete={true}
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    remove(index);
+                                    handleDeleteOption({
+                                        index,
+                                        itemId: item.optionId,
+                                    });
                                 }}
                             >
                                 {context.deleteOptionBtn}

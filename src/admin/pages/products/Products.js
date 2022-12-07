@@ -11,6 +11,8 @@ import * as services from '~/services/services';
 
 import styles from './Products.module.scss';
 import { context } from './constant';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +21,7 @@ function Products() {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(5);
     const [rangeDisplay, setRangeDisplay] = useState(3);
+    const navigate = useNavigate();
     const itemPerPage = 8;
 
     useEffect(() => {
@@ -37,6 +40,24 @@ function Products() {
 
         fetchApi(page - 1, itemPerPage);
     }, [page]);
+
+    const handleDelete = ({ id, name }) => {
+        Swal.fire({
+            title: `Bạn có chắc sẽ xóa ${name}`,
+            confirmButtonText: 'Xóa sản phẩm',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            width: 'auto',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const result = await services.deleteProduct(id);
+
+                if (result?.message === 'Delete product successfully ') {
+                    navigate(0);
+                }
+            }
+        });
+    };
 
     return (
         <>
@@ -87,7 +108,15 @@ function Products() {
                                 >
                                     <FontAwesomeIcon icon={faPen} />
                                 </ButtonCustomize>
-                                <ButtonCustomize isDelete={true}>
+                                <ButtonCustomize
+                                    isDelete={true}
+                                    onClick={() =>
+                                        handleDelete({
+                                            id: item.id,
+                                            name: item.name,
+                                        })
+                                    }
+                                >
                                     <FontAwesomeIcon icon={faXmark} />
                                 </ButtonCustomize>
                             </td>

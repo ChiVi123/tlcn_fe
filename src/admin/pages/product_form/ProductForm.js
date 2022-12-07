@@ -65,11 +65,11 @@ function ProductForm() {
 
                     resultProduct.options.forEach((item, index) => {
                         insert(index, {
-                            id: item.id,
+                            optionId: item.id,
                             value: item.value,
                             stock: item.stock,
                         });
-                        setValue(`options.${index}.id`, item.id);
+                        setValue(`options.${index}.optionId`, item.id);
                         setValue(`options.${index}.value`, item.value);
                         setValue(`options.${index}.stock`, item.stock);
                     });
@@ -135,7 +135,14 @@ function ProductForm() {
 
                     if (result.isSuccess === 'true') {
                         data.options.forEach(async (item) => {
-                            await services.editOptionsProduct(item.id, item);
+                            if (item.optionId) {
+                                await services.editOptionProduct(
+                                    item.optionId,
+                                    item,
+                                );
+                            } else {
+                                await services.addOptionProduct(id, item);
+                            }
                         });
 
                         toast.success('Chỉnh sửa sản phẩm thành công');
@@ -154,7 +161,7 @@ function ProductForm() {
 
                     if (result.isSuccess === 'true') {
                         data.options.forEach(async (item) => {
-                            await services.addOptionsProduct(
+                            await services.addOptionProduct(
                                 result.data.id,
                                 item,
                             );

@@ -30,7 +30,7 @@ function Home() {
     }, []);
     useEffect(() => {
         const fetchApi = async (page, size) => {
-            const result = await services.getProducts(page, size);
+            const result = await services.getProductsByState({ page, size });
             setProducts(result.list);
 
             const resultMicrocontrollers = await services.getProductsByCategory(

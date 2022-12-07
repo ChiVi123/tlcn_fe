@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { currencyVN } from '~/utils/funcs';
 import { toast } from 'react-toastify';
 
 import * as services from '~/services/services';
+import { currencyVN } from '~/utils/funcs';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
@@ -11,8 +11,25 @@ function CartItem({ product }) {
     const navigate = useNavigate();
 
     // Handle event
-    const handleChange = (isAddition) => {
-        console.log(isAddition);
+    const handleChange = async (isAddition) => {
+        const {
+            productid: producId,
+            productOptionid: productOptionId,
+            value,
+        } = product;
+
+        const result = await services.addCart({
+            producId,
+            productOptionId,
+            value,
+            quantity: isAddition ? 1 : -1,
+        });
+
+        if (result?.message === 'Update product  in cart success') {
+            navigate(0);
+        } else {
+            toast.error('Không thể thêm hoặc giảm số lượng');
+        }
     };
     const handleDelete = async (id) => {
         const result = await services.deleteCart(id);
@@ -23,8 +40,6 @@ function CartItem({ product }) {
             toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
         }
     };
-
-    console.log(product);
 
     return (
         <li className={cxCartItem('cart-item')}>
