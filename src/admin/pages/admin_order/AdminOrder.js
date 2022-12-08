@@ -1,16 +1,26 @@
+import { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
-import { useSelector } from 'react-redux';
-import { avatarDefault } from '~/assets/images/statics';
 
+import { avatarDefault } from '~/assets/images/statics';
 import { Button, Title } from '~/components';
-import { userSelector } from '~/redux';
-import { addresses, orders, products } from '~/utils/constant';
-import { currencyVN } from '~/utils/funcs';
+import { currencyVN, replaceMethodOrder } from '~/utils/funcs';
+import * as services from '~/services/services';
 
 import { cx, context } from './constant';
+import { useParams } from 'react-router-dom';
 
 function AdminOrder() {
-    const user = useSelector(userSelector.getUser);
+    const [order, setOrder] = useState();
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchApi = async ({ id }) => {
+            const result = await services.adminGetOrderById({ id });
+
+            setOrder(result);
+        };
+        fetchApi({ id });
+    }, [id]);
 
     return (
         <>
@@ -18,53 +28,59 @@ function AdminOrder() {
             <Button to={'/admin/orders'}>{context.backToPage}</Button>
 
             <div className={cx('row')} style={{ marginTop: '20px' }}>
-                <div className={cx('col', 'l-6')}>
+                <div className={cx('col', 'l-4')}>
                     <Avatar
-                        src={user?.avatar || avatarDefault}
+                        src={order?.userimage || avatarDefault}
                         size='200'
                         alt='avatar'
-                        round='50px'
+                        round='100%'
                     />
 
                     <Title as='h2' classNames={cx('user-name')}>
                         {context.userName}
-                        {user.name}
+                        {order?.userName}
                     </Title>
                 </div>
 
-                <div className={cx('col', 'l-6')}>
+                <div className={cx('col', 'l-8')}>
                     <div className={cx('row')}>
-                        <div className={cx('col', 'l-12')}>
-                            <span className={cx('large-text')}>
-                                {context.status}
-                                {orders[0].status}
-                            </span>
-                        </div>
-                    </div>
+                        {/* Method payment */}
+                        {order?.paymentType && order?.state && (
+                            <div className={cx('col', 'l-12')}>
+                                <span className={cx('large-text')}>
+                                    {context.methodPay}
+                                    {replaceMethodOrder(
+                                        order?.paymentType,
+                                        order?.state,
+                                    )}
+                                </span>
+                            </div>
+                        )}
 
-                    <div className={cx('row')}>
+                        {/* Delivery */}
                         <div className={cx('col', 'l-12')}>
-                            <span className={cx('large-text')}>
-                                {context.address}
-                                {addresses[0].address}
-                            </span>
+                            {order?.delivery && (
+                                <span className={cx('large-text')}>
+                                    {context.address(order?.delivery)}
+                                </span>
+                            )}
                         </div>
-                    </div>
 
-                    <div className={cx('row')}>
+                        {/* Template solve */}
                         <div className={cx('col', 'l-6')}>
                             <span className={cx('large-text')}>
                                 {context.tempResult}
                             </span>
                         </div>
-                        <div className={cx('col', 'l-6')}>
-                            <span className={cx('large-text')}>
-                                {currencyVN(900000)}
-                            </span>
-                        </div>
-                    </div>
+                        {order?.totalPrice && (
+                            <div className={cx('col', 'l-6')}>
+                                <span className={cx('large-text')}>
+                                    {currencyVN(order?.totalPrice)}
+                                </span>
+                            </div>
+                        )}
 
-                    <div className={cx('row')}>
+                        {/* Fee shipping */}
                         <div className={cx('col', 'l-6')}>
                             <span className={cx('large-text')}>
                                 {context.feeShipping}
@@ -75,41 +91,47 @@ function AdminOrder() {
                                 {context.feeShippingValue}
                             </span>
                         </div>
-                    </div>
 
-                    <div className={cx('row')}>
+                        {/* Total price */}
                         <div className={cx('col', 'l-6')}>
                             <span className={cx('large-text')}>
                                 {context.total}
                             </span>
                         </div>
-                        <div className={cx('col', 'l-6')}>
-                            <span
-                                className={cx('large-text', 'large-text--blue')}
-                            >
-                                {currencyVN(900000)}
-                            </span>
-                        </div>
+                        {order?.totalPrice && (
+                            <div className={cx('col', 'l-6')}>
+                                <span
+                                    className={cx(
+                                        'large-text',
+                                        'large-text--blue',
+                                    )}
+                                >
+                                    {currencyVN(order?.totalPrice)}
+                                </span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
             <Title as='h2'>{'Danh sách sản phẩm trong đơn hàng'}</Title>
 
             <ul className={cx('products')}>
-                {products.map((item, index) => (
+                {order?.items.map((item, index) => (
                     <li key={index} className={cx('product')}>
-                        <span className={cx('quantity')}>1</span>
+                        <span className={cx('quantity')}>{item.quantity}</span>
                         <div className={cx('info')}>
                             <img
-                                src={item.imgs[0]}
+                                src={item.image[0].url}
                                 alt={item.name}
                                 className={cx('img')}
                             />
                             <Title as='h3'>{item.name}</Title>
                         </div>
-                        <span className={cx('text')}>
-                            {currencyVN(item.price)}
-                        </span>
+                        {item?.subPrice && (
+                            <span className={cx('text')}>
+                                {currencyVN(item?.subPrice)}
+                            </span>
+                        )}
                     </li>
                 ))}
             </ul>

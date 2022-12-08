@@ -32,3 +32,43 @@ export function getArray(array, code, name) {
 
     return resutl ? resutl[name] : [];
 }
+
+export function replaceStateOrder(state) {
+    switch (state) {
+        case 'pendingpay':
+            return 'Đã thanh toán và đang xử lý';
+        case 'pending':
+            return 'Đang xử lý';
+        case 'delivery':
+            return 'Đang giao hàng';
+        case 'complete':
+            return 'Giao hàng thành công';
+        case 'cancel':
+            return 'Hủy đơn hàng';
+        default:
+            return '';
+    }
+}
+
+export function replaceMethodOrder(paymentType, state) {
+    if (paymentType === 'COD') {
+        switch (state) {
+            case 'complete':
+                return 'Đã thanh toán';
+            default:
+                return 'Chưa thanh toán';
+        }
+    }
+
+    if (paymentType === 'PAYPAL') {
+        switch (state) {
+            case 'pendingpay':
+            case 'delivery':
+            case 'complete':
+                return 'Đã thanh toán';
+
+            default:
+                return 'Chưa thanh toán';
+        }
+    }
+}

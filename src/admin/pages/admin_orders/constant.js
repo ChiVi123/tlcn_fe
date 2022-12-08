@@ -4,7 +4,7 @@ import styles from './AdminOrders.module.scss';
 export const cx = classNames.bind(styles);
 
 export const context = {
-    title: 'Đơn hàng',
+    title: 'Các đơn hàng',
     idOrderCol: 'Mã đơn hàng',
     userNameCol: 'Tên người đặt',
     createAtCol: 'Ngày đặt',

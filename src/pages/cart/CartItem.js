@@ -2,43 +2,58 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import * as services from '~/services/services';
-import { currencyVN } from '~/utils/funcs';
+import { currencyVN, priceSaleVN } from '~/utils/funcs';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
+import Swal from 'sweetalert2';
 
 function CartItem({ product }) {
     const navigate = useNavigate();
 
     // Handle event
-    const handleChange = async (isAddition) => {
-        const {
-            productid: producId,
-            productOptionid: productOptionId,
-            value,
-        } = product;
+    const handleChange = async (isAddition, number) => {
+        if (number < 1) {
+            return;
+        }
 
+        const { productid: producId, productOptionid, value } = product;
         const result = await services.addCart({
             producId,
-            productOptionId,
+            productOptionId: productOptionid || null,
             value,
             quantity: isAddition ? 1 : -1,
         });
+        const expectMessage = `Update product ${
+            productOptionid ? productOptionid : 'null'
+        } in cart success`;
 
-        if (result?.message === 'Update product  in cart success') {
+        if (result?.message === expectMessage) {
             navigate(0);
         } else {
             toast.error('Không thể thêm hoặc giảm số lượng');
         }
     };
-    const handleDelete = async (id) => {
-        const result = await services.deleteCart(id);
+    const handleDelete = (id) => {
+        const title = `Bạn có chắc xóa ${product.name}`;
 
-        if (result?.message === `Delete item ${id} in cart success`) {
-            navigate(0);
-        } else {
-            toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
-        }
+        Swal.fire({
+            title,
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+        }).then(async ({ isConfirmed }) => {
+            if (isConfirmed) {
+                const result = await services.deleteCart(id);
+                const expectMessage = `Delete item ${id} in cart success`;
+
+                if (result?.message === expectMessage) {
+                    navigate(0);
+                } else {
+                    toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
+                }
+            }
+        });
     };
 
     return (
@@ -70,7 +85,7 @@ function CartItem({ product }) {
                     </div>
 
                     <span className={cxCartItem('cart-item__price')}>
-                        {currencyVN(product.subPrice)}
+                        {currencyVN(priceSaleVN(product.price, product.sale))}
                     </span>
                 </div>
             </div>
@@ -79,7 +94,9 @@ function CartItem({ product }) {
                 <InputQuantity
                     startNumber={product.quantity}
                     small
-                    onSpecial={(isAddition) => handleChange(isAddition)}
+                    onSpecial={(isAddition, value) =>
+                        handleChange(isAddition, value)
+                    }
                 />
                 <span
                     className={cxCartItem({

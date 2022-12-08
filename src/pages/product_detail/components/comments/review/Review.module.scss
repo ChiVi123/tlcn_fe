@@ -1,0 +1,78 @@
+.comment {
+    display: flex;
+    margin-bottom: 1.8rem;
+
+    &-left {
+        display: flex;
+        width: 16%;
+    }
+
+    &-right {
+        width: 80%;
+    }
+
+    &-actions {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 0.4rem;
+    }
+
+    &-name {
+        display: block;
+        margin-right: 0.8rem;
+        color: var(--primary);
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    &-avatar {
+        height: 6rem;
+        margin-top: 0.6rem;
+        margin-right: 1.2rem;
+    }
+
+    &-content {
+        min-height: 6rem;
+        padding: 0.8rem;
+        color: var(--text-color);
+        font-size: 1.6rem;
+        background-color: #f2f3f5;
+        border-radius: 1.4rem;
+    }
+
+    &-small-text {
+        margin: 0rem 0.6rem;
+        color: #acacac;
+        font-size: 1.4rem;
+    }
+}
+
+.button {
+    text-transform: none;
+    transition: color 0.4s ease-in;
+
+    &-form {
+        padding: 0.2rem 0.6rem;
+        letter-spacing: 0.06rem;
+
+        & ~ & {
+            margin-left: 0.8rem;
+        }
+    }
+
+    &--edit {
+        color: var(--second-primary);
+        border-color: var(--second-primary);
+
+        &:hover {
+            box-shadow: 1px 0px 6px 2px rgb(14 165 229 / 25%);
+        }
+    }
+
+    &:hover:not(&-form) {
+        color: var(--primary);
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}

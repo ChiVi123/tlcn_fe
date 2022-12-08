@@ -29,4 +29,15 @@
             box-shadow: 1px 0px 6px 2px rgb(239 68 68 / 25%);
         }
     }
+
+    &--read {
+        --read-color: #0ea5e5;
+
+        background-color: var(--read-color);
+        border-color: var(--read-color);
+
+        &:hover {
+            box-shadow: 1px 0px 6px 2px rgb(14 165 229 / 25%);
+        }
+    }
 }

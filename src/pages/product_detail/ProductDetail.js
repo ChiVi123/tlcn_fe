@@ -1,14 +1,13 @@
 import { Controller, useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import parser from 'html-react-parser';
 import { useSelector } from 'react-redux';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { comments } from '~/utils/constant';
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
 import { userSelector } from '~/redux';
@@ -23,6 +22,11 @@ function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
     const [isReview, setIsReview] = useState(false);
     const [product, setProduct] = useState({});
+    const [reviews, setReviews] = useState({
+        totalQuantity: 0,
+        totalPage: 0,
+        list: [],
+    });
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
             quantity: 1,
@@ -44,10 +48,28 @@ function ProductDetail() {
                 10,
             );
             setProductsRelation(resultRelation.list);
+
+            const resultReviews = await services.getReviewByProductId(id);
+            setReviews(resultReviews);
         };
 
         fetchApi(id);
     }, [id, setValue]);
+
+    const rating = useMemo(() => {
+        const total = reviews.list.reduce(
+            (accumulator, currentValue) => {
+                if (currentValue.state === 'enable') {
+                    accumulator.totalStar += currentValue.rate;
+                    accumulator.quantity += 1;
+                }
+                return accumulator;
+            },
+            { totalStar: 0, quantity: 0 },
+        );
+
+        return total;
+    }, [reviews.list]);
 
     // Handle event
     const onSubmit = async (data) => {
@@ -87,10 +109,7 @@ function ProductDetail() {
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
-                            <Rating
-                                rating={product?.rate}
-                                setIsReview={setIsReview}
-                            />
+                            <Rating rating={rating} setIsReview={setIsReview} />
                         </div>
 
                         {/* Price */}
@@ -217,11 +236,16 @@ function ProductDetail() {
                 <div className={cx('section')}>
                     <div className={cx('section__wrapper')}>
                         <Title as='h2' line>
-                            {context.comment}
+                            {context.review(reviews.totalQuantity)}
                         </Title>
                     </div>
 
-                    <Comments comments={comments} setIsReview={setIsReview} />
+                    <Comments
+                        reviews={reviews.list}
+                        setIsReview={setIsReview}
+                        isReview={isReview}
+                        productId={id}
+                    />
                 </div>
 
                 {/* Relation */}

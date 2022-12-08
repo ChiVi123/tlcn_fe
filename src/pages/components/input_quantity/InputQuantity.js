@@ -22,14 +22,15 @@ function InputQuantity({
         event.preventDefault();
 
         let result = quantity - step;
+
+        if (onSpecial) {
+            onSpecial(false, result);
+        }
+
         result = result < min ? min : result;
 
         if (onChange) {
             onChange(result);
-        }
-
-        if (onSpecial) {
-            onSpecial(false);
         }
 
         setQuantity(result);
@@ -38,14 +39,15 @@ function InputQuantity({
         event.preventDefault();
 
         let result = quantity + step;
+
+        if (onSpecial) {
+            onSpecial(true, result);
+        }
+
         result = max && result > max ? max : result;
 
         if (onChange) {
             onChange(result);
-        }
-
-        if (onSpecial) {
-            onSpecial(true);
         }
 
         setQuantity(result);

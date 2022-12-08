@@ -5,6 +5,11 @@ import { cx, context } from './constant';
 function Rating({ rating, setIsReview }) {
     const color = '#ffc120';
     const maxStars = 5;
+    const averageRating = () => {
+        if (rating.quantity) {
+            return rating.totalStar / rating.quantity;
+        } else return 0;
+    };
 
     return (
         <>
@@ -12,7 +17,7 @@ function Rating({ rating, setIsReview }) {
                 starRatedColor={color}
                 starDimension='12px'
                 starSpacing='2px'
-                rating={rating}
+                rating={averageRating()}
                 numberOfStars={maxStars}
             />
             <a

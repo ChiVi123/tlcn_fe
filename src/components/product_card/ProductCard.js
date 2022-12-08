@@ -17,7 +17,7 @@ function ProductCard({ product }) {
             <div className={cx('wrapper-img')}>
                 <img
                     className={cx('product-img')}
-                    src={product.images[0].url}
+                    src={product?.images[0]?.url}
                     alt={product.name}
                 />
             </div>

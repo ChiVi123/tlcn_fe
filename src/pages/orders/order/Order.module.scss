@@ -1,0 +1,33 @@
+.delivery {
+    color: #22c55e;
+}
+
+.complete {
+    color: var(--third-primary);
+}
+
+.pendingpay,
+.pending {
+    color: #ffcf10;
+}
+
+.cancel {
+    color: var(--third-primary);
+}
+
+.td {
+    &-id,
+    &-address {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &-id {
+        max-width: 18rem;
+    }
+
+    &-address {
+        max-width: 18rem;
+    }
+}

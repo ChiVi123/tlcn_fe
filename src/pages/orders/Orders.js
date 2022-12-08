@@ -1,9 +1,27 @@
+import { useEffect, useState } from 'react';
+
 import { Section, Title, Wrapper } from '~/components';
-import { currencyVN } from '~/utils/funcs';
-import { orders } from '~/utils/constant';
+import * as services from '~/services/services';
 import { cx, context } from './constant';
+import Order from './order/Order';
 
 function Orders() {
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await services.userGetAllOrder();
+
+            if (result?.list?.length) {
+                setOrders(result.list);
+            }
+
+            console.log(result);
+        };
+
+        fetchApi();
+    }, []);
+
     return (
         <Wrapper>
             <div className={cx('grid', 'wide')}>
@@ -22,44 +40,24 @@ function Orders() {
                         </div>
                     </div>
 
-                    <div className='row'>
-                        <div className='col l-12'>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>{context.id}</th>
-                                        <th>{context.date}</th>
-                                        <th>{context.product}</th>
-                                        <th>{context.address}</th>
-                                        <th>{context.value}</th>
-                                        <th>{context.status}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {orders.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.id}</td>
-                                            <td>{item.date}</td>
-                                            <td>
-                                                {item.products[0].name}{' '}
-                                                {context.and}{' '}
-                                                {item.products.length}{' '}
-                                                {context.otherProduct}
-                                            </td>
-                                            <td>{item.address}</td>
-                                            <td>{currencyVN(item.value)}</td>
-                                            <td className={cx(item.status)}>
-                                                {item.status === 'done'
-                                                    ? context.done
-                                                    : item.status === 'procces'
-                                                    ? context.procces
-                                                    : context.cancel}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div className='col l-12'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>{context.id}</th>
+                                    <th>{context.date}</th>
+                                    <th>{context.product}</th>
+                                    <th>{context.address}</th>
+                                    <th>{context.totalPrice}</th>
+                                    <th>{context.status}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map((order, index) => (
+                                    <Order key={index} order={order} />
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </Section>
             </div>

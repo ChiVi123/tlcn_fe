@@ -4,6 +4,7 @@ import {
     faAddressCard,
     faReceipt,
 } from '@fortawesome/free-solid-svg-icons';
+import { faMessage } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
 
@@ -29,5 +30,10 @@ export const sidebarItems = [
         context: 'Danh sách người dùng',
         navTo: '/admin/users',
         icon: faAddressCard,
+    },
+    {
+        context: 'Danh sách đánh giá sản phẩm',
+        navTo: '/admin/reviews',
+        icon: faMessage,
     },
 ];

@@ -26,6 +26,7 @@ import { userSelector } from '~/redux';
 // Local
 import { context, cx, schema } from './constant';
 import { ChoosePayment } from './components';
+import Swal from 'sweetalert2';
 
 function Checkout() {
     // Hooks
@@ -101,7 +102,7 @@ function Checkout() {
         return () => subscription.unsubscribe();
     }, [watch]);
 
-    const handleOnSubmit = async (data) => {
+    const handleOnSubmit = (data) => {
         const { province, district, ward, payment, ...rest } = data;
         const { id: cartId } = cart;
         const newData = {
@@ -112,17 +113,26 @@ function Checkout() {
             payment,
         };
 
-        const result = await services.postPayment({
-            cartId,
-            type: payment,
-            data: newData,
-        });
+        Swal.fire({
+            title: 'Nếu bạn muốn kiểm tra đơn hàng thêm lần nữa hãy nhấn nút hủy',
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+        }).then(async ({ isConfirmed }) => {
+            if (isConfirmed) {
+                const result = await services.postPayment({
+                    cartId,
+                    type: payment,
+                    data: newData,
+                });
 
-        if (result?.message === 'Payment init complete') {
-            window.open(result.data);
-        } else {
-            toast.error('Thanh toán thất bại');
-        }
+                if (result?.message === 'Payment init complete') {
+                    window.open(result.data);
+                } else {
+                    toast.error('Thanh toán thất bại');
+                }
+            }
+        });
     };
 
     return (

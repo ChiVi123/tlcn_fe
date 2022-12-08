@@ -7,6 +7,10 @@
     background-color: var(--white);
 }
 
+.mt-2 {
+    margin-top: 0.2rem;
+}
+
 .logo {
     display: block;
     width: 15rem;
@@ -25,13 +29,13 @@
 
 .item {
     width: 100%;
-    margin-bottom: 1rem;
 }
 
 .link {
-    display: block;
+    display: flex;
+    align-items: flex-start;
     width: 100%;
-    padding: 1rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     padding-right: 0;
 
     border-radius: 0.8rem;

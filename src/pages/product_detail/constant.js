@@ -11,7 +11,7 @@ const context = {
     tags: 'Tags:',
     description: 'Mô tả sản phẩm',
     relation: 'Sản phẩm cùng loại',
-    comment: 'Đánh giá sản phẩm (780 đánh giá)',
+    review: (quantity) => `Đánh giá sản phẩm (${quantity} đánh giá)`,
 };
 
 const form = {

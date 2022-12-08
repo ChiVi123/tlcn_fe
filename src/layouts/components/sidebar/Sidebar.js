@@ -41,10 +41,12 @@ function Sidebar() {
                                 cx('link', { active: isActive })
                             }
                         >
-                            <FontAwesomeIcon
-                                icon={item.icon}
-                                className={cx('font-icon')}
-                            />
+                            <div className={cx('mt-2')}>
+                                <FontAwesomeIcon
+                                    icon={item.icon}
+                                    className={cx('font-icon')}
+                                />
+                            </div>
                             <span className={cx('context')}>
                                 {item.context}
                             </span>
@@ -57,7 +59,7 @@ function Sidebar() {
                             icon={faArrowRightFromBracket}
                             className={cx('font-icon')}
                         />
-                        <span className={cx('context')}>Logout</span>
+                        <span className={cx('context')}>Đăng xuất</span>
                     </button>
                 </li>
             </ul>

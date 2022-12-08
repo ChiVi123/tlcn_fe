@@ -28,6 +28,7 @@ import {
     LoginAdmin,
     ProductForm,
     Products,
+    Reviews,
     Users,
 } from '~/admin/pages';
 
@@ -68,6 +69,7 @@ const pathNames = {
     users: 'users',
     adminOrders: 'orders',
     orderDetail: 'order/:id',
+    reviews: 'reviews',
 };
 
 const publicRoutes = [
@@ -159,6 +161,11 @@ const adminRoutes = [
     {
         path: pathNames.users,
         component: Users,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.reviews,
+        component: Reviews,
         layout: AdminLayout,
     },
 ];

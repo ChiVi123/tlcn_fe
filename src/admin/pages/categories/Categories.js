@@ -31,28 +31,36 @@ function Categories() {
                     return 'Bạn cần chọn trạng thái cho sản phẩm!';
                 }
             },
-        }).then(async ({ value }) => {
-            Swal.fire({
-                title: 'Tiến hành thay đổi trạng thái',
-                didOpen: async () => {
-                    Swal.showLoading();
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+        }).then(async ({ isConfirmed, value }) => {
+            if (isConfirmed) {
+                Swal.fire({
+                    title: 'Tiến hành thay đổi trạng thái',
+                    didOpen: async () => {
+                        Swal.showLoading();
 
-                    const result = await services.updateCategory(category.id, {
-                        name: category.name,
-                        state: value,
-                    });
+                        const result = await services.updateCategory(
+                            category.id,
+                            {
+                                name: category.name,
+                                state: value,
+                            },
+                        );
 
-                    if (result.message === 'update category success ') {
-                        toast.success('Thay đổi trạng thái thành công');
-                        fetchApi();
-                    } else {
-                        toast.error('Thay đổi trạng thái thất bại');
-                        fetchApi();
-                    }
+                        if (result.message === 'update category success ') {
+                            toast.success('Thay đổi trạng thái thành công');
+                            fetchApi();
+                        } else {
+                            toast.error('Thay đổi trạng thái thất bại');
+                            fetchApi();
+                        }
 
-                    Swal.close();
-                },
-            });
+                        Swal.close();
+                    },
+                });
+            }
         });
     };
 

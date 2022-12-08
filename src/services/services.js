@@ -362,10 +362,98 @@ export const searchProducts = async ({ q, page, size }) => {
 };
 
 // Order
-export const adminGetAllOrder = async () => {
+export const adminGetAllOrder = async (page) => {
     try {
-        const response = await request.get('admin/manage/orders');
+        const response = await request.get(`admin/manage/orders?page=${page}`);
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const adminGetOrderById = async ({ id }) => {
+    try {
+        const response = await request.get(`admin/manage/orders/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const userGetAllOrder = async () => {
+    try {
+        const response = await request.get('orders/getallorder');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Review
+export const adminGetReviews = async () => {
+    try {
+        const response = await request.get('admin/manage/comment/findall');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getReviewByProductId = async (id) => {
+    try {
+        const response = await request.get(`comment/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addReview = async (data) => {
+    try {
+        const response = await request.post('comment', data);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const editReview = async ({ id, data }) => {
+    try {
+        const response = await request.put(`comment/edit/${id}`, data);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const blockReview = async ({ id }) => {
+    try {
+        const response = await request.requestDelete(
+            `admin/manage/comment/block/${id}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const unblockReview = async ({ id }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/comment/setenable/${id}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteReviewByUser = async ({ id }) => {
+    try {
+        const response = await request.requestDelete(
+            `comment/deletebyuser/${id}`,
+        );
+        return response;
     } catch (error) {
         throw error;
     }
