@@ -1,26 +1,90 @@
 import { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { avatarDefault } from '~/assets/images/statics';
 import { Button, Title } from '~/components';
-import { currencyVN, replaceMethodOrder } from '~/utils/funcs';
+import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import * as services from '~/services/services';
+import { enumStateOrder } from '~/utils/constant';
+import { ButtonCustomize } from '~/admin/components';
 
 import { cx, context } from './constant';
-import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function AdminOrder() {
     const [order, setOrder] = useState();
+    const [user, setUser] = useState();
+    const [orderState, setOrderState] = useState({});
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async ({ id }) => {
-            const result = await services.adminGetOrderById({ id });
+            const resultOrder = await services.adminGetOrderById({ id });
+            setOrder(resultOrder);
 
-            setOrder(result);
+            const state = enumStateOrder[resultOrder.state];
+            setOrderState(state[resultOrder.paymentType]);
+
+            const resultUser = await services.getUserById({
+                id: resultOrder.userId,
+            });
+            setUser(resultUser);
         };
         fetchApi({ id });
     }, [id]);
+
+    const handleCancel = () => {
+        Swal.fire({
+            title: 'Bạn muốn hủy đơn hàng',
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Bỏ qua',
+        }).then(async ({ isConfirmed }) => {
+            if (isConfirmed) {
+                const expectMessage = 'Cancel order successfully';
+                const result = await services.adminCancelOrderById({ id });
+                if (result?.message === expectMessage) {
+                    navigate(0);
+                }
+            }
+        });
+    };
+
+    const handleDelivery = () => {
+        Swal.fire({
+            title: 'Bạn muốn xác nhận đơn hàng',
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Bỏ qua',
+        }).then(async ({ isConfirmed }) => {
+            if (isConfirmed) {
+                const expectMessage = 'Delivery order successfully';
+                const result = await services.adminDeliveryOrderById({ id });
+                if (result?.message === expectMessage) {
+                    navigate(0);
+                }
+            }
+        });
+    };
+
+    const handleComplete = () => {
+        Swal.fire({
+            title: 'Giao hàng thành công',
+            confirmButtonText: 'Xác nhận',
+            showCancelButton: true,
+            cancelButtonText: 'Bỏ qua',
+        }).then(async ({ isConfirmed }) => {
+            if (isConfirmed) {
+                const expectMessage = 'Complete order successfully';
+                const result = await services.adminCompletelOrderById({ id });
+                if (result?.message === expectMessage) {
+                    navigate(0);
+                }
+            }
+        });
+    };
 
     return (
         <>
@@ -30,7 +94,7 @@ function AdminOrder() {
             <div className={cx('row')} style={{ marginTop: '20px' }}>
                 <div className={cx('col', 'l-4')}>
                     <Avatar
-                        src={order?.userimage || avatarDefault}
+                        src={user?.avatar || avatarDefault}
                         size='200'
                         alt='avatar'
                         round='100%'
@@ -45,14 +109,19 @@ function AdminOrder() {
                 <div className={cx('col', 'l-8')}>
                     <div className={cx('row')}>
                         {/* Method payment */}
+                        <div className={cx('col', 'l-12')}>
+                            <span className={cx('large-text')}>
+                                {context.methodPay}
+                                {order?.paymentType}
+                            </span>
+                        </div>
+
+                        {/* State payment */}
                         {order?.paymentType && order?.state && (
                             <div className={cx('col', 'l-12')}>
                                 <span className={cx('large-text')}>
-                                    {context.methodPay}
-                                    {replaceMethodOrder(
-                                        order?.paymentType,
-                                        order?.state,
-                                    )}
+                                    {context.status}
+                                    {orderState.isPay}
                                 </span>
                             </div>
                         )}
@@ -110,10 +179,52 @@ function AdminOrder() {
                                 </span>
                             </div>
                         )}
+
+                        {orderState.isCancel && (
+                            <div
+                                className={cx('col', 'l-4')}
+                                style={{ marginTop: '1.2rem' }}
+                            >
+                                <ButtonCustomize
+                                    isDelete={true}
+                                    onClick={handleCancel}
+                                >
+                                    {context.cancelButton}
+                                </ButtonCustomize>
+                            </div>
+                        )}
+
+                        {orderState.isDelivery && (
+                            <div
+                                className={cx('col', 'l-4')}
+                                style={{ marginTop: '1.2rem' }}
+                            >
+                                <ButtonCustomize
+                                    isRead={true}
+                                    onClick={handleDelivery}
+                                >
+                                    {context.deliveryButton}
+                                </ButtonCustomize>
+                            </div>
+                        )}
+
+                        {orderState.isComplete && (
+                            <div
+                                className={cx('col', 'l-4')}
+                                style={{ marginTop: '1.2rem' }}
+                            >
+                                <ButtonCustomize
+                                    isEdit={true}
+                                    onClick={handleComplete}
+                                >
+                                    {context.completeButton}
+                                </ButtonCustomize>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-            <Title as='h2'>{'Danh sách sản phẩm trong đơn hàng'}</Title>
+            <Title as='h2'>{context.titleListProduct}</Title>
 
             <ul className={cx('products')}>
                 {order?.items.map((item, index) => (
@@ -127,9 +238,11 @@ function AdminOrder() {
                             />
                             <Title as='h3'>{item.name}</Title>
                         </div>
-                        {item?.subPrice && (
+                        {item?.price && (
                             <span className={cx('text')}>
-                                {currencyVN(item?.subPrice)}
+                                {currencyVN(
+                                    priceSaleVN(item?.price, item?.sale),
+                                )}
                             </span>
                         )}
                     </li>

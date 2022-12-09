@@ -1,18 +1,42 @@
 .delivery {
-    color: #22c55e;
+    height: 2rem;
+    padding: 0.2rem;
+    color: var(--white);
+    background-color: #22c55e;
+    border-radius: 0.4rem;
 }
 
 .complete {
-    color: var(--third-primary);
+    height: 2rem;
+    padding: 0.2rem;
+    color: var(--white);
+    background-color: var(--second-primary);
+    border-radius: 0.4rem;
+}
+
+.process {
+    height: 2rem;
+    padding: 0.2rem;
+    color: var(--white);
+    background-color: var(--primary);
+    border-radius: 0.4rem;
 }
 
 .pendingpay,
 .pending {
-    color: #ffcf10;
+    height: 2rem;
+    padding: 0.2rem;
+    color: var(--white);
+    background-color: #ffd21e;
+    border-radius: 0.4rem;
 }
 
 .cancel {
-    color: var(--third-primary);
+    height: 2rem;
+    padding: 0.2rem;
+    color: var(--white);
+    background-color: var(--third-primary);
+    border-radius: 0.4rem;
 }
 
 .td {
@@ -24,10 +48,23 @@
     }
 
     &-id {
-        max-width: 18rem;
+        max-width: 14rem;
+    }
+
+    &-link {
+        color: var(--second-primary);
+        text-decoration: none;
+    }
+
+    &-createDate {
+        max-width: 10rem;
     }
 
     &-address {
-        max-width: 18rem;
+        max-width: 12rem;
+    }
+
+    &-summary {
+        max-width: 44rem;
     }
 }

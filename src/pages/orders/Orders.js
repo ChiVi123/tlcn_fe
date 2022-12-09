@@ -1,26 +1,37 @@
 import { useEffect, useState } from 'react';
 
-import { Section, Title, Wrapper } from '~/components';
+import { ButtonPagination, Section, Title, Wrapper } from '~/components';
 import * as services from '~/services/services';
 import { cx, context } from './constant';
 import Order from './order/Order';
 
 function Orders() {
     const [orders, setOrders] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
+    const [rangeDisplay, setRangeDisplay] = useState(3);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await services.userGetAllOrder();
+        const fetchApi = async ({ currentPage }) => {
+            const result = await services.userGetAllOrder(currentPage);
 
             if (result?.list?.length) {
                 setOrders(result.list);
             }
+            setTotalPage(result.totalPage);
+            setRangeDisplay((prev) => {
+                if (result.totalPage > 5) {
+                    return 5;
+                } else {
+                    return prev;
+                }
+            });
 
             console.log(result);
         };
 
-        fetchApi();
-    }, []);
+        fetchApi({ currentPage: page - 1 });
+    }, [page]);
 
     return (
         <Wrapper>
@@ -38,26 +49,37 @@ function Orders() {
                         <div className={cx('col', 'l-12')}>
                             <Title as='h2'>{context.titleTable}</Title>
                         </div>
-                    </div>
 
-                    <div className='col l-12'>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>{context.id}</th>
-                                    <th>{context.date}</th>
-                                    <th>{context.product}</th>
-                                    <th>{context.address}</th>
-                                    <th>{context.totalPrice}</th>
-                                    <th>{context.status}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orders.map((order, index) => (
-                                    <Order key={index} order={order} />
-                                ))}
-                            </tbody>
-                        </table>
+                        <div className='col l-12'>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{context.id}</th>
+                                        <th>{context.date}</th>
+                                        <th>{context.product}</th>
+                                        <th>{context.address}</th>
+                                        <th>{context.totalPrice}</th>
+                                        <th>{context.status}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders.map((order, index) => (
+                                        <Order key={index} order={order} />
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            {totalPage > 1 && (
+                                <ButtonPagination
+                                    nextLabel={'next >'}
+                                    previousLabel={'< previous'}
+                                    currentPage={page}
+                                    rangeDisplay={rangeDisplay}
+                                    totalPage={totalPage}
+                                    onClick={(value) => setPage(value)}
+                                />
+                            )}
+                        </div>
                     </div>
                 </Section>
             </div>

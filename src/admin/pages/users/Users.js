@@ -4,23 +4,34 @@ import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 
 import { ButtonCustomize } from '~/admin/components';
-import { Title } from '~/components';
+import { ButtonPagination, Title } from '~/components';
 import * as services from '~/services/services';
 
-import { context } from './constant';
+import { cx, context } from './constant';
 
 function Users() {
     const [users, setUsers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
+    const [rangeDisplay, setRangeDisplay] = useState(3);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await services.getUsers();
+        const fetchApi = async ({ currentPage }) => {
+            const result = await services.getUsers({ currentPage });
 
-            setUsers(result);
+            setUsers(result.list);
+            setTotalPage(result.totalPage);
+            setRangeDisplay((prev) => {
+                if (result.totalPage > 5) {
+                    return 5;
+                } else {
+                    return prev;
+                }
+            });
         };
 
-        fetchApi();
-    }, []);
+        fetchApi({ currentPage: page });
+    }, [page]);
     const handleRole = () => {
         Swal.fire({
             title: 'Select role member',
@@ -71,7 +82,9 @@ function Users() {
                 <tbody>
                     {users.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.id}</td>
+                            <td className={cx('td-id')} title={item.id}>
+                                {item.id}
+                            </td>
                             <td>{item.name}</td>
                             <td>{item.email}</td>
                             <td>{item.role}</td>
@@ -92,6 +105,17 @@ function Users() {
                     ))}
                 </tbody>
             </table>
+
+            {totalPage > 1 && (
+                <ButtonPagination
+                    nextLabel={'next >'}
+                    previousLabel={'< previous'}
+                    currentPage={page}
+                    rangeDisplay={rangeDisplay}
+                    totalPage={totalPage}
+                    onClick={(value) => setPage(value)}
+                />
+            )}
         </>
     );
 }

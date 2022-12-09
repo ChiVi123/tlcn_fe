@@ -293,9 +293,18 @@ export const updateImageCategory = async (id, data) => {
 };
 
 // User/users
-export const getUsers = async () => {
+export const getUsers = async ({ page }) => {
     try {
-        const response = await request.get('admin/manage/users');
+        const response = await request.get(`admin/manage/users?page=${page}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getUserById = async ({ id }) => {
+    try {
+        const response = await request.get(`/users/${id}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -380,10 +389,61 @@ export const adminGetOrderById = async ({ id }) => {
     }
 };
 
-export const userGetAllOrder = async () => {
+export const userGetAllOrder = async (page) => {
     try {
-        const response = await request.get('orders/getallorder');
+        const response = await request.get(`orders/getallorder?page=${page}`);
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const userGetOrderById = async ({ id }) => {
+    try {
+        const response = await request.get(`orders/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const adminCancelOrderById = async ({ id }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/orders/setcancel/${id}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const adminDeliveryOrderById = async ({ id }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/orders/setdelivery/${id}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const adminCompletelOrderById = async ({ id }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/orders/setcomplete/${id}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const userCancelOrderById = async ({ id }) => {
+    try {
+        const response = await request.put(`orders/cancel/${id}`);
+        return response;
     } catch (error) {
         throw error;
     }

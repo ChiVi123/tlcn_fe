@@ -27,10 +27,12 @@ import { userSelector } from '~/redux';
 import { context, cx, schema } from './constant';
 import { ChoosePayment } from './components';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function Checkout() {
     // Hooks
     const user = useSelector(userSelector.getUser);
+    const navigate = useNavigate();
 
     // - useState
     const [provinces, setProvinces] = useState([]);
@@ -126,10 +128,18 @@ function Checkout() {
                     data: newData,
                 });
 
-                if (result?.message === 'Payment init complete') {
-                    window.open(result.data);
-                } else {
-                    toast.error('Thanh toán thất bại');
+                switch (result?.message) {
+                    case 'Payment init complete':
+                        window.open(result.data);
+                        break;
+                    case ' Pay by COD successfully':
+                        toast.success('Thanh toán thành công');
+                        navigate(pathNames.home);
+                        break;
+                    default:
+                        toast.error('Thanh toán thất bại');
+                        navigate(pathNames.cart);
+                        break;
                 }
             }
         });

@@ -36,3 +36,20 @@
         }
     }
 }
+
+.td {
+    &-name,
+    &-id {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &-id {
+        max-width: 14rem;
+    }
+
+    &-name {
+        max-width: 11rem;
+    }
+}

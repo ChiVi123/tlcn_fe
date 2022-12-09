@@ -1,0 +1,8 @@
+.td {
+    &-id {
+        max-width: 18rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

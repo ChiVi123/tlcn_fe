@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
-import { currencyVN, replaceStateOrder } from '~/utils/funcs';
+import { currencyVN } from '~/utils/funcs';
+import { enumStateOrder } from '~/utils/constant';
 import { cx, context } from './constant';
+import { Link } from 'react-router-dom';
 
 function Order({ order }) {
     if (order.state === 'enable') {
@@ -9,10 +11,14 @@ function Order({ order }) {
         return (
             <tr>
                 <td className={cx('td-id')} title={order.id}>
-                    {order.id}
+                    <Link to={`/order/${order.id}`} className={cx('td-link')}>
+                        {order.id}
+                    </Link>
                 </td>
-                <td>{order.createdDate}</td>
-                <td>{context.summaryItems(order.items)}</td>
+                <td className={cx('td-createDate')}>{order.createdDate}</td>
+                <td className={cx('td-summary')}>
+                    {context.summaryItems(order.items)}
+                </td>
                 <td
                     className={cx('td-address')}
                     title={context.dataAddress(order.delivery)}
@@ -20,8 +26,10 @@ function Order({ order }) {
                     {context.dataAddress(order.delivery)}
                 </td>
                 <td>{currencyVN(order.totalPrice)}</td>
-                <td className={cx(order.state)}>
-                    {replaceStateOrder(order.state)}
+                <td>
+                    <span className={cx(order.state)}>
+                        {enumStateOrder[order.state].state}
+                    </span>
                 </td>
             </tr>
         );

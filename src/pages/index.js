@@ -19,3 +19,4 @@ export { default as Checkout } from './checkout/Checkout';
 export { default as Profile } from './profile/Profile';
 export { default as ChangePassword } from './change_password/ChangePassword';
 export { default as NotifyOrder } from './notify_order/NotifyOrder';
+export { default as Order } from './order/Order';

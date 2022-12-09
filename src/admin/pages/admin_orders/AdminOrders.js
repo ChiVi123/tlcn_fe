@@ -3,9 +3,10 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, Fragment } from 'react';
 
 import { ButtonPagination, Title } from '~/components';
-import { currencyVN, replaceStateOrder } from '~/utils/funcs';
+import { currencyVN } from '~/utils/funcs';
 import { ButtonCustomize } from '~/admin/components';
 import * as services from '~/services/services';
+import { enumStateOrder } from '~/utils/constant';
 
 import { context, cx } from './constant';
 
@@ -18,8 +19,6 @@ function AdminOrders() {
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
             const result = await services.adminGetAllOrder(currentPage);
-
-            console.log(result);
 
             setOrders(result.list);
             setTotalPage(result.totalPage);
@@ -55,14 +54,21 @@ function AdminOrders() {
                         if (order.state !== 'enable') {
                             return (
                                 <tr key={index}>
-                                    <td>{order.id}</td>
-                                    <td>{order.userName}</td>
+                                    <td
+                                        className={cx('td-id')}
+                                        title={order.id}
+                                    >
+                                        {order.id}
+                                    </td>
+                                    <td className={cx('td-name')}>
+                                        {order.userName}
+                                    </td>
                                     <td>
                                         {order.lastModifiedDate ||
                                             order.createdDate}
                                     </td>
                                     <td>{currencyVN(order.totalPrice)}</td>
-                                    <td>{replaceStateOrder(order.state)}</td>
+                                    <td>{enumStateOrder[order.state].state}</td>
                                     <td>
                                         <ButtonCustomize
                                             to={`/admin/order/${order.id}`}
@@ -78,7 +84,7 @@ function AdminOrders() {
                 </tbody>
             </table>
 
-            {!!orders.length && (
+            {totalPage > 1 && (
                 <ButtonPagination
                     nextLabel={'next >'}
                     previousLabel={'< previous'}

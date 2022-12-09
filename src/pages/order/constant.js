@@ -1,13 +1,10 @@
 import classNames from 'classnames/bind';
-import styles from './AdminOrder.module.scss';
+import styles from './Order.module.scss';
 
 export const cx = classNames.bind(styles);
-
 export const context = {
     title: 'Chi tiết hóa đơn',
     titleListProduct: 'Danh sách sản phẩm trong đơn hàng',
-    backToPage: 'Về trang danh sách hóa đơn',
-    userName: 'Tên người dùng: ',
     status: 'Tình trạng thanh toán: ',
     methodPay: 'Phương thức thanh toán: ',
     address: ({ shipAddress, shipProvince, shipDistrict, shipWard }) => {
@@ -19,6 +16,4 @@ export const context = {
     total: 'Tổng tiền',
     listProduct: 'Các sản phẩm trong đơn hàng',
     cancelButton: 'Hủy đơn hàng',
-    deliveryButton: 'Xác nhận đơn hàng',
-    completeButton: 'Đã nhận được hàng',
 };

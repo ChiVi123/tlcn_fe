@@ -18,6 +18,7 @@ import {
     CheckOtpRegister,
     ChangePassword,
     NotifyOrder,
+    Order,
 } from '~/pages';
 import {
     AdminOrder,
@@ -52,6 +53,7 @@ const pathNames = {
     addresses: '/addresses',
     addressForm: '/address-form',
     orders: '/orders',
+    order: '/order/:id',
     checkout: '/checkout',
     profile: '/profile',
     changePassword: '/change-password',
@@ -100,6 +102,7 @@ const privateRoutes = [
         layout: AddressLayout,
     },
     { path: pathNames.orders, component: Orders },
+    { path: pathNames.order, component: Order },
     { path: pathNames.checkout, component: Checkout, layout: null },
     { path: pathNames.profile, component: Profile },
     { path: pathNames.changePassword, component: ChangePassword },
