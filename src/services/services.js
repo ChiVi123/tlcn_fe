@@ -97,6 +97,40 @@ export const resetPassword = async (id, data) => {
     }
 };
 
+export const adminBlockUserById = async ({ id }) => {
+    try {
+        const response = await request.requestDelete(
+            `admin/manage/users/${id}`,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const adminUnblockUserById = async ({ id }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/users/unblockuser/${id}`,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const adminSetRoleUserById = async ({ id, data }) => {
+    try {
+        const response = await request.put(
+            `admin/manage/users/setrole/${id}`,
+            data,
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 // Product/Products
 export const getProducts = async (page, size) => {
     try {

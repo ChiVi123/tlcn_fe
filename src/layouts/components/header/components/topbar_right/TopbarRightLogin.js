@@ -4,16 +4,20 @@ import {
     faArrowRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '~/components';
 import { cartActions, userActions } from '~/redux';
+import { pathNames } from '~/routes';
 
 function TopbarRightLogin({ topbarSection, topbarItem, btn }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(userActions.resetUser());
         dispatch(cartActions.resetCart());
+        navigate(pathNames.login);
     };
 
     return (

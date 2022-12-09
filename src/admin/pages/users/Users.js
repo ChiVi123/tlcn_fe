@@ -1,7 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faPen } from '@fortawesome/free-solid-svg-icons';
+import {
+    faLock,
+    faLockOpen,
+    faUser,
+    faUserTie,
+} from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import { ButtonCustomize } from '~/admin/components';
 import { ButtonPagination, Title } from '~/components';
@@ -14,6 +21,7 @@ function Users() {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [rangeDisplay, setRangeDisplay] = useState(3);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
@@ -32,36 +40,65 @@ function Users() {
 
         fetchApi({ currentPage: page });
     }, [page]);
-    const handleRole = () => {
+
+    const handleRole = ({ id, role }) => {
         Swal.fire({
-            title: 'Select role member',
+            title: 'Chọn vai trò cho thành viên',
             input: 'radio',
             inputOptions: {
-                admin: 'Admin',
-                client: 'Khach hang',
+                role_admin: 'Quản trị viên',
+                role_user: 'Người dùng',
             },
+            inputValue: role,
             inputValidator: (value) => {
                 if (!value) {
-                    return 'You need to choose something!';
+                    return 'Chưa chọn vai trò cho thành viên!';
                 }
             },
-        }).then((result) => console.log(result));
+        }).then(async ({ isConfirmed, value }) => {
+            if (isConfirmed) {
+                const result = await services.adminSetRoleUserById({
+                    id,
+                    data: { role: value },
+                });
+                const expectMessage = 'Get user success';
+
+                if (result?.message === expectMessage) {
+                    navigate(0);
+                } else {
+                    toast.error('Không thể chỉnh vai trò cho người dùng này');
+                }
+            }
+        });
     };
 
-    const handleIsActivate = () => {
-        Swal.fire({
-            title: 'Select user active',
-            input: 'radio',
-            inputOptions: {
-                activated: 'Activated',
-                disActivated: 'Disactivated',
-            },
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'You need to choose something!';
+    const handleIsActivate = async ({ id, state }) => {
+        switch (state) {
+            case 'active':
+                const resultBlock = await services.adminBlockUserById({ id });
+                const expectMessageBlock = 'Delete user success';
+
+                if (resultBlock?.message === expectMessageBlock) {
+                    navigate(0);
+                } else {
+                    toast.error('Không thể khóa cho người dùng này');
                 }
-            },
-        }).then((result) => console.log(result));
+                break;
+            case 'block':
+                const resultActive = await services.adminUnblockUserById({
+                    id,
+                });
+                const expectMessageUnblock = 'Unblock user success';
+
+                if (resultActive?.message === expectMessageUnblock) {
+                    navigate(0);
+                } else {
+                    toast.error('Không thể mở khóa cho người dùng này');
+                }
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -90,15 +127,40 @@ function Users() {
                             <td>{item.role}</td>
                             <td>{item.state}</td>
                             <td>
-                                <ButtonCustomize onClick={handleIsActivate}>
-                                    <FontAwesomeIcon icon={faCircleCheck} />
+                                <ButtonCustomize
+                                    onClick={() =>
+                                        handleRole({
+                                            id: item.id,
+                                            role: item.role,
+                                        })
+                                    }
+                                >
+                                    <FontAwesomeIcon
+                                        icon={
+                                            item.role === 'role_admin'
+                                                ? faUserTie
+                                                : faUser
+                                        }
+                                    />
                                 </ButtonCustomize>
 
                                 <ButtonCustomize
-                                    isEdit={true}
-                                    onClick={handleRole}
+                                    isEdit={item.state !== 'active'}
+                                    isDelete={item.state === 'active'}
+                                    onClick={() =>
+                                        handleIsActivate({
+                                            id: item.id,
+                                            state: item.state,
+                                        })
+                                    }
                                 >
-                                    <FontAwesomeIcon icon={faPen} />
+                                    <FontAwesomeIcon
+                                        icon={
+                                            item.state === 'active'
+                                                ? faLock
+                                                : faLockOpen
+                                        }
+                                    />
                                 </ButtonCustomize>
                             </td>
                         </tr>

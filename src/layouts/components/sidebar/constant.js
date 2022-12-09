@@ -22,7 +22,7 @@ export const sidebarItems = [
         icon: faRectangleList,
     },
     {
-        context: 'Danh sách hóa đơn',
+        context: 'Danh sách đơn hàng',
         navTo: '/admin/orders',
         icon: faReceipt,
     },
