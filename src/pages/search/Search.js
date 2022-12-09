@@ -11,10 +11,17 @@ function Search() {
 
     useEffect(() => {
         const fetchApi = async ({ q, page, size }) => {
-            const result = await services.searchProducts({ q, page, size });
+            if (q) {
+                const result = await services.searchProducts({ q, page, size });
 
-            if (result?.totalQuantity) {
-                setSearchResult(result);
+                if (result?.totalQuantity) {
+                    setSearchResult(result);
+                }
+            } else {
+                const result = await services.getProducts(page, size);
+                if (result?.totalQuantity) {
+                    setSearchResult(result);
+                }
             }
         };
 

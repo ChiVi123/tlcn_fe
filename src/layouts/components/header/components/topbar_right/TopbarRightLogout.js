@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowRightToBracket,
+    faUserPen,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from '~/components';
 
@@ -8,8 +11,14 @@ function TopbarRightLogout({ topbarSection, topbarItem, btn }) {
         <ul className={topbarSection}>
             <li className={topbarItem}>
                 <Button className={btn} reset={true} to={'/login'}>
-                    <FontAwesomeIcon icon={faUser} />
-                    <span>Tài khoản</span>
+                    <FontAwesomeIcon icon={faArrowRightToBracket} />
+                    <span>Đăng nhập</span>
+                </Button>
+            </li>
+            <li className={topbarItem}>
+                <Button className={btn} reset={true} to={'/register'}>
+                    <FontAwesomeIcon icon={faUserPen} />
+                    <span>Đăng ký</span>
                 </Button>
             </li>
         </ul>

@@ -22,7 +22,7 @@ function Products() {
     const [totalPage, setTotalPage] = useState(5);
     const [rangeDisplay, setRangeDisplay] = useState(3);
     const navigate = useNavigate();
-    const itemPerPage = 8;
+    const itemPerPage = 5;
 
     useEffect(() => {
         const fetchApi = async (page, size) => {

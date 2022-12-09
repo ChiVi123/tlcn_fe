@@ -4,7 +4,7 @@ import styles from './Home.module.scss';
 const cx = classNames.bind(styles);
 
 const context = {
-    title: 'Sản phẩm nổi bật',
+    title: 'Sản phẩm mới nhất',
     titleControl: 'Vi điều khiển - Nhúng',
     titleTool: 'Dụng cụ - phụ kiện',
     viewMoreButton: 'Xem thêm',

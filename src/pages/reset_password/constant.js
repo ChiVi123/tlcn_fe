@@ -12,7 +12,7 @@ export const cx = classNames.bind(styles);
 export const context = {
     title: 'Đặt lại mật khẩu',
     passwordLabel: 'Nhập mật khẩu mới',
-    button: 'Lấy lại mật khẩu',
+    button: 'Đặt lại mật khẩu',
 };
 export const form = {
     password: 'password',
