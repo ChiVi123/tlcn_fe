@@ -12,7 +12,6 @@ import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import * as services from '~/services/services';
-
 import {
     cartSelector,
     userSelector,

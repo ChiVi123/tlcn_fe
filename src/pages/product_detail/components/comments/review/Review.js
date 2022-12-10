@@ -11,8 +11,8 @@ import Swal from 'sweetalert2';
 
 import { Button, FormGroup, FormQuill } from '~/components';
 import * as services from '~/services/services';
-import { cx, context } from './constant';
 import { userSelector } from '~/redux';
+import { cx, context } from './constant';
 
 const schema = yup.object({
     content: yup.string().required('Bạn chưa điền nội dung'),

@@ -12,10 +12,82 @@ import {
     Input,
     UploadImage,
 } from '~/admin/components';
-import * as services from '~/services/services';
+import { categoryServices } from '~/services';
 
 import { context, schema, defaultValues, cx } from './constant';
 import { useEffect, useState } from 'react';
+
+const updateCategory = ({ id, name, state, image, formData }) => {
+    Swal.fire({
+        title: 'Chỉnh sửa danh mục sản phẩm',
+        didOpen: async () => {
+            Swal.showLoading();
+            const result = await categoryServices.updateCategory(id, {
+                name,
+                state,
+            });
+
+            if (result.isSuccess === 'true') {
+                toast.success('Chỉnh sửa danh mục thành công');
+            } else {
+                toast.error('Chỉnh sửa danh mục thất bại');
+            }
+
+            if (typeof image[0] !== 'string') {
+                const resultImage = await categoryServices.updateImageCategory(
+                    result.data.id,
+                    formData,
+                );
+
+                if (resultImage.isSuccess === 'true') {
+                    toast.success('Chỉnh sửa ảnh thành công');
+                } else {
+                    toast.success('Chỉnh sửa ảnh thất bại');
+                }
+            }
+
+            Swal.close();
+        },
+    });
+};
+
+const createCategory = ({ name, formData }) => {
+    Swal.fire({
+        title: 'Thêm danh mục sản phẩm',
+        didOpen: async () => {
+            Swal.showLoading();
+            const errorMessage =
+                'Insert Category Fail Because Category Name exist';
+            // const expectMessage = 'Get category success';
+            try {
+                const result = await categoryServices.addCategory({
+                    name,
+                    state: 'enable',
+                });
+
+                const resultImage = await categoryServices.updateImageCategory(
+                    result.data.id,
+                    formData,
+                );
+
+                if (resultImage.isSuccess === 'true') {
+                    toast.success('Thêm danh mục thành công');
+                }
+            } catch (error) {
+                switch (error) {
+                    case errorMessage:
+                        toast.error('Tên danh mục bị trùng');
+                        break;
+                    default:
+                        toast.error('Thêm danh mục thất bại');
+                        break;
+                }
+            }
+
+            Swal.close();
+        },
+    });
+};
 
 function CategoryForm() {
     // Hooks
@@ -25,7 +97,7 @@ function CategoryForm() {
     useEffect(() => {
         const fetchApi = async () => {
             if (id) {
-                const result = await services.getCategoryById(id);
+                const result = await categoryServices.getCategoryById(id);
 
                 if (result) {
                     setValue('name', result.name || '');
@@ -57,73 +129,15 @@ function CategoryForm() {
         formData.append('categoryimage', data.image[0]);
 
         if (id) {
-            Swal.fire({
-                title: 'Chỉnh sửa danh mục sản phẩm',
-                didOpen: async () => {
-                    Swal.showLoading();
-                    const result = await services.updateCategory(id, {
-                        name: data.name,
-                        state: category.state,
-                    });
-
-                    if (result.isSuccess === 'true') {
-                        toast.success('Chỉnh sửa danh mục thành công');
-                    } else {
-                        toast.error('Chỉnh sửa danh mục thất bại');
-                    }
-
-                    if (typeof data.image[0] !== 'string') {
-                        const resultImage = await services.updateImageCategory(
-                            result.data.id,
-                            formData,
-                        );
-
-                        if (resultImage.isSuccess === 'true') {
-                            toast.success('Chỉnh sửa ảnh thành công');
-                        } else {
-                            toast.success('Chỉnh sửa ảnh thất bại');
-                        }
-                    }
-
-                    Swal.close();
-                },
+            updateCategory({
+                id,
+                name: data.name,
+                state: category.state,
+                image: data.image,
+                formData,
             });
         } else {
-            Swal.fire({
-                title: 'Thêm danh mục sản phẩm',
-                didOpen: async () => {
-                    Swal.showLoading();
-                    const errorMessage =
-                        'Insert Category Fail Because Category Name exist';
-                    // const expectMessage = 'Get category success';
-                    try {
-                        const result = await services.addCategory({
-                            name: data.name,
-                            state: 'enable',
-                        });
-
-                        const resultImage = await services.updateImageCategory(
-                            result.data.id,
-                            formData,
-                        );
-
-                        if (resultImage.isSuccess === 'true') {
-                            toast.success('Thêm danh mục thành công');
-                        }
-                    } catch (error) {
-                        switch (error) {
-                            case errorMessage:
-                                toast.error('Tên danh mục bị trùng');
-                                break;
-                            default:
-                                toast.error('Thêm danh mục thất bại');
-                                break;
-                        }
-                    }
-
-                    Swal.close();
-                },
-            });
+            createCategory({ name: data.name, formData });
         }
     };
 
@@ -162,7 +176,7 @@ function CategoryForm() {
                             <Controller
                                 name='image'
                                 control={control}
-                                render={({ field: { onChange, value } }) => (
+                                render={({ field: { onChange } }) => (
                                     <UploadImage
                                         value={[category.categoryimage]}
                                         onChange={(files) => onChange(files)}
