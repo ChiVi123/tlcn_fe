@@ -8,6 +8,11 @@ import { Button, Form, FormGroup, FormQuill } from '~/components';
 import * as services from '~/services/services';
 import { context, cx } from './constant';
 import Review from './review/Review';
+import { useSelector } from 'react-redux';
+import { userSelector } from '~/redux';
+import { useNavigate } from 'react-router-dom';
+import { pathNames } from '~/routes';
+import Swal from 'sweetalert2';
 
 const schema = yup.object({
     content: yup.string().required('Bạn chưa điền nội dung'),
@@ -25,19 +30,44 @@ function Comments({ reviews, setIsReview, isReview, productId }) {
             rate: 0,
         },
     });
+    const userId = useSelector(userSelector.getUserId);
+    const navigate = useNavigate();
     const color = '#ffc120';
 
     const handleOnSubmit = async (data) => {
-        const result = await services.addReview({ ...data, productId });
-        const expectMessage = 'Add comment success ';
+        if (!userId) {
+            navigate(pathNames.login);
+        }
+
         const toastMessage = 'Đánh giá sản sản phẩm';
 
-        if (result?.message === expectMessage) {
-            toast.success(`${toastMessage} thành công`);
-            setIsReview(false);
-        } else {
-            toast.error(`${toastMessage} thất bại`);
+        try {
+            const result = await services.addReview({ ...data, productId });
+            const expectMessage = 'Add comment success ';
+
+            if (result?.message === expectMessage) {
+                toast.success(`${toastMessage} thành công`);
+            }
+        } catch ({
+            response: {
+                data: { message },
+            },
+        }) {
+            const errorMessage = 'You already comment this product';
+            if (message === errorMessage) {
+                Swal.fire({
+                    title: 'Bạn đã đánh giá rồi',
+                    icon: 'error',
+                    html: '<h2>Nếu bạn không thấy đánh giá của bạn, có thể là do  đánh giá của bạn đã bị khóa!!!</h2>',
+                    confirmButtonText: 'Xác nhận',
+                    width: 'auto',
+                });
+            } else {
+                toast.error(`${toastMessage} thất bại`);
+            }
         }
+
+        setIsReview(false);
     };
 
     return (

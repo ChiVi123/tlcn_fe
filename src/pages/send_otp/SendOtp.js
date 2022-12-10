@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
 import * as services from '~/services/services';
@@ -22,16 +23,33 @@ function SendOtp() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleOnSubmit = async (data) => {
-        const result = await services.getOtpReset(data);
+    const handleOnSubmit = ({ email }) => {
+        Swal.fire({
+            title: 'Gửi OTP',
+            didOpen: async () => {
+                Swal.showLoading();
+                const errorMessage = `Can not found user with email ${email} is activated`;
+                const expectMessage = 'Send otp email success';
 
-        if (result.data === data.email) {
-            toast.success('Gửi OTP thành công');
-            dispatch(userActions.addUser(data));
-            navigate('/check-otp');
-        } else {
-            toast.error('Gửi OTP thất bại');
-        }
+                try {
+                    const result = await services.getOtpReset({ email });
+
+                    if (result?.message === expectMessage) {
+                        toast.success('Gửi OTP thành công');
+                        dispatch(userActions.addUser({ email }));
+                        navigate('/check-otp');
+                    }
+                } catch (error) {
+                    if (error === errorMessage) {
+                        toast.error(`${email} không tồn tại`);
+                    } else {
+                        toast.error('Gửi OTP thất bại');
+                    }
+                }
+
+                Swal.close();
+            },
+        });
     };
 
     return (

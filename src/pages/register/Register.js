@@ -10,6 +10,7 @@ import * as services from '~/services/services';
 import { userActions } from '~/redux';
 
 import { cx, context, placeholder, schema } from './constant';
+import Swal from 'sweetalert2';
 
 function Register() {
     const {
@@ -23,17 +24,29 @@ function Register() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleOnSubmit = async (data) => {
-        const { name, email, password } = data;
-        const user = await services.registerSendMail({ name, email, password });
+    const handleOnSubmit = async ({ name, email, password }) => {
+        Swal.fire({
+            title: 'Gửi OTP',
+            didOpen: async () => {
+                Swal.showLoading();
+                const expectMessage = 'Register successfully ';
+                const user = await services.registerSendMail({
+                    name,
+                    email,
+                    password,
+                });
 
-        if (user?.isSuccess === 'true') {
-            toast.success('Tạo tài khoản thành công');
-            dispatch(userActions.addUser({ name, email, password }));
-            navigate(pathNames.checkOtpRegister);
-        } else {
-            toast.error('Tạo tài khoản thất bại');
-        }
+                if (user?.message === expectMessage) {
+                    toast.success('Tạo tài khoản thành công');
+                    dispatch(userActions.addUser({ name, email, password }));
+                    navigate(pathNames.checkOtpRegister);
+                } else {
+                    toast.error('Tạo tài khoản thất bại');
+                }
+
+                Swal.close();
+            },
+        });
     };
 
     return (

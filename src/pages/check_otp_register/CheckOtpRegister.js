@@ -2,13 +2,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
 import * as services from '~/services/services';
+import { userActions, userSelector } from '~/redux';
 
 import { cx, context, schema, form } from './constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { userActions, userSelector } from '~/redux';
 
 function CheckOtpRegister() {
     const dispatch = useDispatch();
@@ -17,27 +18,47 @@ function CheckOtpRegister() {
     const {
         handleSubmit,
         register,
+        getValues,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             email: user.email,
+            otp: '',
         },
     });
     const navigate = useNavigate();
 
     const handleResend = async (event) => {
         event.preventDefault();
-        const result = await services.getOtp({ email: user.email });
-
-        if (result.data === user.email) {
-            toast.success('Gửi OTP thành công');
-        } else {
-            toast.error('Gửi OTP thất bại');
+        const email = getValues(form.email);
+        if (!email) {
+            toast.error('Nhập email');
         }
+
+        Swal.fire({
+            title: 'Gửi OTP',
+            didOpen: async () => {
+                Swal.showLoading();
+                const email = getValues('email');
+                const result = await services.getOtp({
+                    email: user.email || email,
+                });
+                const expectMessage = 'Send otp email success';
+
+                if (result?.message === expectMessage) {
+                    toast.success('Gửi OTP thành công');
+                } else {
+                    toast.error('Gửi OTP thất bại');
+                }
+
+                Swal.close();
+            },
+        });
     };
     const handleOnSubmit = async (data) => {
         const type = 'register';
+
         const result = await services.verifyOtp({ ...data, type });
 
         if (result?.data?.id) {

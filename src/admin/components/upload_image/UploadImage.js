@@ -10,6 +10,7 @@ import { cx, context } from './constant';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Title } from '~/components';
 
 function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
     // Hooks
@@ -96,6 +97,7 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
             <div
                 className={cx('dropzone', {
                     'dropzone--dragover': dragover,
+                    'dropzone--single': !isMultiple,
                 })}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
@@ -119,8 +121,10 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
             <div
                 className={cx('images-preview', {
                     'images-preview--empty': !files.length,
+                    'images-preview--single': !isMultiple,
                 })}
             >
+                {!!files.length && <Title as='h2'>Ảnh cũ</Title>}
                 <ul className={cx('row')}>
                     {!!files.length &&
                         files.map((item, index) => (
@@ -128,23 +132,29 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
                                 key={index}
                                 className={cx('image-preview', 'col', colBase)}
                             >
-                                <div className={cx('wrapper-image')}>
+                                <div
+                                    className={cx('wrapper-image', {
+                                        'wrapper-image--single': !isMultiple,
+                                    })}
+                                >
                                     <img
                                         className={cx('image')}
                                         src={item?.url || item}
                                         alt={item?.name || `response-${index}`}
                                     />
                                 </div>
-                                <ButtonCustomize
-                                    isDelete={true}
-                                    fullWidth
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        handleDeleteImage(item);
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </ButtonCustomize>
+                                {isMultiple && (
+                                    <ButtonCustomize
+                                        isDelete={true}
+                                        fullWidth
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            handleDeleteImage(item);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </ButtonCustomize>
+                                )}
                             </li>
                         ))}
                 </ul>
@@ -153,15 +163,21 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
             <div
                 className={cx('images-preview', {
                     'images-preview--empty': !filesAddition.length,
+                    'images-preview--single': !isMultiple,
                 })}
             >
+                {!!filesAddition.length && <Title as='h2'>Ảnh mới</Title>}
                 <ul className={cx('row')}>
                     {filesAddition.map((item, index) => (
                         <li
                             key={index}
                             className={cx('image-preview', 'col', colBase)}
                         >
-                            <div className={cx('wrapper-image')}>
+                            <div
+                                className={cx('wrapper-image', {
+                                    'wrapper-image--single': !isMultiple,
+                                })}
+                            >
                                 <img
                                     className={cx('image')}
                                     src={item.preview}

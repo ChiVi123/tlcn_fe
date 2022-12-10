@@ -1,31 +1,20 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faLock,
-    faLockOpen,
-    faUser,
-    faUserTie,
-} from '@fortawesome/free-solid-svg-icons';
-import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
-import { ButtonCustomize } from '~/admin/components';
 import { ButtonPagination, Title } from '~/components';
 import * as services from '~/services/services';
 
-import { cx, context } from './constant';
+import { context } from './constant';
+import UserItem from './user_item/UserItem';
 
 function Users() {
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [rangeDisplay, setRangeDisplay] = useState(3);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
-            const result = await services.getUsers({ currentPage });
+            const result = await services.getUsers({ page: currentPage });
 
             setUsers(result.list);
             setTotalPage(result.totalPage);
@@ -38,68 +27,8 @@ function Users() {
             });
         };
 
-        fetchApi({ currentPage: page });
+        fetchApi({ currentPage: page - 1 });
     }, [page]);
-
-    const handleRole = ({ id, role }) => {
-        Swal.fire({
-            title: 'Chọn vai trò cho thành viên',
-            input: 'radio',
-            inputOptions: {
-                role_admin: 'Quản trị viên',
-                role_user: 'Người dùng',
-            },
-            inputValue: role,
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Chưa chọn vai trò cho thành viên!';
-                }
-            },
-        }).then(async ({ isConfirmed, value }) => {
-            if (isConfirmed) {
-                const result = await services.adminSetRoleUserById({
-                    id,
-                    data: { role: value },
-                });
-                const expectMessage = 'Get user success';
-
-                if (result?.message === expectMessage) {
-                    navigate(0);
-                } else {
-                    toast.error('Không thể chỉnh vai trò cho người dùng này');
-                }
-            }
-        });
-    };
-
-    const handleIsActivate = async ({ id, state }) => {
-        switch (state) {
-            case 'active':
-                const resultBlock = await services.adminBlockUserById({ id });
-                const expectMessageBlock = 'Delete user success';
-
-                if (resultBlock?.message === expectMessageBlock) {
-                    navigate(0);
-                } else {
-                    toast.error('Không thể khóa cho người dùng này');
-                }
-                break;
-            case 'block':
-                const resultActive = await services.adminUnblockUserById({
-                    id,
-                });
-                const expectMessageUnblock = 'Unblock user success';
-
-                if (resultActive?.message === expectMessageUnblock) {
-                    navigate(0);
-                } else {
-                    toast.error('Không thể mở khóa cho người dùng này');
-                }
-                break;
-            default:
-                break;
-        }
-    };
 
     return (
         <>
@@ -118,52 +47,7 @@ function Users() {
                 </thead>
                 <tbody>
                     {users.map((item, index) => (
-                        <tr key={index}>
-                            <td className={cx('td-id')} title={item.id}>
-                                {item.id}
-                            </td>
-                            <td>{item.name}</td>
-                            <td>{item.email}</td>
-                            <td>{item.role}</td>
-                            <td>{item.state}</td>
-                            <td>
-                                <ButtonCustomize
-                                    onClick={() =>
-                                        handleRole({
-                                            id: item.id,
-                                            role: item.role,
-                                        })
-                                    }
-                                >
-                                    <FontAwesomeIcon
-                                        icon={
-                                            item.role === 'role_admin'
-                                                ? faUserTie
-                                                : faUser
-                                        }
-                                    />
-                                </ButtonCustomize>
-
-                                <ButtonCustomize
-                                    isEdit={item.state !== 'active'}
-                                    isDelete={item.state === 'active'}
-                                    onClick={() =>
-                                        handleIsActivate({
-                                            id: item.id,
-                                            state: item.state,
-                                        })
-                                    }
-                                >
-                                    <FontAwesomeIcon
-                                        icon={
-                                            item.state === 'active'
-                                                ? faLock
-                                                : faLockOpen
-                                        }
-                                    />
-                                </ButtonCustomize>
-                            </td>
-                        </tr>
+                        <UserItem key={index} user={item} />
                     ))}
                 </tbody>
             </table>

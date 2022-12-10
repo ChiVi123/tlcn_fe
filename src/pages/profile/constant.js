@@ -16,5 +16,6 @@ export const context = {
 };
 
 export const schema = yup.object({
-    name: yup.string(),
+    name: yup.string().required('Nhập họ và tên'),
+    email: yup.string().required('Email đang không có sẵn'),
 });

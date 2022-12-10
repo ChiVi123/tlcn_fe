@@ -23,8 +23,6 @@ function CheckOtp() {
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
 
-    console.log(user);
-
     const handleOnSubmit = async (data) => {
         const email = user.email;
         const type = 'reset';

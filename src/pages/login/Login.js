@@ -38,7 +38,7 @@ function Login() {
             dispatch(userActions.addUser(user));
             navigate(pathNames.home);
         } else {
-            toast.error('Email hoặc mật khẩu không đúng');
+            toast.error('Tài khoản không đúng hoặc email chưa xác nhận');
         }
     };
 

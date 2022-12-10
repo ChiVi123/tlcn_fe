@@ -15,13 +15,13 @@ const pageNumber = 0;
 
 function Home() {
     const dispatch = useDispatch();
-    const user = useSelector(userSelector.getUser);
+    const user = useSelector(userSelector.getUserId);
     const [products, setProducts] = useState([]);
     const [microcontrollers, setMicrocontrollers] = useState([]);
     const [toolers, setToolers] = useState([]);
 
     useEffect(() => {
-        if (user.email && !user.isToast) {
+        if (user?.id && !user.isToast) {
             dispatch(userActions.showedToast());
             toast.success(context.loginSuccess);
         }

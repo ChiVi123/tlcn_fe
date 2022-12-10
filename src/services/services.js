@@ -44,8 +44,12 @@ export const getOtpReset = async (data) => {
             `auth/getotpreset?email=${data.email}`,
         );
         return response;
-    } catch (error) {
-        console.log(error);
+    } catch ({
+        response: {
+            data: { message },
+        },
+    }) {
+        throw message;
     }
 };
 
@@ -294,8 +298,12 @@ export const addCategory = async (data) => {
     try {
         const response = await request.post('admin/manage/categories', data);
         return response;
-    } catch (error) {
-        console.log(error);
+    } catch ({
+        response: {
+            data: { message },
+        },
+    }) {
+        throw message;
     }
 };
 

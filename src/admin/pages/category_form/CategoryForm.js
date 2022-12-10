@@ -93,12 +93,15 @@ function CategoryForm() {
                 title: 'Thêm danh mục sản phẩm',
                 didOpen: async () => {
                     Swal.showLoading();
-                    const result = await services.addCategory({
-                        name: data.name,
-                        state: 'enable',
-                    });
+                    const errorMessage =
+                        'Insert Category Fail Because Category Name exist';
+                    // const expectMessage = 'Get category success';
+                    try {
+                        const result = await services.addCategory({
+                            name: data.name,
+                            state: 'enable',
+                        });
 
-                    if (result.isSuccess === 'true') {
                         const resultImage = await services.updateImageCategory(
                             result.data.id,
                             formData,
@@ -107,8 +110,15 @@ function CategoryForm() {
                         if (resultImage.isSuccess === 'true') {
                             toast.success('Thêm danh mục thành công');
                         }
-                    } else {
-                        toast.error('Thêm danh mục thất bại');
+                    } catch (error) {
+                        switch (error) {
+                            case errorMessage:
+                                toast.error('Tên danh mục bị trùng');
+                                break;
+                            default:
+                                toast.error('Thêm danh mục thất bại');
+                                break;
+                        }
                     }
 
                     Swal.close();
@@ -144,6 +154,8 @@ function CategoryForm() {
                     classes={cx('col', 'l-12')}
                     name={'image'}
                     label={context.imageLabel}
+                    errors={errors}
+                    isRequired
                 >
                     {id ? (
                         category.categoryimage && (
@@ -176,7 +188,7 @@ function CategoryForm() {
 
                 <FormGroup classes={cx('col', 'l-12')}>
                     <ButtonCustomize isEdit={true}>
-                        {context.addBtn}
+                        {id ? context.editBtn : context.addBtn}
                     </ButtonCustomize>
                 </FormGroup>
             </Form>

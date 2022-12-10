@@ -72,7 +72,7 @@ function Header() {
         }
     };
 
-    if (user.email) {
+    if (user?.id) {
         TopbarRight = TopbarRightLogin;
     }
 

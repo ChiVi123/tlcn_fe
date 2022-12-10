@@ -27,7 +27,7 @@ function Profile() {
         register,
         handleSubmit,
         watch,
-        // formState: { errors },
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -45,9 +45,14 @@ function Profile() {
         const subscription = watch((value, { name, type }) => {
             if (name === 'avatar' && type === 'change') {
                 setFile((prev) => {
-                    prev = value.avatar[0];
-                    prev.preview = URL.createObjectURL(prev);
-                    return prev;
+                    const { 0: avatar } = value.avatar;
+
+                    if (avatar) {
+                        avatar.preview = URL.createObjectURL(avatar);
+                        return avatar;
+                    } else {
+                        return prev;
+                    }
                 });
             }
         });
@@ -55,9 +60,10 @@ function Profile() {
         return () => subscription.unsubscribe();
     }, [watch]);
 
-    const handleImage = (event) => {
+    const handleImage = ({ target: { files } }) => {
         setFile((prev) => {
-            prev = event.target.files[0];
+            prev = files[0];
+            console.log(prev);
             prev.preview = URL.createObjectURL(prev);
 
             return prev;
@@ -147,8 +153,9 @@ function Profile() {
                         <div className={cx('col', 'l-6')}>
                             <div className={cx('avatar')}>
                                 <Avatar
-                                    src={file.preview}
+                                    src={file.preview || avatarDefault}
                                     size='200'
+                                    round='100%'
                                     alt='anh dai dien'
                                 />
                             </div>
@@ -182,6 +189,12 @@ function Profile() {
                                     {...register('name')}
                                 />
                             </div>
+                            <span
+                                className={cx('col', 'l-12')}
+                                style={{ color: 'red', marginBottom: '1.8rem' }}
+                            >
+                                {errors && errors.name?.message}
+                            </span>
 
                             <div className={cx('group')}>
                                 <label htmlFor='' className={cx('label-input')}>

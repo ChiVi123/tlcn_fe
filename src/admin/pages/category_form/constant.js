@@ -9,15 +9,20 @@ export const context = {
     backToCategoriesPage: 'Trở về trang danh mục sản phẩm',
     nameLabel: 'Tên danh mục ',
     imageLabel: 'Hình ảnh ',
-    addBtn: '+ Thêm mục sản phẩm',
+    addBtn: '+ Thêm danh mục',
+    editBtn: 'Chỉnh sửa danh mục',
 };
 
 export const placeholder = {
-    namePlaceHolder: 'Category name',
+    namePlaceHolder: 'Tên danh mục',
 };
 
 export const schema = yup.object({
-    name: yup.string().trim().required(),
+    name: yup.string().trim().required('Nhập tên danh mục'),
+    image: yup
+        .array()
+        .length(1, 'Chọn một ảnh cho danh mục')
+        .required('Chọn một ảnh cho danh mục'),
 });
 
 export const defaultValues = {

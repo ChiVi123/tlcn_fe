@@ -18,6 +18,11 @@
     &--dragover {
         opacity: 0.6;
     }
+
+    &--single {
+        width: 68rem;
+        height: 18rem;
+    }
 }
 
 .upload-img {
@@ -64,6 +69,12 @@
         padding: 0;
         border-width: 0;
     }
+
+    &--single {
+        display: inline-block;
+        width: 14rem;
+        margin: 1rem 14rem;
+    }
 }
 
 .image-preview {
@@ -81,6 +92,11 @@
     min-height: 18.8rem;
     border: 0.1rem solid #c7cacd;
     border-radius: 0.4rem;
+
+    &--single {
+        justify-content: center;
+        min-height: 10rem;
+    }
 }
 
 .image {
