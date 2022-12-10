@@ -4,15 +4,15 @@ import { Controller, useForm } from 'react-hook-form';
 import StarRatings from 'react-star-ratings';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import { Button, FormGroup, FormQuill } from '~/components';
 import * as services from '~/services/services';
 import { cx, context } from './constant';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { userSelector } from '~/redux';
-import { toast } from 'react-toastify';
 
 const schema = yup.object({
     content: yup.string().required('Bạn chưa điền nội dung'),
@@ -29,7 +29,7 @@ function Review({ review }) {
         resolver: yupResolver(schema),
         defaultValues: {
             rate: review.rate,
-            content: review.content,
+            content: review.content === '<p><br></p>' ? '' : review.content,
         },
     });
     const navigate = useNavigate();
@@ -60,7 +60,6 @@ function Review({ review }) {
     const handleOnSubmit = async (data) => {
         const expectMessage = 'Update comment successfully';
         const result = await services.editReview({ id: review.id, data });
-
         if (result?.message === expectMessage) {
             navigate(0);
         } else {

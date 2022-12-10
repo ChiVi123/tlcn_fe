@@ -270,9 +270,10 @@ export const deleteOptionProduct = async (id) => {
 export const getCategories = async () => {
     try {
         const response = await request.get('categories');
+        console.log('services getCategories', response);
         return response.data;
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 };
 

@@ -3,7 +3,7 @@ import * as asyncThunk from '../async_thunk/categoriesAsync';
 
 const initialState = {
     isLoading: false,
-    categories: [],
+    items: [],
     message: '',
 };
 
@@ -17,7 +17,7 @@ const categoriesSlice = createSlice({
         },
         [asyncThunk.getAllCategory.fulfilled]: (state, { payload }) => {
             state.isLoading = true;
-            state.categories = payload;
+            state.items = payload;
         },
         [asyncThunk.getAllCategory.rejected]: (state, { payload }) => {
             state.message = payload;

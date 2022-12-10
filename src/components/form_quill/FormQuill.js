@@ -11,7 +11,9 @@ function FormQuill({ name, control, theme, modules, formats }) {
                 <ReactQuill
                     theme={theme}
                     value={value}
-                    onChange={(value) => onChange(value)}
+                    onChange={(value) => {
+                        onChange(value === '<p><br></p>' ? '' : value);
+                    }}
                     formats={formats}
                     modules={modules}
                 />

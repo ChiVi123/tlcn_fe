@@ -11,6 +11,7 @@ import modalReducer from './slice/modalSlice';
 const persistConfig = {
     key: 'tlcnFE2022',
     storage,
+    blacklist: ['modal', 'categories', 'cart'],
 };
 
 const rootReducer = combineReducers({
