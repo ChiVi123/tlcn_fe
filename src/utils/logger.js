@@ -1,7 +1,7 @@
-function logger({ groupName, values = [] }) {
+function logger({ groupName, values = [], type = 'log' }) {
     console.group(groupName);
     values.forEach((item, index) => {
-        console.log(index, item);
+        console[type]({ index, item });
     });
     console.groupEnd();
 }

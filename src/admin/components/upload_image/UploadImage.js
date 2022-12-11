@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { faXmark, faImage } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 import { imgCloudUpload } from '~/assets/images/statics';
 import { ButtonCustomize } from '~/admin/components';
-import * as services from '~/services/services';
+import { productServices } from '~/services';
+import { Title } from '~/components';
+// import logger from '~/utils/logger';
 
 import { cx, context } from './constant';
-import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { Title } from '~/components';
 
 function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
     // Hooks
@@ -18,8 +18,6 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
     const [dragover, setDragOver] = useState(false);
     const [files, setFiles] = useState(value);
     const [filesAddition, setFilesAddition] = useState([]);
-    // constant
-    const navigate = useNavigate();
     // - useEffect
     useEffect(() => {
         return () =>
@@ -57,11 +55,13 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
             title: 'Thêm ảnh',
             didOpen: async () => {
                 Swal.showLoading();
-                const result = await services.addImagesProduct(id, formData);
+                const result = await productServices.addImagesProduct({
+                    id,
+                    data: formData,
+                });
+                const expectMessage = 'Add image to product successfully';
 
-                console.log(result);
-
-                if (result.isSuccess === 'true') {
+                if (result?.message === expectMessage) {
                     toast.success('Thêm ảnh thành công');
                     setFiles(result.data);
                     setFilesAddition([]);
@@ -78,15 +78,25 @@ function UploadImage({ id, onChange, value = [], isMultiple, colBase }) {
             title: 'Xóa ảnh',
             didOpen: async () => {
                 Swal.showLoading();
-                const result = await services.deleteImageProduct(id, id_image);
+                const result = await productServices.deleteImageProduct({
+                    id,
+                    idImage: id_image,
+                });
+                const expectMessage = 'Delete image successfully';
 
-                if (result.isSuccess === 'true') {
+                if (result?.message === expectMessage) {
                     toast.success('Xóa ảnh thành công');
+                    setFiles((previous) => {
+                        const newFiles = previous.filter(
+                            (item) => item.id_image !== result.data,
+                        );
+
+                        return newFiles;
+                    });
                 } else {
                     toast.error('Xóa ảnh thất bại');
                 }
 
-                navigate(0);
                 Swal.close();
             },
         });

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
+import { productServices } from '~/services';
 import { cx, context } from './constant';
 
 function Search() {
@@ -18,7 +19,10 @@ function Search() {
                     setSearchResult(result);
                 }
             } else {
-                const result = await services.getProducts(page, size);
+                const result = await productServices.getProductsByState({
+                    page,
+                    size,
+                });
                 if (result?.totalQuantity) {
                     setSearchResult(result);
                 }

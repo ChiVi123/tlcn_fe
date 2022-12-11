@@ -1,19 +1,44 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faPen } from '@fortawesome/free-solid-svg-icons';
-
-import { Button, Title } from '~/components';
-import * as services from '~/services/services';
-
-import { context, cx } from './constant';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+
+import { Button, Title } from '~/components';
+import { categoryServices } from '~/services';
+
+import { context, cx } from './constant';
+
+const updateStateCategory = ({ id, name, state }, fetchApi) => {
+    Swal.fire({
+        title: 'Thay đổi trạng thái',
+        didOpen: async () => {
+            Swal.showLoading();
+            const result = await categoryServices.updateCategory(id, {
+                name,
+                state,
+            });
+            const expectMessage = 'update category success ';
+            const toastSucssess = 'Thay đổi trạng thái thành công';
+            const toastError = 'Thay đổi trạng thái thất bại';
+
+            if (result.message === expectMessage) {
+                toast.success(toastSucssess);
+            } else {
+                toast.error(toastError);
+            }
+
+            fetchApi();
+            Swal.close();
+        },
+    });
+};
 
 function Categories() {
     const [categories, setCategories] = useState([]);
 
     const fetchApi = async () => {
-        const result = await services.getCategoriesRoleAdmin();
+        const result = await categoryServices.getCategoriesRoleAdmin();
         setCategories(result);
     };
 
@@ -36,30 +61,7 @@ function Categories() {
             cancelButtonText: 'Hủy',
         }).then(async ({ isConfirmed, value }) => {
             if (isConfirmed) {
-                Swal.fire({
-                    title: 'Tiến hành thay đổi trạng thái',
-                    didOpen: async () => {
-                        Swal.showLoading();
-
-                        const result = await services.updateCategory(
-                            category.id,
-                            {
-                                name: category.name,
-                                state: value,
-                            },
-                        );
-
-                        if (result.message === 'update category success ') {
-                            toast.success('Thay đổi trạng thái thành công');
-                            fetchApi();
-                        } else {
-                            toast.error('Thay đổi trạng thái thất bại');
-                            fetchApi();
-                        }
-
-                        Swal.close();
-                    },
-                });
+                updateStateCategory({ ...category, state: value }, fetchApi);
             }
         });
     };

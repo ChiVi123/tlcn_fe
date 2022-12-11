@@ -8,7 +8,11 @@ function ProductCard({ product }) {
     const priceSale = priceSaleVN(product.price, product.sale);
 
     return (
-        <Link to={`/product/${product.id}`} className={cx('product')}>
+        <Link
+            to={`/product/${product.id}`}
+            className={cx('product')}
+            title={product.name}
+        >
             {product.sale !== 0 && (
                 <span className={cx('label-sale')}>
                     <span>{product.sale * percent}%</span> Giảm

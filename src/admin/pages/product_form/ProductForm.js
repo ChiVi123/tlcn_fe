@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import slugify from 'slugify';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
@@ -14,7 +14,7 @@ import {
     Form,
     FormGroup,
 } from '~/admin/components';
-import * as services from '~/services/services';
+import { productServices } from '~/services';
 
 import {
     context,
@@ -28,6 +28,64 @@ import {
     productValues,
 } from './constant';
 import { BasicInput } from './components';
+
+const addProduct = ({ data, options, formData }) => {
+    Swal.fire({
+        title: 'Thêm sản phẩm',
+        didOpen: async () => {
+            Swal.showLoading();
+            const result = await productServices.addProduct(data);
+            const {
+                data: { id },
+            } = result;
+
+            if (result.isSuccess === 'true') {
+                options.forEach(async (item) => {
+                    await productServices.addOptionProduct({ id, data: item });
+                });
+
+                await productServices.addImagesProduct({ id, data: formData });
+
+                toast.success('Thêm sản phẩm thành công');
+            } else {
+                toast.error('Thêm sản phẩm thất bại');
+            }
+
+            Swal.close();
+        },
+    });
+};
+
+const updateProduct = ({ id, options, data }) => {
+    Swal.fire({
+        title: 'Chỉnh sửa sản phẩm',
+        didOpen: async () => {
+            Swal.showLoading();
+            const result = await productServices.editProduct({ id, data });
+
+            if (result.isSuccess === 'true') {
+                options.forEach(async (item) => {
+                    if (item.optionId) {
+                        await productServices.editOptionProduct({
+                            id: item.optionId,
+                            data: item,
+                        });
+                    } else {
+                        await productServices.addOptionProduct({
+                            id,
+                            data: item,
+                        });
+                    }
+                });
+
+                toast.success('Chỉnh sửa sản phẩm thành công');
+            } else {
+                toast.error('Chỉnh sửa sản phẩm thất bại');
+            }
+            Swal.close();
+        },
+    });
+};
 
 // Component
 function ProductForm() {
@@ -49,11 +107,10 @@ function ProductForm() {
         control,
         name: 'options',
     });
-
-    useEffect(() => {
-        const fetchApi = async (id) => {
+    const fetchApi = useCallback(
+        async (id) => {
             if (id) {
-                const resultProduct = await services.getProduct(id);
+                const resultProduct = await productServices.getProduct(id);
 
                 if (resultProduct) {
                     productValues.forEach((item) => {
@@ -87,12 +144,13 @@ function ProductForm() {
                     state: resultProduct?.state || '',
                 });
             }
-        };
+        },
+        [insert, setValue],
+    );
 
+    useEffect(() => {
         fetchApi(id);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchApi, id]);
 
     // Hanlde event
     const handleOnSubmit = async (data) => {
@@ -106,7 +164,7 @@ function ProductForm() {
                 formData.append('url', image);
             }
         });
-
+        data.quantity = 0;
         data.options.forEach((option) => {
             option.stock = parseInt(option.stock);
             data.quantity += option.stock;
@@ -127,59 +185,9 @@ function ProductForm() {
         };
 
         if (id) {
-            Swal.fire({
-                title: 'Chỉnh sửa sản phẩm',
-                didOpen: async () => {
-                    Swal.showLoading();
-                    const result = await services.editProduct(id, newData);
-
-                    if (result.isSuccess === 'true') {
-                        data.options.forEach(async (item) => {
-                            if (item.optionId) {
-                                await services.editOptionProduct(
-                                    item.optionId,
-                                    item,
-                                );
-                            } else {
-                                await services.addOptionProduct(id, item);
-                            }
-                        });
-
-                        toast.success('Chỉnh sửa sản phẩm thành công');
-                    } else {
-                        toast.error('Chỉnh sửa sản phẩm thất bại');
-                    }
-                    Swal.close();
-                },
-            });
+            updateProduct({ id, options: data.options, data: newData });
         } else {
-            Swal.fire({
-                title: 'Thêm sản phẩm',
-                didOpen: async () => {
-                    Swal.showLoading();
-                    const result = await services.addProduct(newData);
-
-                    if (result.isSuccess === 'true') {
-                        data.options.forEach(async (item) => {
-                            await services.addOptionProduct(
-                                result.data.id,
-                                item,
-                            );
-                        });
-
-                        await services.addImagesProduct(
-                            result.data.id,
-                            formData,
-                        );
-
-                        toast.success('Thêm sản phẩm thành công');
-                    } else {
-                        toast.error('Thêm sản phẩm thất bại');
-                    }
-
-                    Swal.close();
-                },
-            });
+            addProduct({ data: newData, options: data.options, formData });
         }
     };
 

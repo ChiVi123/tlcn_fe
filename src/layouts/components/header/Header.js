@@ -22,6 +22,7 @@ import {
 import { cx, actions, navItems, topbarsLeft, context } from './constant';
 import Menu from './components/menu/Menu';
 import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
+import logger from '~/utils/logger';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
@@ -38,8 +39,9 @@ function Header() {
     useEffect(() => {
         const fetchApi = async () => {
             const result = await services.getCartByToken();
+            const expectMessage = 'Get cart success';
 
-            if (result?.message === 'Get cart success') {
+            if (result?.message === expectMessage) {
                 setTotalProduct(result.data.totalProduct);
             }
         };
@@ -70,10 +72,15 @@ function Header() {
                 break;
         }
     };
+    const handleFocus = ({ target }) => {
+        target.select();
+    };
 
     if (user?.id) {
         TopbarRight = TopbarRightLogin;
     }
+
+    logger({ groupName: 'Header', values: ['re-render'] });
 
     return (
         <header className={cx('header')}>
@@ -150,6 +157,7 @@ function Header() {
                                 value={inputSearch}
                                 onChange={handleChangeSearch}
                                 onKeyDown={handleKeyDown}
+                                onFocus={handleFocus}
                             />
                             <button
                                 className={cx('btn-search')}
@@ -212,7 +220,7 @@ function Header() {
                             {context.categories}
                         </span>
 
-                        {dropDown && categories && (
+                        {dropDown && !!categories.length && (
                             <Menu items={categories} top />
                         )}
                     </span>

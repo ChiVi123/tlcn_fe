@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ProductCard, Title } from '~/components';
 import { pathNames } from '~/routes';
 import { userActions, userSelector } from '~/redux';
-import * as services from '~/services/services';
+import { productServices } from '~/services';
 
 import { cx, context } from './constant';
 
@@ -30,21 +30,28 @@ function Home() {
     }, []);
     useEffect(() => {
         const fetchApi = async (page, size) => {
-            const result = await services.getProductsByState({ page, size });
+            const microcontrollersId = '6377c780e5faa15251783671';
+            const toolersId = '6377c803e5faa15251783677';
+
+            const result = await productServices.getProductsByState({
+                page,
+                size,
+            });
             setProducts(result.list);
 
-            const resultMicrocontrollers = await services.getProductsByCategory(
-                '6377c780e5faa15251783671',
-                page,
-                size,
-            );
+            const resultMicrocontrollers =
+                await productServices.getProductsByCategory({
+                    id: microcontrollersId,
+                    size,
+                    page,
+                });
             setMicrocontrollers(resultMicrocontrollers.list);
 
-            const resultToolers = await services.getProductsByCategory(
-                '6377c803e5faa15251783677',
+            const resultToolers = await productServices.getProductsByCategory({
+                id: toolersId,
                 page,
                 size,
-            );
+            });
             setToolers(resultToolers.list);
         };
 
@@ -92,7 +99,10 @@ function Home() {
                         >
                             {context.titleControl}
                         </span>
-                        <Link to={pathNames.search} className={cx('cate-link')}>
+                        <Link
+                            to={'search?q=Vi điều khiển - Nhúng'}
+                            className={cx('cate-link')}
+                        >
                             {context.viewMoreText}
                         </Link>
                     </nav>

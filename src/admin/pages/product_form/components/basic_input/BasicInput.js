@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
     ButtonCustomize,
@@ -8,7 +8,7 @@ import {
     Input,
     FormGroup,
 } from '~/admin/components';
-import * as services from '~/services/services';
+import { categoryServices, productServices } from '~/services';
 
 import { cx, context, placeholder } from './constant';
 
@@ -22,11 +22,10 @@ function BasicInput({
     errors,
 }) {
     const [categories, setCategories] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await services.getCategories();
+            const result = await categoryServices.getCategories();
 
             if (result || result.length) {
                 setCategories(result);
@@ -38,14 +37,16 @@ function BasicInput({
 
     const handleDeleteOption = async ({ index, itemId }) => {
         if (itemId) {
-            const result = await services.deleteOptionProduct(itemId);
+            const result = await productServices.deleteOptionProduct(itemId);
 
             if (result?.message === 'Delete Option successfully ') {
-                navigate(0);
+                toast.success('Xóa tùy chọn thành công');
+            } else {
+                toast.error('Xóa tùy chọn thất bại');
             }
-        } else {
-            remove(index);
         }
+
+        remove(index);
     };
 
     return (

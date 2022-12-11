@@ -8,6 +8,7 @@ import PrivateRoutes from './hoc/PrivateRoutes';
 import AdminRoutes from './hoc/AdminRoutes';
 import { getAllCategory } from './redux/async_thunk/categoriesAsync';
 import { Modal } from './components';
+import logger from './utils/logger';
 
 function App() {
     const dispatch = useDispatch();
@@ -17,6 +18,8 @@ function App() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    logger({ groupName: 'App', values: ['re-render'] });
 
     return (
         <BrowserRouter>

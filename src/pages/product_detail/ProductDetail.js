@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
+import { productServices } from '~/services';
 import { userSelector } from '~/redux';
 import { pathNames } from '~/routes';
 
@@ -38,15 +39,15 @@ function ProductDetail() {
 
     useEffect(() => {
         const fetchApi = async (id) => {
-            const result = await services.getProduct(id);
+            const result = await productServices.getProduct(id);
             setProduct(result);
             setValue('option', result.options[0]);
 
-            const resultRelation = await services.getProductsByCategory(
-                result.category_id,
-                0,
-                10,
-            );
+            const resultRelation = await productServices.getProductsByCategory({
+                id: result.category_id,
+                page: 0,
+                size: 10,
+            });
             setProductsRelation(resultRelation.list);
 
             const resultReviews = await services.getReviewByProductId(id);

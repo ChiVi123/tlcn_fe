@@ -3,59 +3,74 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
+import Swal from 'sweetalert2';
 
 import { Button, ButtonPagination, Title } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { ButtonCustomize } from '~/admin/components';
-import * as services from '~/services/services';
+import { productServices } from '~/services';
 
 import styles from './Products.module.scss';
 import { context } from './constant';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
+const hideProduct = ({ id, name }, fetchApi, { currentPage, size }) => {
+    Swal.fire({
+        title: `Bạn có muốn ẩn ${name} không?`,
+        confirmButtonText: 'Ẩn sản phẩm',
+        showCancelButton: true,
+        cancelButtonText: 'Hủy',
+        width: 'auto',
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const result = await productServices.deleteProduct(id);
+            const expectMessage = 'Delete product successfully ';
+            const toastSuccess = 'Ẩn sản phẩm thành công';
+            const toastError = 'Ẩn sản phẩm thất bại';
+
+            if (result?.message === expectMessage) {
+                toast.success(toastSuccess);
+            } else {
+                toast.error(toastError);
+            }
+
+            fetchApi({ currentPage, size });
+        }
+    });
+};
 
 function Products() {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(5);
     const [rangeDisplay, setRangeDisplay] = useState(3);
-    const navigate = useNavigate();
     const itemPerPage = 5;
+    const fetchApi = async ({ currentPage, size }) => {
+        const result = await productServices.getProducts({
+            page: currentPage,
+            size,
+        });
+
+        setProducts(result.list);
+        setTotalPage(result.totalPage);
+        setRangeDisplay(() => {
+            if (result.totalPage > 5) {
+                return 5;
+            } else {
+                return result.totalPage;
+            }
+        });
+    };
 
     useEffect(() => {
-        const fetchApi = async (page, size) => {
-            const result = await services.getProducts(page, size);
-            setProducts(result.list);
-            setTotalPage(result.totalPage);
-            setRangeDisplay(() => {
-                if (result.totalPage > 5) {
-                    return 5;
-                } else {
-                    return result.totalPage;
-                }
-            });
-        };
-
-        fetchApi(page - 1, itemPerPage);
+        fetchApi({ currentPage: page - 1, size: itemPerPage });
     }, [page]);
 
     const handleDelete = ({ id, name }) => {
-        Swal.fire({
-            title: `Bạn có chắc sẽ xóa ${name}`,
-            confirmButtonText: 'Xóa sản phẩm',
-            showCancelButton: true,
-            cancelButtonText: 'Hủy',
-            width: 'auto',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const result = await services.deleteProduct(id);
-
-                if (result?.message === 'Delete product successfully ') {
-                    navigate(0);
-                }
-            }
+        hideProduct({ id, name }, fetchApi, {
+            currentPage: page - 1,
+            size: itemPerPage,
         });
     };
 
