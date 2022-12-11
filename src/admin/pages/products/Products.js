@@ -29,11 +29,11 @@ function Products() {
             const result = await services.getProducts(page, size);
             setProducts(result.list);
             setTotalPage(result.totalPage);
-            setRangeDisplay((prev) => {
+            setRangeDisplay(() => {
                 if (result.totalPage > 5) {
                     return 5;
                 } else {
-                    return prev;
+                    return result.totalPage;
                 }
             });
         };
