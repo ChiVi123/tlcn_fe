@@ -39,7 +39,27 @@ function Order() {
                 const expectMessage = 'Cancel order successfully';
                 const result = await services.userCancelOrderById({ id });
                 if (result?.message === expectMessage) {
-                    navigate(0);
+                    Swal.fire({
+                        title: 'Hủy đơn hàng thành công',
+                        icon: 'success',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Hủy đơn hàng thất bại',
+                        icon: 'error',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
                 }
             }
         });

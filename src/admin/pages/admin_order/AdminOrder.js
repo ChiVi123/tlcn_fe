@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import { avatarDefault } from '~/assets/images/statics';
 import { Button, Title } from '~/components';
@@ -10,7 +11,6 @@ import { enumStateOrder } from '~/utils/constant';
 import { ButtonCustomize } from '~/admin/components';
 
 import { cx, context } from './constant';
-import Swal from 'sweetalert2';
 
 function AdminOrder() {
     const [order, setOrder] = useState();
@@ -46,7 +46,27 @@ function AdminOrder() {
                 const expectMessage = 'Cancel order successfully';
                 const result = await services.adminCancelOrderById({ id });
                 if (result?.message === expectMessage) {
-                    navigate(0);
+                    Swal.fire({
+                        title: 'Hủy đơn hàng thành công',
+                        icon: 'success',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Hủy đơn hàng thất bại',
+                        icon: 'error',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
                 }
             }
         });
@@ -63,7 +83,27 @@ function AdminOrder() {
                 const expectMessage = 'Delivery order successfully';
                 const result = await services.adminDeliveryOrderById({ id });
                 if (result?.message === expectMessage) {
-                    navigate(0);
+                    Swal.fire({
+                        title: 'Xác nhận đơn hàng thành công',
+                        icon: 'success',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Xác nhận đơn hàng thất bại',
+                        icon: 'error',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
                 }
             }
         });
@@ -71,7 +111,7 @@ function AdminOrder() {
 
     const handleComplete = () => {
         Swal.fire({
-            title: 'Giao hàng thành công',
+            title: 'Xác nhận giao hàng thành công',
             confirmButtonText: 'Xác nhận',
             showCancelButton: true,
             cancelButtonText: 'Bỏ qua',
@@ -80,7 +120,27 @@ function AdminOrder() {
                 const expectMessage = 'Complete order successfully';
                 const result = await services.adminCompletelOrderById({ id });
                 if (result?.message === expectMessage) {
-                    navigate(0);
+                    Swal.fire({
+                        title: 'Đã xác nhận đơn hàng',
+                        icon: 'success',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Xác nhận đơn hàng thất bại',
+                        icon: 'error',
+                        confirmButtonText: 'Xác nhận',
+                        allowOutsideClick: false,
+                    }).then(({ isConfirmed }) => {
+                        if (isConfirmed) {
+                            navigate(0);
+                        }
+                    });
                 }
             }
         });
