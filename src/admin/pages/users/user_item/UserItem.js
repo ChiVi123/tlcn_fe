@@ -1,55 +1,76 @@
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faLock,
     faLockOpen,
-    faUser,
-    faUserTie,
+    // faUser,
+    // faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
+// import { useSelector } from 'react-redux';
 
 import { ButtonCustomize } from '~/admin/components';
 import * as services from '~/services/services';
+// import { userSelector } from '~/redux';
 import styles from './UserItem.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const cx = classNames.bind(styles);
 
-function UserItem({ user }) {
-    const navigate = useNavigate();
+function UserItem({ user, page, fetchApi }) {
     const isActive = user.state === 'active';
+    // const userId = useSelector(userSelector.getUserId);
+    // const isSetRole = userId !== user.id;
+    let isBlock = true;
 
-    const handleRole = ({ id, role }) => {
-        Swal.fire({
-            title: 'Chọn vai trò cho thành viên',
-            input: 'radio',
-            inputOptions: {
-                role_admin: 'Quản trị viên',
-                role_user: 'Người dùng',
-            },
-            inputValue: role,
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Chưa chọn vai trò cho thành viên!';
-                }
-            },
-        }).then(async ({ isConfirmed, value }) => {
-            if (isConfirmed) {
-                const result = await services.adminSetRoleUserById({
-                    id,
-                    data: { role: value },
-                });
-                const expectMessage = 'Get user success';
+    if (user.role === 'role_admin') {
+        isBlock = false;
+    }
 
-                if (result?.message === expectMessage) {
-                    navigate(0);
-                } else {
-                    toast.error('Không thể chỉnh vai trò cho người dùng này');
-                }
-            }
-        });
-    };
+    if (user.state === 'not_verify') {
+        isBlock = false;
+    }
+
+    /*
+    là admin thì không thể block (cả trường hợp dòng là chính user đang đăng nhập)
+    user có trạng thái chưa kích hoạt
+    */
+
+    // const handleRole = ({ id, role }) => {
+    //     Swal.fire({
+    //         title: 'Chọn vai trò cho thành viên',
+    //         input: 'radio',
+    //         inputOptions: {
+    //             role_admin: 'Quản trị viên',
+    //             role_user: 'Người dùng',
+    //         },
+    //         inputValue: role,
+    //         inputValidator: (value) => {
+    //             if (!value) {
+    //                 return 'Chưa chọn vai trò cho thành viên!';
+    //             }
+    //         },
+    //         confirmButtonText: 'Xác nhận',
+    //     }).then(async ({ isConfirmed, value }) => {
+    //         if (isConfirmed) {
+    //             const result = await services.adminSetRoleUserById({
+    //                 id,
+    //                 data: { role: value },
+    //             });
+    //             const expectMessage = 'Get user success';
+
+    //             if (result?.message === expectMessage) {
+    //                 toast.success('Vai trò người dùng đã được cập nhật');
+    //             } else {
+    //                 toast.error(
+    //                     'Không thể chỉnh sửa vai trò của người dùng này',
+    //                 );
+    //             }
+
+    //             fetchApi({ currentPage: page - 1 });
+    //         }
+    //     });
+    // };
 
     const handleIsActivate = async ({ id, state }) => {
         switch (state) {
@@ -58,9 +79,9 @@ function UserItem({ user }) {
                 const expectMessageBlock = 'Delete user success';
 
                 if (resultBlock?.message === expectMessageBlock) {
-                    navigate(0);
+                    toast.success('Khóa người dùng thành công');
                 } else {
-                    toast.error('Không thể khóa cho người dùng này');
+                    toast.error('Không thể khóa người dùng này');
                 }
                 break;
             case 'block':
@@ -70,14 +91,16 @@ function UserItem({ user }) {
                 const expectMessageUnblock = 'Unblock user success';
 
                 if (resultActive?.message === expectMessageUnblock) {
-                    navigate(0);
+                    toast.success('Mở khóa người dùng thành công');
                 } else {
-                    toast.error('Không thể mở khóa cho người dùng này');
+                    toast.error('Không thể mở khóa người dùng này');
                 }
                 break;
             default:
                 break;
         }
+
+        fetchApi({ currentPage: page - 1 });
     };
 
     return (
@@ -90,20 +113,24 @@ function UserItem({ user }) {
             <td>{user.role}</td>
             <td>{user.state}</td>
             <td>
-                <ButtonCustomize
-                    onClick={() =>
-                        handleRole({
-                            id: user.id,
-                            role: user.role,
-                        })
-                    }
-                >
-                    <FontAwesomeIcon
-                        icon={user.role === 'role_admin' ? faUserTie : faUser}
-                    />
-                </ButtonCustomize>
+                {/* {isSetRole && (
+                    <ButtonCustomize
+                        onClick={() =>
+                            handleRole({
+                                id: user.id,
+                                role: user.role,
+                            })
+                        }
+                    >
+                        <FontAwesomeIcon
+                            icon={
+                                user.role === 'role_admin' ? faUserTie : faUser
+                            }
+                        />
+                    </ButtonCustomize>
+                )} */}
 
-                {user.state === 'not_verify' || (
+                {isBlock && (
                     <ButtonCustomize
                         isEdit={!isActive}
                         isDelete={isActive}

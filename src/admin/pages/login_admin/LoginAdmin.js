@@ -28,7 +28,7 @@ function LoginAdmin() {
     useEffect(() => {
         if (user.id) {
             if (user.role === 'role_admin') {
-                navigate('/admin/products');
+                navigate('/admin/dashboard');
             } else {
                 navigate(pathNames.home);
             }
@@ -41,7 +41,7 @@ function LoginAdmin() {
         if (result) {
             dispatch(userActions.addUser(result));
             dispatch(userActions.showedToast());
-            navigate('/admin/products');
+            navigate('/admin/dashboard');
         } else {
             toast.error('Email hoặc mật khẩu không đúng');
         }

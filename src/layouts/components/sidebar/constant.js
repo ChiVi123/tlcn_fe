@@ -3,6 +3,7 @@ import {
     faRectangleList,
     faAddressCard,
     faReceipt,
+    faTableCells,
 } from '@fortawesome/free-solid-svg-icons';
 import { faMessage } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames/bind';
@@ -11,6 +12,11 @@ import styles from './Sidebar.module.scss';
 export const cx = classNames.bind(styles);
 
 export const sidebarItems = [
+    {
+        context: 'Thống kê',
+        navTo: '/admin/dashboard',
+        icon: faTableCells,
+    },
     {
         context: 'Danh sách sản phẩm',
         navTo: '/admin/products',

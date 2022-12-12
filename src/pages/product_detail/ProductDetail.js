@@ -13,11 +13,14 @@ import * as services from '~/services/services';
 import { productServices } from '~/services';
 import { userSelector } from '~/redux';
 import { pathNames } from '~/routes';
+// import logger from '~/utils/logger';
 
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
 import './ProductDetail.scss';
 import { InputQuantity, Slick } from '../components';
+
+// const pathname = 'src/pages/product_detail/ProductDetail';
 
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
@@ -48,7 +51,17 @@ function ProductDetail() {
                 page: 0,
                 size: 10,
             });
-            setProductsRelation(resultRelation.list);
+            const newRelationProducst = resultRelation.list.filter(
+                (item) => item.id !== id,
+            );
+            // const selector = '> ProductDetail > useEffect > fetchApi';
+
+            // logger({
+            //     groupName: `${pathname} ${selector}`,
+            //     values: [newRelationProducst],
+            // });
+
+            setProductsRelation(newRelationProducst);
 
             const resultReviews = await services.getReviewByProductId(id);
             setReviews(resultReviews);
@@ -92,6 +105,11 @@ function ProductDetail() {
             toast.error('Không thể thêm vào giỏ hàng');
         }
     };
+
+    // logger({
+    //     groupName: `${pathname}`,
+    //     values: ['re-render', productsRelation],
+    // });
 
     return (
         <div className={cx('wrapper')}>

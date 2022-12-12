@@ -7,9 +7,11 @@ import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { useState, useRef, useEffect } from 'react';
 
+// import logger from '~/utils/logger';
 import styles from './Slick.module.scss';
 
 const cx = classNames.bind(styles);
+// const pathname = 'src/pages/components/slick/Slick';
 
 function Slick({ list, component, nameProp, onClick, large, medium, small }) {
     const [translateX, setTranslateX] = useState(0);
@@ -24,8 +26,14 @@ function Slick({ list, component, nameProp, onClick, large, medium, small }) {
 
     useEffect(() => {
         setOffsetWidth((prev) => {
-            const item = itemElement.current.offsetWidth;
-            const list = listElement.current.offsetWidth;
+            // const selector = '> Slick > useEffect > setOffsetWidth';
+            // logger({
+            //     groupName: `${pathname} ${selector}`,
+            //     values: [itemElement],
+            // });
+
+            const item = itemElement.current?.offsetWidth;
+            const list = listElement.current?.offsetWidth;
             const listViewPort = item * itemCount - list;
 
             return {

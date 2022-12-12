@@ -1,6 +1,9 @@
+// import logger from '~/utils/logger';
 import * as request from '~/utils/request';
 
-export const productServices = {
+// const pathName = 'src/services/productServices';
+
+const productServices = {
     getProducts: async ({ page, size }) => {
         try {
             const response = await request.get(
@@ -12,14 +15,25 @@ export const productServices = {
         }
     },
     getProductsByCategory: async ({ id, page, size }) => {
+        // const selector = '> productServices > getProductsByCategory';
+
         try {
             const response = await request.get(
                 `products/category/${id}?page=${page}&size=${size}`,
             );
 
             return response.data;
-        } catch (error) {
-            console.log(error);
+        } catch ({
+            response: {
+                data: { message },
+            },
+        }) {
+            // logger({
+            //     groupName: `${pathName} ${selector}`,
+            //     values: [message],
+            // });
+
+            throw message;
         }
     },
     getProductsByState: async ({ page, size }) => {
@@ -122,3 +136,5 @@ export const productServices = {
         }
     },
 };
+
+export default productServices;

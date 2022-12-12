@@ -1,2 +1,3 @@
-export { categoryServices } from './categoryServices';
-export { productServices } from './productServices';
+export { default as categoryServices } from './categoryServices';
+export { default as productServices } from './productServices';
+export { default as statisticalServices } from './statisticalServices';

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
@@ -21,7 +21,6 @@ function Register() {
         resolver: yupResolver(schema),
     });
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleOnSubmit = async ({ name, email, password }) => {
@@ -39,7 +38,6 @@ function Register() {
                 if (user?.message === expectMessage) {
                     toast.success('Tạo tài khoản thành công');
                     dispatch(userActions.addUser({ name, email, password }));
-                    navigate(pathNames.checkOtpRegister);
                 } else {
                     toast.error('Tạo tài khoản thất bại');
                 }

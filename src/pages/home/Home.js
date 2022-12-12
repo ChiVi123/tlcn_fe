@@ -19,6 +19,8 @@ function Home() {
     const [products, setProducts] = useState([]);
     const [microcontrollers, setMicrocontrollers] = useState([]);
     const [toolers, setToolers] = useState([]);
+    const microcontrollersId = '6377c780e5faa15251783671';
+    const toolersId = '6377c803e5faa15251783677';
 
     useEffect(() => {
         if (user?.id && !user.isToast) {
@@ -30,9 +32,6 @@ function Home() {
     }, []);
     useEffect(() => {
         const fetchApi = async (page, size) => {
-            const microcontrollersId = '6377c780e5faa15251783671';
-            const toolersId = '6377c803e5faa15251783677';
-
             const result = await productServices.getProductsByState({
                 page,
                 size,
@@ -100,7 +99,7 @@ function Home() {
                             {context.titleControl}
                         </span>
                         <Link
-                            to={'search?q=Vi điều khiển - Nhúng'}
+                            to={`search?category=${microcontrollersId}`}
                             className={cx('cate-link')}
                         >
                             {context.viewMoreText}
@@ -126,7 +125,10 @@ function Home() {
                         <span className={cx('cate-title', 'cate-title--black')}>
                             {context.titleTool}
                         </span>
-                        <Link to={pathNames.search} className={cx('cate-link')}>
+                        <Link
+                            to={`search?category=${toolersId}`}
+                            className={cx('cate-link')}
+                        >
                             {context.viewMoreText}
                         </Link>
                     </nav>

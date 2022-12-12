@@ -2,7 +2,7 @@
 import * as request from '~/utils/request';
 
 // Cateogry/Categories
-export const categoryServices = {
+const categoryServices = {
     getCategories: async () => {
         try {
             const response = await request.get('categories');
@@ -68,3 +68,5 @@ export const categoryServices = {
         }
     },
 };
+
+export default categoryServices;

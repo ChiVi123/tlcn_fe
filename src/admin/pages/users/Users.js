@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { ButtonPagination, Title } from '~/components';
 import * as services from '~/services/services';
@@ -11,24 +11,23 @@ function Users() {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [rangeDisplay, setRangeDisplay] = useState(3);
+    const fetchApi = useCallback(async ({ currentPage }) => {
+        const result = await services.getUsers({ page: currentPage });
+
+        setUsers(result.list);
+        setTotalPage(result.totalPage);
+        setRangeDisplay(() => {
+            if (result.totalPage > 5) {
+                return 5;
+            } else {
+                return result.totalPage;
+            }
+        });
+    }, []);
 
     useEffect(() => {
-        const fetchApi = async ({ currentPage }) => {
-            const result = await services.getUsers({ page: currentPage });
-
-            setUsers(result.list);
-            setTotalPage(result.totalPage);
-            setRangeDisplay(() => {
-                if (result.totalPage > 5) {
-                    return 5;
-                } else {
-                    return result.totalPage;
-                }
-            });
-        };
-
         fetchApi({ currentPage: page - 1 });
-    }, [page]);
+    }, [fetchApi, page]);
 
     return (
         <>
@@ -47,7 +46,12 @@ function Users() {
                 </thead>
                 <tbody>
                     {users.map((item, index) => (
-                        <UserItem key={index} user={item} />
+                        <UserItem
+                            key={index}
+                            user={item}
+                            page={page}
+                            fetchApi={fetchApi}
+                        />
                     ))}
                 </tbody>
             </table>

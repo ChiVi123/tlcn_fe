@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,6 +14,7 @@ import { cx, context, schema, form } from './constant';
 function CheckOtpRegister() {
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
+    const [searchParams] = useSearchParams();
 
     const {
         handleSubmit,
@@ -23,7 +24,7 @@ function CheckOtpRegister() {
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            email: user.email,
+            email: user.email || searchParams.get('email'),
             otp: '',
         },
     });
@@ -89,6 +90,7 @@ function CheckOtpRegister() {
                         type={'text'}
                         register={register}
                         errors={errors}
+                        isDisable={true}
                     />
                 </FormGroup>
 

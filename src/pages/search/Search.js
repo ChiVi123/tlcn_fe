@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
 import { productServices } from '~/services';
+// import logger from '~/utils/logger';
 import { cx, context } from './constant';
 
 function Search() {
@@ -11,7 +12,37 @@ function Search() {
     const [searchResult, setSearchResult] = useState({});
 
     useEffect(() => {
-        const fetchApi = async ({ q, page, size }) => {
+        const fetchApi = async ({ q, category, page, size }) => {
+            if (category) {
+                const errorMessage = `Can not found any product with category or brand id: ${category}`;
+
+                try {
+                    const result = await productServices.getProductsByCategory({
+                        id: category,
+                        page,
+                        size,
+                    });
+
+                    setSearchResult(result);
+                } catch (error) {
+                    // const selector = '> useEffect > fetchApi';
+                    // logger({
+                    //     groupName: `${pathname} ${selector}`,
+                    //     values: [error],
+                    // });
+
+                    if (error === errorMessage) {
+                        setSearchResult((prev) => ({
+                            ...prev,
+                            list: [],
+                            totalQuantity: 0,
+                        }));
+                    }
+                }
+
+                return;
+            }
+
             if (q) {
                 const result = await services.searchProducts({ q, page, size });
 
@@ -29,7 +60,12 @@ function Search() {
             }
         };
 
-        fetchApi({ q: searchParams.get('q'), page: 0, size: 25 });
+        fetchApi({
+            q: searchParams.get('q'),
+            category: searchParams.get('category'),
+            page: 0,
+            size: 25,
+        });
     }, [searchParams]);
 
     return (

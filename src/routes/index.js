@@ -61,7 +61,7 @@ const pathNames = {
 
     //admin
     admin: 'admin/*',
-    dasboard: 'dashboard',
+    dashboard: 'dashboard',
     products: 'products',
     productFormAdd: 'product-form',
     productFormEdit: 'product-form/:id',
@@ -169,6 +169,11 @@ const adminRoutes = [
     {
         path: pathNames.reviews,
         component: Reviews,
+        layout: AdminLayout,
+    },
+    {
+        path: pathNames.dashboard,
+        component: Dashboard,
         layout: AdminLayout,
     },
 ];
