@@ -10,8 +10,8 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
-import { Title } from '~/components';
 
+import { Title } from '~/components';
 import { statisticalServices } from '~/services';
 import logger from '~/utils/logger';
 import { enumStateOrder } from '~/utils/constant';
@@ -89,99 +89,89 @@ function Dashboard() {
         <>
             <Title as='h1'>Các số liệu thống kê</Title>
             <div className={cx('row')}>
-                <div className={cx('col', 'l-6', 'section')}>
-                    <Title as={'h2'}>Danh mục sản phẩm</Title>
-                    <div className={cx('row')}>
-                        {categoryCount.list.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-12')}>
-                                <Title as={'h3'}>
-                                    {item.state === 'enable'
-                                        ? 'Danh mục được phép xuất hiện'
-                                        : 'Danh mục không được xuất hiện'}
-                                </Title>
-                                <ProgressBar
-                                    completed={Math.floor(
-                                        (item.count /
-                                            categoryCount.totalQuantity) *
-                                            100,
-                                    )}
-                                    maxCompleted={100}
-                                    bgColor={'#' + randomColor()}
-                                />
-                            </div>
-                        ))}
+                <div className={cx('col', 'l-4')}>
+                    <div className={cx('section')}>
+                        <Title as={'h2'}>Danh mục sản phẩm</Title>
+                        <div className={cx('row')}>
+                            {categoryCount.list.map((item, index) => (
+                                <div key={index} className={cx('col', 'l-10')}>
+                                    <Title as={'h3'}>
+                                        {item.state === 'enable'
+                                            ? 'Danh mục được phép xuất hiện'
+                                            : 'Danh mục không được xuất hiện'}
+                                    </Title>
+                                    <ProgressBar
+                                        completed={item.count.toString()}
+                                        maxCompleted={categoryCount.totalQuantity.toString()}
+                                        bgColor={'#' + randomColor()}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className={cx('col', 'l-6', 'section')}>
-                    <Title as={'h2'}>Đơn hàng</Title>
-                    <div className={cx('row')}>
-                        {orderCount.list.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-12')}>
-                                <Title as={'h3'}>
-                                    {'Sản phẩm ' +
-                                        enumStateOrder[
-                                            item.state
-                                        ].state.toLowerCase()}
-                                </Title>
-                                <ProgressBar
-                                    completed={Math.floor(
-                                        (item.count /
-                                            orderCount.totalQuantity) *
-                                            100,
-                                    )}
-                                    maxCompleted={100}
-                                    bgColor={'#' + randomColor()}
-                                />
-                            </div>
-                        ))}
+                <div className={cx('col', 'l-4')}>
+                    <div className={cx('section')}>
+                        <Title as={'h2'}>Người dùng</Title>
+                        <div className={cx('row')}>
+                            {userCount.list.map((item, index) => (
+                                <div key={index} className={cx('col', 'l-10')}>
+                                    <Title as={'h3'}>
+                                        {item.state === 'active'
+                                            ? 'Đã được kích hoạt'
+                                            : 'Chưa được kích hoạt'}
+                                    </Title>
+                                    <ProgressBar
+                                        completed={item.count.toString()}
+                                        maxCompleted={userCount.totalQuantity.toString()}
+                                        bgColor={'#' + randomColor()}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className={cx('col', 'l-6', 'section')}>
-                    <Title as={'h2'}>Sản phẩm</Title>
-                    <div className={cx('row')}>
-                        {productCount.list.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-12')}>
-                                <Title as={'h3'}>
-                                    {item.state === 'enable'
-                                        ? 'Sản phẩm được phép xuất hiện'
-                                        : 'Sản phẩm không được xuất hiện'}
-                                </Title>
-                                <ProgressBar
-                                    completed={Math.floor(
-                                        (item.count /
-                                            productCount.totalQuantity) *
-                                            100,
-                                    )}
-                                    maxCompleted={100}
-                                    bgColor={'#' + randomColor()}
-                                />
-                            </div>
-                        ))}
+                <div className={cx('col', 'l-4')}>
+                    <div className={cx('section')}>
+                        <Title as={'h2'}>Sản phẩm</Title>
+                        <div className={cx('row')}>
+                            {productCount.list.map((item, index) => (
+                                <div key={index} className={cx('col', 'l-10')}>
+                                    <Title as={'h3'}>
+                                        {item.state === 'enable'
+                                            ? 'Sản phẩm được phép xuất hiện'
+                                            : 'Sản phẩm không được xuất hiện'}
+                                    </Title>
+                                    <ProgressBar
+                                        completed={item.count.toString()}
+                                        maxCompleted={productCount.totalQuantity.toString()}
+                                        bgColor={'#' + randomColor()}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className={cx('col', 'l-6', 'section')}>
-                    <Title as={'h2'}>Người dùng</Title>
-                    <div className={cx('row')}>
-                        {userCount.list.map((item, index) => (
-                            <div key={index} className={cx('col', 'l-12')}>
-                                <Title as={'h3'}>
-                                    {item.state === 'active'
-                                        ? 'Đã được kích hoạt'
-                                        : 'Chưa được kích hoạt'}
-                                </Title>
-                                <ProgressBar
-                                    completed={Math.floor(
-                                        (item.count / userCount.totalQuantity) *
-                                            100,
-                                    )}
-                                    maxCompleted={100}
-                                    bgColor={'#' + randomColor()}
-                                />
-                            </div>
-                        ))}
+                <div className={cx('col', 'l-12')}>
+                    <div className={cx('section')}>
+                        <Title as={'h2'}>Đơn hàng</Title>
+                        <div className={cx('row')}>
+                            {orderCount.list.map((item, index) => (
+                                <div key={index} className={cx('col', 'l-6')}>
+                                    <Title as={'h3'}>
+                                        {enumStateOrder[item.state].state}
+                                    </Title>
+                                    <ProgressBar
+                                        completed={item.count.toString()}
+                                        maxCompleted={orderCount.totalQuantity.toString()}
+                                        bgColor={'#' + randomColor()}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
