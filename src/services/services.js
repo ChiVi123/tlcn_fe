@@ -1,67 +1,5 @@
 import * as request from '~/utils/request';
 
-// Auth
-export const login = async (data) => {
-    try {
-        const response = await request.post('auth/login', data);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const register = async (data) => {
-    try {
-        const response = await request.post('auth/register', data);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const registerSendMail = async (data) => {
-    try {
-        const response = await request.post('auth/registersendmail', data);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// Otp
-export const verifyOtp = async (data) => {
-    try {
-        const response = await request.post('auth/verify', data);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const getOtpReset = async (data) => {
-    try {
-        const response = await request.post(
-            `auth/getotpreset?email=${data.email}`,
-        );
-        return response;
-    } catch ({
-        response: {
-            data: { message },
-        },
-    }) {
-        throw message;
-    }
-};
-
-export const getOtp = async ({ email }) => {
-    try {
-        const response = await request.post(`auth/getotp?email=${email}`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 // User
 export const getUser = async (id) => {
     try {
@@ -160,56 +98,6 @@ export const changePassword = async (id, data) => {
         return response;
     } catch (error) {
         console.log(error);
-    }
-};
-
-// Cart
-export const getCartByToken = async () => {
-    try {
-        const response = await request.get('cart');
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const addCart = async (data) => {
-    try {
-        const response = await request.post('cart', data);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const deleteCart = async (itemCartId) => {
-    try {
-        const response = await request.requestDelete(`cart/${itemCartId}`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// Payment
-export const postPayment = async ({ cartId, type, data }) => {
-    try {
-        const response = await request.post(`checkout/${type}/${cartId}`, data);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// Search
-export const searchProducts = async ({ q, page, size }) => {
-    try {
-        const response = await request.get(
-            `products/search?q=${q}&page=${page}&size=${size}`,
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
     }
 };
 

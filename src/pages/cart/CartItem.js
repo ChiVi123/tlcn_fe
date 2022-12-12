@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
-import * as services from '~/services/services';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
+import { cartServices } from '~/services';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
-import Swal from 'sweetalert2';
 
 function CartItem({ product }) {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ function CartItem({ product }) {
         }
 
         const { productid: producId, productOptionid, value } = product;
-        const result = await services.addCart({
+        const result = await cartServices.addCart({
             producId,
             productOptionId: productOptionid || null,
             value,
@@ -44,7 +44,7 @@ function CartItem({ product }) {
             cancelButtonText: 'Hủy',
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                const result = await services.deleteCart(id);
+                const result = await cartServices.deleteCart(id);
                 const expectMessage = `Delete item ${id} in cart success`;
 
                 if (result?.message === expectMessage) {

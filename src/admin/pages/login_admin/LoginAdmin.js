@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
-import * as services from '~/services/services';
+// import * as services from '~/services/services';
+import { authServices } from '~/services';
 import { userActions, userSelector } from '~/redux';
 
 import { cx, context, schema, defaultValues, form } from './constant';
@@ -36,7 +37,7 @@ function LoginAdmin() {
     }, [user, navigate]);
 
     const handleOnSubmit = async (data) => {
-        const result = await services.login(data);
+        const result = await authServices.login(data);
 
         if (result) {
             dispatch(userActions.addUser(result));

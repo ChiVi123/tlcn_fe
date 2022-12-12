@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 
 import { Title } from '~/components';
 import { pathNames } from '~/routes';
-import * as services from '~/services/services';
+// import * as services from '~/services/services';
+import { authServices } from '~/services';
 import { userActions } from '~/redux';
 
 import { cx, context, placeholder, schema } from './constant';
@@ -29,7 +30,7 @@ function Register() {
             didOpen: async () => {
                 Swal.showLoading();
                 const expectMessage = 'Register successfully ';
-                const user = await services.registerSendMail({
+                const user = await authServices.registerSendMail({
                     name,
                     email,
                     password,

@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
-import * as services from '~/services/services';
 import { userActions } from '~/redux';
+import { authServices } from '~/services';
 
 import { cx, context, schema, defaultValues, form } from './constant';
 
@@ -32,7 +32,7 @@ function SendOtp() {
                 const expectMessage = 'Send otp email success';
 
                 try {
-                    const result = await services.getOtpReset({ email });
+                    const result = await authServices.getOtpReset({ email });
 
                     if (result?.message === expectMessage) {
                         toast.success('Gửi OTP thành công');

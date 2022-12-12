@@ -7,6 +7,7 @@ import { ProductCard, Title } from '~/components';
 import { pathNames } from '~/routes';
 import { userActions, userSelector } from '~/redux';
 import { productServices } from '~/services';
+// import logger from '~/utils/logger';
 
 import { cx, context } from './constant';
 
@@ -15,7 +16,7 @@ const pageNumber = 0;
 
 function Home() {
     const dispatch = useDispatch();
-    const user = useSelector(userSelector.getUserId);
+    const user = useSelector(userSelector.getUser);
     const [products, setProducts] = useState([]);
     const [microcontrollers, setMicrocontrollers] = useState([]);
     const [toolers, setToolers] = useState([]);
@@ -23,7 +24,9 @@ function Home() {
     const toolersId = '6377c803e5faa15251783677';
 
     useEffect(() => {
-        if (user?.id && !user.isToast) {
+        // logger({ groupName: 'home', values: [user] });
+
+        if (user?.id && user.isToast) {
             dispatch(userActions.showedToast());
             toast.success(context.loginSuccess);
         }

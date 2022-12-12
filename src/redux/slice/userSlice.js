@@ -9,7 +9,7 @@ const initialState = {
     phone: '',
     role: '',
     accessToken: '',
-    isToast: false,
+    isToast: true,
 };
 
 const userSlice = createSlice({
@@ -31,7 +31,7 @@ const userSlice = createSlice({
             state.avatar = payload.avatar && state.avatar;
         },
         showedToast(state) {
-            state.isToast = true;
+            state.isToast = false;
         },
         resetUser(state) {
             state.id = '';
@@ -42,7 +42,7 @@ const userSlice = createSlice({
             state.phone = '';
             state.role = '';
             state.accessToken = '';
-            state.isToast = false;
+            state.isToast = true;
         },
     },
 });

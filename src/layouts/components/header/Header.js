@@ -11,18 +11,18 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '~/components';
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
-import * as services from '~/services/services';
 import {
     cartSelector,
     userSelector,
     categoriesSelector,
     modalActions,
 } from '~/redux';
+import logger from '~/utils/logger';
+import { cartServices } from '~/services';
 
 import { cx, actions, navItems, topbarsLeft, context } from './constant';
 import Menu from './components/menu/Menu';
 import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
-import logger from '~/utils/logger';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
@@ -38,7 +38,7 @@ function Header() {
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await services.getCartByToken();
+            const result = await cartServices.getCartByToken();
             const expectMessage = 'Get cart success';
 
             if (result?.message === expectMessage) {

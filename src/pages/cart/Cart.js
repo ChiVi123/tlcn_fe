@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Section, Title, Wrapper } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { pathNames } from '~/routes';
-import * as services from '~/services/services';
+import { cartServices } from '~/services';
 
 import { cxCart, context } from './constant';
 import CartItem from './CartItem';
@@ -13,7 +13,7 @@ function Cart() {
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await services.getCartByToken();
+            const result = await cartServices.getCartByToken();
 
             if (result.message === 'Get cart success') {
                 setCart(result.data);

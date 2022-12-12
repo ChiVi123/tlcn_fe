@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { ProductCard, Title } from '~/components';
-import * as services from '~/services/services';
-import { productServices } from '~/services';
+import { productServices, searchServices } from '~/services';
 // import logger from '~/utils/logger';
 import { cx, context } from './constant';
 
@@ -44,7 +43,11 @@ function Search() {
             }
 
             if (q) {
-                const result = await services.searchProducts({ q, page, size });
+                const result = await searchServices.searchProducts({
+                    q,
+                    page,
+                    size,
+                });
 
                 if (result?.totalQuantity) {
                     setSearchResult(result);

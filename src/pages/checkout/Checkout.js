@@ -6,6 +6,8 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 // Common
 import {
@@ -19,15 +21,13 @@ import {
 import { imgLogo } from '~/assets/images/logo';
 import { pathNames } from '~/routes';
 import { currencyVN } from '~/utils/funcs';
-import * as servicesGHN from '~/services/servicesGHN';
-import * as services from '~/services/services';
+import { servicesGHN } from '~/services';
+import { paymentServices, cartServices } from '~/services';
 import { userSelector } from '~/redux';
 
 // Local
 import { context, cx, schema } from './constant';
 import { ChoosePayment } from './components';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
 function Checkout() {
     // Hooks
@@ -60,7 +60,7 @@ function Checkout() {
     // - useEffect
     useEffect(() => {
         const fetchApi = async () => {
-            const resultCart = await services.getCartByToken();
+            const resultCart = await cartServices.getCartByToken();
             setCart(resultCart.data);
 
             const resultProvinces = await servicesGHN.getProvince();
@@ -122,7 +122,7 @@ function Checkout() {
             cancelButtonText: 'Hủy',
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                const result = await services.postPayment({
+                const result = await paymentServices.postPayment({
                     cartId,
                     type: payment,
                     data: newData,

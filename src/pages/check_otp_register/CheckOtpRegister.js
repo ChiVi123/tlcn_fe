@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
-import * as services from '~/services/services';
+import { authServices } from '~/services';
 import { userActions, userSelector } from '~/redux';
 
 import { cx, context, schema, form } from './constant';
@@ -42,7 +42,7 @@ function CheckOtpRegister() {
             didOpen: async () => {
                 Swal.showLoading();
                 const email = getValues('email');
-                const result = await services.getOtp({
+                const result = await authServices.getOtp({
                     email: user.email || email,
                 });
                 const expectMessage = 'Send otp email success';
@@ -60,7 +60,7 @@ function CheckOtpRegister() {
     const handleOnSubmit = async (data) => {
         const type = 'register';
 
-        const result = await services.verifyOtp({ ...data, type });
+        const result = await authServices.verifyOtp({ ...data, type });
 
         if (result?.data?.id) {
             dispatch(userActions.addUser(result.data));

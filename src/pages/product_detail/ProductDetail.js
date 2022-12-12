@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { ProductCard, Title } from '~/components';
 import * as services from '~/services/services';
-import { productServices } from '~/services';
+import { cartServices, productServices } from '~/services';
 import { userSelector } from '~/redux';
 import { pathNames } from '~/routes';
 // import logger from '~/utils/logger';
@@ -92,7 +92,7 @@ function ProductDetail() {
         }
 
         const { quantity, option } = data;
-        const result = await services.addCart({
+        const result = await cartServices.addCart({
             producId: id,
             productOptionId: option?.id,
             value: option?.value,
