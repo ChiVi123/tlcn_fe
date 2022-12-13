@@ -9,7 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { ButtonCustomize } from '~/admin/components';
 import { Title } from '~/components';
-import * as services from '~/services/services';
+import { reviewServices } from '~/services';
 import { cx, context } from './constant';
 
 const reactSwal = withReactContent(Swal);
@@ -17,7 +17,7 @@ const reactSwal = withReactContent(Swal);
 function Reviews() {
     const [reviews, setReviews] = useState([]);
     const fetchApi = async () => {
-        const result = await services.adminGetReviews();
+        const result = await reviewServices.adminGetReviews();
 
         if (result?.length) {
             setReviews(result);
@@ -42,7 +42,7 @@ function Reviews() {
         switch (state) {
             case 'enable':
                 const expectMessageBlock = 'Block comment successfully ';
-                const resultBlock = await services.blockReview({ id });
+                const resultBlock = await reviewServices.blockReview({ id });
 
                 if (resultBlock?.message === expectMessageBlock) {
                     toast.success('Khóa đánh giá thành công');
@@ -53,7 +53,7 @@ function Reviews() {
                 break;
             case 'block':
                 const expectMessageEnable = ' Comment successfully ';
-                const resultEnable = await services.unblockReview({ id });
+                const resultEnable = await reviewServices.unblockReview({ id });
 
                 if (resultEnable?.message === expectMessageEnable) {
                     toast.success('Mở khóa đánh giá thành công');

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { Button, Form, Section, Title, Wrapper } from '~/components';
 import { userSelector } from '~/redux';
 import { avatarDefault } from '~/assets/images/statics';
-import * as services from '~/services/services';
+import { userServices } from '~/services';
 import { userActions } from '~/redux';
 import { pathNames } from '~/routes';
 
@@ -63,7 +63,6 @@ function Profile() {
     const handleImage = ({ target: { files } }) => {
         setFile((prev) => {
             prev = files[0];
-            console.log(prev);
             prev.preview = URL.createObjectURL(prev);
 
             return prev;
@@ -83,7 +82,7 @@ function Profile() {
                 Swal.showLoading();
 
                 if (name !== user.name) {
-                    const result = await services.updateUser(user.id, {
+                    const result = await userServices.updateUser(user.id, {
                         name,
                         email,
                     });
@@ -108,7 +107,7 @@ function Profile() {
                 }
 
                 if (avatar) {
-                    const resultImage = await services.uploadAvatar(
+                    const resultImage = await userServices.uploadAvatar(
                         user.id,
                         formData,
                     );

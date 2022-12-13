@@ -6,8 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
 import { userSelector } from '~/redux';
-import * as services from '~/services/services';
-
+import { userServices } from '~/services';
 import { cx, context, schema } from './constant';
 
 function ChangePassword() {
@@ -29,9 +28,10 @@ function ChangePassword() {
         const id = user.id;
         const oldpass = data.oldPassword;
         const newpass = data.newPassword;
-        const result = await services.changePassword(id, { oldpass, newpass });
-
-        console.log(result);
+        const result = await userServices.changePassword(id, {
+            oldpass,
+            newpass,
+        });
 
         if (result?.message === 'Change password success') {
             toast.success('Thay đổi mật khẩu thành công');

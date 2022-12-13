@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import { ButtonPagination, Title } from '~/components';
-import * as services from '~/services/services';
-
+import { userServices } from '~/services';
 import { context } from './constant';
 import UserItem from './user_item/UserItem';
 
@@ -12,7 +11,7 @@ function Users() {
     const [totalPage, setTotalPage] = useState(0);
     const [rangeDisplay, setRangeDisplay] = useState(3);
     const fetchApi = useCallback(async ({ currentPage }) => {
-        const result = await services.getUsers({ page: currentPage });
+        const result = await userServices.getUsers({ page: currentPage });
 
         setUsers(result.list);
         setTotalPage(result.totalPage);

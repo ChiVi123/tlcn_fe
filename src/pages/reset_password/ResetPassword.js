@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Form, FormGroup, Input, Title } from '~/components';
-import * as services from '~/services/services';
+import { userServices } from '~/services';
 import { userActions, userSelector } from '~/redux';
 
 import { cx, context, schema, defaultValues, form } from './constant';
@@ -26,7 +26,7 @@ function ResetPassword() {
     const handleOnSubmit = async (data) => {
         const id = user.id;
         const resetpass = data.password;
-        const result = await services.resetPassword(id, { resetpass });
+        const result = await userServices.resetPassword(id, { resetpass });
 
         if (result?.data?.id) {
             toast.success('Đặt lại mật khẩu thành công');

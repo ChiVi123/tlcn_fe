@@ -13,6 +13,7 @@ export const context = {
     address: 'Địa chỉ',
     totalPrice: 'Tổng giá trị',
     status: 'Trạng thái đơn hàng',
+    actions: 'Các hoạt động',
     done: 'Giao hàng thành công',
     procces: 'Đang giao',
     cancel: 'Đã hủy',

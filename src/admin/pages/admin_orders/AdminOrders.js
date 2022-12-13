@@ -5,7 +5,7 @@ import { useEffect, useState, Fragment } from 'react';
 import { ButtonPagination, Title } from '~/components';
 import { currencyVN } from '~/utils/funcs';
 import { ButtonCustomize } from '~/admin/components';
-import * as services from '~/services/services';
+import { orderServices } from '~/services';
 import { enumStateOrder } from '~/utils/constant';
 
 import { context, cx } from './constant';
@@ -18,7 +18,7 @@ function AdminOrders() {
 
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
-            const result = await services.adminGetAllOrder(currentPage);
+            const result = await orderServices.adminGetAllOrder(currentPage);
 
             setOrders(result.list);
             setTotalPage(result.totalPage);

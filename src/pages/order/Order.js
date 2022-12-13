@@ -5,9 +5,10 @@ import Swal from 'sweetalert2';
 import { ButtonCustomize } from '~/admin/components';
 import { Section, Title, Wrapper } from '~/components';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import * as services from '~/services/services';
-import { cx, context } from './constant';
+// import * as services from '~/services/services';
+import { orderServices } from '~/services';
 import { enumStateOrder } from '~/utils/constant';
+import { cx, context } from './constant';
 
 function Order() {
     const { id } = useParams();
@@ -17,7 +18,7 @@ function Order() {
 
     useEffect(() => {
         const fetchApi = async ({ id }) => {
-            const result = await services.userGetOrderById({ id });
+            const result = await orderServices.userGetOrderById({ id });
             setOrder(result);
 
             const state = enumStateOrder[result.state];
@@ -38,7 +39,9 @@ function Order() {
             const expectMessage = 'Cancel order successfully';
             if (isConfirmed) {
                 try {
-                    const result = await services.userCancelOrderById({ id });
+                    const result = await orderServices.userCancelOrderById({
+                        id,
+                    });
                     if (result?.message === expectMessage) {
                         Swal.fire({
                             title: 'Hủy đơn hàng thành công',
@@ -77,30 +80,6 @@ function Order() {
                         });
                     }
                 }
-                // const result = await services.userCancelOrderById({ id });
-                // if (result?.message === expectMessage) {
-                //     Swal.fire({
-                //         title: 'Hủy đơn hàng thành công',
-                //         icon: 'success',
-                //         confirmButtonText: 'Xác nhận',
-                //         allowOutsideClick: false,
-                //     }).then(({ isConfirmed }) => {
-                //         if (isConfirmed) {
-                //             navigate(0);
-                //         }
-                //     });
-                // } else {
-                //     Swal.fire({
-                //         title: 'Hủy đơn hàng thất bại',
-                //         icon: 'error',
-                //         confirmButtonText: 'Xác nhận',
-                //         allowOutsideClick: false,
-                //     }).then(({ isConfirmed }) => {
-                //         if (isConfirmed) {
-                //             navigate(0);
-                //         }
-                //     });
-                // }
             }
         });
     };

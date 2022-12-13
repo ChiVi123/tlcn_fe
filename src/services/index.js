@@ -6,3 +6,6 @@ export { default as paymentServices } from './paymentServices';
 export { default as servicesGHN } from './servicesGHN';
 export { default as searchServices } from './searchServices';
 export { default as cartServices } from './cartServices';
+export { default as userServices } from './userServices';
+export { default as orderServices } from './orderServices';
+export { default as reviewServices } from './reviewServices';

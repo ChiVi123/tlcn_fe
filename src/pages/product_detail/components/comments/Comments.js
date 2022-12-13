@@ -3,16 +3,16 @@ import StarRatings from 'react-star-ratings';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import { Button, Form, FormGroup, FormQuill } from '~/components';
-import * as services from '~/services/services';
+import { reviewServices } from '~/services';
+import { userSelector } from '~/redux';
+import { pathNames } from '~/routes';
 import { context, cx } from './constant';
 import Review from './review/Review';
-import { useSelector } from 'react-redux';
-import { userSelector } from '~/redux';
-import { useNavigate } from 'react-router-dom';
-import { pathNames } from '~/routes';
-import Swal from 'sweetalert2';
 
 const schema = yup.object({
     content: yup.string().required('Bạn chưa điền nội dung'),
@@ -42,7 +42,10 @@ function Comments({ reviews, setIsReview, isReview, productId }) {
         const toastMessage = 'Đánh giá sản sản phẩm';
 
         try {
-            const result = await services.addReview({ ...data, productId });
+            const result = await reviewServices.addReview({
+                ...data,
+                productId,
+            });
             const expectMessage = 'Add comment success ';
 
             if (result?.message === expectMessage) {

@@ -1,8 +1,11 @@
 import { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { currencyVN } from '~/utils/funcs';
 import { enumStateOrder } from '~/utils/constant';
 import { cx, context } from './constant';
-import { Link } from 'react-router-dom';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { ButtonCustomize } from '~/admin/components';
 
 function Order({ order }) {
     if (order.state === 'enable') {
@@ -11,9 +14,7 @@ function Order({ order }) {
         return (
             <tr>
                 <td className={cx('td-id')} title={order.id}>
-                    <Link to={`/order/${order.id}`} className={cx('td-link')}>
-                        {order.id}
-                    </Link>
+                    {order.id}
                 </td>
                 <td className={cx('td-createDate')}>{order.createdDate}</td>
                 <td className={cx('td-summary')}>
@@ -30,6 +31,11 @@ function Order({ order }) {
                     <span className={cx(order.state)}>
                         {enumStateOrder[order.state].state}
                     </span>
+                </td>
+                <td>
+                    <ButtonCustomize isEdit={true} to={`/order/${order.id}`}>
+                        <FontAwesomeIcon icon={faEye} />
+                    </ButtonCustomize>
                 </td>
             </tr>
         );

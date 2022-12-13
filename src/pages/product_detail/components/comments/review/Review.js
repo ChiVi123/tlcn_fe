@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { Button, FormGroup, FormQuill } from '~/components';
-import * as services from '~/services/services';
+import { reviewServices } from '~/services';
 import { userSelector } from '~/redux';
 import { cx, context } from './constant';
 
@@ -46,7 +46,7 @@ function Review({ review }) {
             cancelButtonText: 'Hủy',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await services.deleteReviewByUser({
+                await reviewServices.deleteReviewByUser({
                     id: review.id,
                 });
                 navigate(0);
@@ -59,7 +59,7 @@ function Review({ review }) {
     };
     const handleOnSubmit = async (data) => {
         const expectMessage = 'Update comment successfully';
-        const result = await services.editReview({ id: review.id, data });
+        const result = await reviewServices.editReview({ id: review.id, data });
         if (result?.message === expectMessage) {
             navigate(0);
         } else {

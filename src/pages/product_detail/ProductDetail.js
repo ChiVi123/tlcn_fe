@@ -9,18 +9,14 @@ import { useSelector } from 'react-redux';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { ProductCard, Title } from '~/components';
-import * as services from '~/services/services';
-import { cartServices, productServices } from '~/services';
+import { cartServices, productServices, reviewServices } from '~/services';
 import { userSelector } from '~/redux';
 import { pathNames } from '~/routes';
-// import logger from '~/utils/logger';
 
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
 import './ProductDetail.scss';
 import { InputQuantity, Slick } from '../components';
-
-// const pathname = 'src/pages/product_detail/ProductDetail';
 
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
@@ -54,16 +50,9 @@ function ProductDetail() {
             const newRelationProducst = resultRelation.list.filter(
                 (item) => item.id !== id,
             );
-            // const selector = '> ProductDetail > useEffect > fetchApi';
-
-            // logger({
-            //     groupName: `${pathname} ${selector}`,
-            //     values: [newRelationProducst],
-            // });
-
             setProductsRelation(newRelationProducst);
 
-            const resultReviews = await services.getReviewByProductId(id);
+            const resultReviews = await reviewServices.getReviewByProductId(id);
             setReviews(resultReviews);
         };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ButtonPagination, Section, Title, Wrapper } from '~/components';
-import * as services from '~/services/services';
+import { orderServices } from '~/services';
 import { cx, context } from './constant';
 import Order from './order/Order';
 
@@ -13,7 +13,7 @@ function Orders() {
 
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
-            const result = await services.userGetAllOrder(currentPage);
+            const result = await orderServices.userGetAllOrder(currentPage);
 
             if (result?.list?.length) {
                 setOrders(result.list);
@@ -58,6 +58,7 @@ function Orders() {
                                         <th>{context.address}</th>
                                         <th>{context.totalPrice}</th>
                                         <th>{context.status}</th>
+                                        <th>{context.actions}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

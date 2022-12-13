@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { avatarDefault } from '~/assets/images/statics';
 import { Button, Title } from '~/components';
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import * as services from '~/services/services';
+import { userServices, orderServices } from '~/services';
 import { enumStateOrder } from '~/utils/constant';
 import { ButtonCustomize } from '~/admin/components';
 
@@ -21,13 +21,13 @@ function AdminOrder() {
 
     useEffect(() => {
         const fetchApi = async ({ id }) => {
-            const resultOrder = await services.adminGetOrderById({ id });
+            const resultOrder = await orderServices.adminGetOrderById({ id });
             setOrder(resultOrder);
 
             const state = enumStateOrder[resultOrder.state];
             setOrderState(state[resultOrder.paymentType]);
 
-            const resultUser = await services.getUserById({
+            const resultUser = await userServices.getUserById({
                 id: resultOrder.userId,
             });
             setUser(resultUser);
@@ -44,7 +44,7 @@ function AdminOrder() {
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 const expectMessage = 'Cancel order successfully';
-                const result = await services.adminCancelOrderById({ id });
+                const result = await orderServices.adminCancelOrderById({ id });
                 if (result?.message === expectMessage) {
                     Swal.fire({
                         title: 'Hủy đơn hàng thành công',
@@ -81,7 +81,9 @@ function AdminOrder() {
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 const expectMessage = 'Delivery order successfully';
-                const result = await services.adminDeliveryOrderById({ id });
+                const result = await orderServices.adminDeliveryOrderById({
+                    id,
+                });
                 if (result?.message === expectMessage) {
                     Swal.fire({
                         title: 'Xác nhận đơn hàng thành công',
@@ -118,7 +120,9 @@ function AdminOrder() {
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 const expectMessage = 'Complete order successfully';
-                const result = await services.adminCompletelOrderById({ id });
+                const result = await orderServices.adminCompletelOrderById({
+                    id,
+                });
                 if (result?.message === expectMessage) {
                     Swal.fire({
                         title: 'Đã xác nhận đơn hàng',
