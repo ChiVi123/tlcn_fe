@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState, useCallback } from 'react';
 import slugify from 'slugify';
 import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
 
 import { Button, Title } from '~/components';
 import {
@@ -30,6 +29,8 @@ import {
 import { BasicInput } from './components';
 
 const addProduct = ({ data, options, formData }) => {
+    let isSuccess = false;
+
     Swal.fire({
         title: 'Thêm sản phẩm',
         didOpen: async () => {
@@ -43,20 +44,28 @@ const addProduct = ({ data, options, formData }) => {
                 options.forEach(async (item) => {
                     await productServices.addOptionProduct({ id, data: item });
                 });
-
                 await productServices.addImagesProduct({ id, data: formData });
 
-                toast.success('Thêm sản phẩm thành công');
-            } else {
-                toast.error('Thêm sản phẩm thất bại');
+                isSuccess = true;
             }
 
             Swal.close();
         },
+    }).then(() => {
+        Swal.fire({
+            title: `Thêm sản phẩm ${isSuccess ? 'thành công' : 'thất bại'}`,
+            confirmButtonText: 'Xác nhận',
+        }).then(({ isConfirmed }) => {
+            if (isConfirmed) {
+                window.location.reload();
+            }
+        });
     });
 };
 
 const updateProduct = ({ id, options, data }) => {
+    let isSuccess = false;
+
     Swal.fire({
         title: 'Chỉnh sửa sản phẩm',
         didOpen: async () => {
@@ -78,12 +87,22 @@ const updateProduct = ({ id, options, data }) => {
                     }
                 });
 
-                toast.success('Chỉnh sửa sản phẩm thành công');
-            } else {
-                toast.error('Chỉnh sửa sản phẩm thất bại');
+                isSuccess = true;
             }
+
             Swal.close();
         },
+    }).then(() => {
+        Swal.fire({
+            title: `Chỉnh sửa sản phẩm ${
+                isSuccess ? 'thành công' : 'thất bại'
+            }`,
+            confirmButtonText: 'Xác nhận',
+        }).then(({ isConfirmed }) => {
+            if (isConfirmed) {
+                window.location.reload();
+            }
+        });
     });
 };
 
@@ -164,11 +183,14 @@ function ProductForm() {
                 formData.append('url', image);
             }
         });
-        data.quantity = 0;
-        data.options.forEach((option) => {
-            option.stock = parseInt(option.stock);
-            data.quantity += option.stock;
-        });
+
+        if (data.options.length) {
+            data.quantity = 0;
+            data.options.forEach((option) => {
+                option.stock = parseInt(option.stock);
+                data.quantity += option.stock;
+            });
+        }
 
         const newData = {
             name: data.name,

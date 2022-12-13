@@ -89,7 +89,7 @@ const errorMessages = {
     quantityPositive: 'Số lượng sản phẩm là số dương',
 };
 export const schema = yup.object({
-    name: yup.string().trim().required(''),
+    name: yup.string().trim().required(errorMessages.nameRequired),
     price: yup
         .number()
         .typeError(errorMessages.priceTypeError)

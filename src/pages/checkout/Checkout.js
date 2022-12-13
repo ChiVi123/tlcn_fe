@@ -116,31 +116,38 @@ function Checkout() {
         };
 
         Swal.fire({
-            title: 'Nếu bạn muốn kiểm tra đơn hàng thêm lần nữa hãy nhấn nút hủy',
+            title: 'Nhấn nút hủy nếu chưa muốn thanh toán ngay',
             confirmButtonText: 'Xác nhận',
             showCancelButton: true,
             cancelButtonText: 'Hủy',
         }).then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                const result = await paymentServices.postPayment({
-                    cartId,
-                    type: payment,
-                    data: newData,
-                });
+                Swal.fire({
+                    title: 'Đặt hàng',
+                    didOpen: async () => {
+                        Swal.showLoading();
+                        const result = await paymentServices.postPayment({
+                            cartId,
+                            type: payment,
+                            data: newData,
+                        });
 
-                switch (result?.message) {
-                    case 'Payment init complete':
-                        window.open(result.data);
-                        break;
-                    case ' Pay by COD successfully':
-                        toast.success('Thanh toán thành công');
-                        navigate(pathNames.home);
-                        break;
-                    default:
-                        toast.error('Thanh toán thất bại');
-                        navigate(pathNames.cart);
-                        break;
-                }
+                        switch (result?.message) {
+                            case 'Payment init complete':
+                                window.location.href = result.data;
+                                break;
+                            case ' Pay by COD successfully':
+                                toast.success('Thanh toán thành công');
+                                navigate(pathNames.home);
+                                break;
+                            default:
+                                toast.error('Thanh toán thất bại');
+                                navigate(pathNames.cart);
+                                break;
+                        }
+                        Swal.close();
+                    },
+                });
             }
         });
     };
