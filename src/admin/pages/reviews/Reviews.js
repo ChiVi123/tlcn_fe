@@ -1,13 +1,8 @@
 import { faEye } from '@fortawesome/free-regular-svg-icons';
-import {
-    faLock,
-    // faMagnifyingGlass,
-    faLockOpen,
-} from '@fortawesome/free-solid-svg-icons';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HTMLReactParser from 'html-react-parser';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -21,17 +16,15 @@ const reactSwal = withReactContent(Swal);
 
 function Reviews() {
     const [reviews, setReviews] = useState([]);
-    const navigate = useNavigate();
+    const fetchApi = async () => {
+        const result = await services.adminGetReviews();
+
+        if (result?.length) {
+            setReviews(result);
+        }
+    };
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await services.adminGetReviews();
-
-            if (result?.length) {
-                setReviews(result);
-            }
-        };
-
         fetchApi();
     }, []);
 
@@ -52,7 +45,8 @@ function Reviews() {
                 const resultBlock = await services.blockReview({ id });
 
                 if (resultBlock?.message === expectMessageBlock) {
-                    navigate(0);
+                    toast.success('Khóa đánh giá thành công');
+                    fetchApi();
                 } else {
                     toast.error('Không thể khóa đánh giá này');
                 }
@@ -62,12 +56,12 @@ function Reviews() {
                 const resultEnable = await services.unblockReview({ id });
 
                 if (resultEnable?.message === expectMessageEnable) {
-                    navigate(0);
+                    toast.success('Mở khóa đánh giá thành công');
+                    fetchApi();
                 } else {
                     toast.error('Không thể mở khóa đánh giá này');
                 }
                 break;
-
             default:
                 break;
         }

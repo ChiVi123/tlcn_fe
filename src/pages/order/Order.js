@@ -35,32 +35,72 @@ function Order() {
             showCancelButton: true,
             cancelButtonText: 'Bỏ qua',
         }).then(async ({ isConfirmed }) => {
+            const expectMessage = 'Cancel order successfully';
             if (isConfirmed) {
-                const expectMessage = 'Cancel order successfully';
-                const result = await services.userCancelOrderById({ id });
-                if (result?.message === expectMessage) {
-                    Swal.fire({
-                        title: 'Hủy đơn hàng thành công',
-                        icon: 'success',
-                        confirmButtonText: 'Xác nhận',
-                        allowOutsideClick: false,
-                    }).then(({ isConfirmed }) => {
-                        if (isConfirmed) {
-                            navigate(0);
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Hủy đơn hàng thất bại',
-                        icon: 'error',
-                        confirmButtonText: 'Xác nhận',
-                        allowOutsideClick: false,
-                    }).then(({ isConfirmed }) => {
-                        if (isConfirmed) {
-                            navigate(0);
-                        }
-                    });
+                try {
+                    const result = await services.userCancelOrderById({ id });
+                    if (result?.message === expectMessage) {
+                        Swal.fire({
+                            title: 'Hủy đơn hàng thành công',
+                            icon: 'success',
+                            confirmButtonText: 'Xác nhận',
+                            allowOutsideClick: false,
+                        }).then(({ isConfirmed }) => {
+                            if (isConfirmed) {
+                                navigate(0);
+                            }
+                        });
+                    }
+                } catch (error) {
+                    const erroMessage = 'You cannot cancel';
+                    if (error === erroMessage) {
+                        Swal.fire({
+                            title: 'Không thể hủy khi đơn hàng đang được giao',
+                            icon: 'error',
+                            confirmButtonText: 'Xác nhận',
+                            allowOutsideClick: false,
+                        }).then(({ isConfirmed }) => {
+                            if (isConfirmed) {
+                                navigate(0);
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Hủy đơn hàng thất bại',
+                            icon: 'error',
+                            confirmButtonText: 'Xác nhận',
+                            allowOutsideClick: false,
+                        }).then(({ isConfirmed }) => {
+                            if (isConfirmed) {
+                                navigate(0);
+                            }
+                        });
+                    }
                 }
+                // const result = await services.userCancelOrderById({ id });
+                // if (result?.message === expectMessage) {
+                //     Swal.fire({
+                //         title: 'Hủy đơn hàng thành công',
+                //         icon: 'success',
+                //         confirmButtonText: 'Xác nhận',
+                //         allowOutsideClick: false,
+                //     }).then(({ isConfirmed }) => {
+                //         if (isConfirmed) {
+                //             navigate(0);
+                //         }
+                //     });
+                // } else {
+                //     Swal.fire({
+                //         title: 'Hủy đơn hàng thất bại',
+                //         icon: 'error',
+                //         confirmButtonText: 'Xác nhận',
+                //         allowOutsideClick: false,
+                //     }).then(({ isConfirmed }) => {
+                //         if (isConfirmed) {
+                //             navigate(0);
+                //         }
+                //     });
+                // }
             }
         });
     };

@@ -15,8 +15,24 @@ export const enumStateOrder = {
             isComplete: false,
         },
     },
-    process: {
+    enable: {
         level: 0,
+        state: 'Trong giỏ hàng',
+        COD: {
+            isPay: 'Chưa thanh toán',
+            isCancel: false,
+            isDelivery: false,
+            isComplete: false,
+        },
+        PAYPAL: {
+            isPay: 'Chưa thanh toán',
+            isCancel: false,
+            isDelivery: false,
+            isComplete: false,
+        },
+    },
+    process: {
+        level: 1,
         state: 'Đang tiến hành',
         COD: {
             isPay: 'Chưa thanh toán',
@@ -32,7 +48,7 @@ export const enumStateOrder = {
         },
     },
     pendingpay: {
-        level: 1,
+        level: 2,
         state: 'Đã thanh toán và đang xử lý',
         COD: {
             isPay: 'Chưa thanh toán',
@@ -48,7 +64,7 @@ export const enumStateOrder = {
         },
     },
     pending: {
-        level: 2,
+        level: 3,
         state: 'Đang xử lý',
         COD: {
             isPay: 'Chưa thanh toán',
@@ -64,7 +80,7 @@ export const enumStateOrder = {
         },
     },
     delivery: {
-        level: 3,
+        level: 4,
         state: 'Đang giao hàng',
         COD: {
             isPay: 'Chưa thanh toán',
@@ -80,7 +96,7 @@ export const enumStateOrder = {
         },
     },
     complete: {
-        level: 4,
+        level: 5,
         state: 'Giao hàng thành công',
         COD: {
             isPay: 'Đã thanh toán',

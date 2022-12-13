@@ -175,8 +175,12 @@ export const userCancelOrderById = async ({ id }) => {
     try {
         const response = await request.put(`orders/cancel/${id}`);
         return response;
-    } catch (error) {
-        throw error;
+    } catch ({
+        response: {
+            data: { message },
+        },
+    }) {
+        throw message;
     }
 };
 

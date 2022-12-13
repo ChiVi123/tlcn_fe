@@ -102,7 +102,9 @@ function Dashboard() {
                                     </Title>
                                     <ProgressBar
                                         completed={item.count.toString()}
-                                        maxCompleted={categoryCount.totalQuantity.toString()}
+                                        maxCompleted={
+                                            categoryCount.totalQuantity
+                                        }
                                         bgColor={'#' + randomColor()}
                                     />
                                 </div>
@@ -124,7 +126,7 @@ function Dashboard() {
                                     </Title>
                                     <ProgressBar
                                         completed={item.count.toString()}
-                                        maxCompleted={userCount.totalQuantity.toString()}
+                                        maxCompleted={userCount.totalQuantity}
                                         bgColor={'#' + randomColor()}
                                     />
                                 </div>
@@ -146,7 +148,9 @@ function Dashboard() {
                                     </Title>
                                     <ProgressBar
                                         completed={item.count.toString()}
-                                        maxCompleted={productCount.totalQuantity.toString()}
+                                        maxCompleted={
+                                            productCount.totalQuantity
+                                        }
                                         bgColor={'#' + randomColor()}
                                     />
                                 </div>
@@ -166,7 +170,7 @@ function Dashboard() {
                                     </Title>
                                     <ProgressBar
                                         completed={item.count.toString()}
-                                        maxCompleted={orderCount.totalQuantity.toString()}
+                                        maxCompleted={orderCount.totalQuantity}
                                         bgColor={'#' + randomColor()}
                                     />
                                 </div>
