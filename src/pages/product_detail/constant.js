@@ -12,6 +12,9 @@ const context = {
     description: 'Mô tả sản phẩm',
     relation: 'Sản phẩm cùng loại',
     review: (quantity) => `Đánh giá sản phẩm (${quantity} đánh giá)`,
+    reviewButton: 'Đánh giá sản phẩm',
+    notifyReview:
+        'Vui lòng đặt hàng và thanh toán để có thể đánh giá sản phẩm này',
 };
 
 const form = {

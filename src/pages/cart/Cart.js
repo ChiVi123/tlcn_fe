@@ -7,16 +7,24 @@ import { cartServices } from '~/services';
 
 import { cxCart, context } from './constant';
 import CartItem from './CartItem';
+import logger from '~/utils/logger';
 
 function Cart() {
-    const [cart, setCart] = useState({});
+    const [cart, setCart] = useState({
+        items: [],
+        totalPrice: 0,
+    });
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await cartServices.getCartByToken();
+            try {
+                const result = await cartServices.getCartByToken();
 
-            if (result.message === 'Get cart success') {
-                setCart(result.data);
+                if (result.message === 'Get cart success') {
+                    setCart(result.data);
+                }
+            } catch (error) {
+                logger({ groupName: 'Cart', values: [error] });
             }
         };
 

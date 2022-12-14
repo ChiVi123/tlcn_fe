@@ -3,17 +3,20 @@ import { isExpired } from 'react-jwt';
 
 const getToken = () => {
     const item = window.localStorage.getItem('persist:tlcnFE2022');
-    const { user } = JSON.parse(item);
-    const { accessToken } = JSON.parse(user);
 
-    if (accessToken) {
-        if (isExpired(accessToken)) {
-            return accessToken;
+    if (item) {
+        const { user } = JSON.parse(item);
+        const { accessToken } = JSON.parse(user);
+
+        if (accessToken) {
+            if (isExpired(accessToken)) {
+                return accessToken;
+            } else {
+                return accessToken;
+            }
         } else {
-            return accessToken;
+            return null;
         }
-    } else {
-        return null;
     }
 };
 

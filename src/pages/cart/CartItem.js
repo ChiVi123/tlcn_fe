@@ -7,17 +7,26 @@ import { cartServices } from '~/services';
 
 import { cxCartItem, context } from './constant';
 import { InputQuantity } from '../components';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '~/redux';
+// import logger from '~/utils/logger';
 
 function CartItem({ product }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Handle event
     const handleChange = async (isAddition, number) => {
         if (number < 1) {
             return;
         }
+        const { productid: producId, productOptionid, value, stock } = product;
 
-        const { productid: producId, productOptionid, value } = product;
+        if (stock && number > stock) {
+            toast.error(`Số lượng không vượt quá ${stock}`);
+            return;
+        }
+
         const result = await cartServices.addCart({
             producId,
             productOptionId: productOptionid || null,
@@ -49,6 +58,7 @@ function CartItem({ product }) {
 
                 if (result?.message === expectMessage) {
                     navigate(0);
+                    dispatch(cartActions.decreaseQuantity());
                 } else {
                     toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại');
                 }

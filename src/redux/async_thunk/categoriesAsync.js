@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { categoryServices } from '~/services';
-// import logger from '~/utils/logger';
 
 export const getAllCategory = createAsyncThunk(
     'categories/getAllcategory',

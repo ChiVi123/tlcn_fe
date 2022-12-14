@@ -7,7 +7,6 @@ import { ProductCard, Title } from '~/components';
 import { pathNames } from '~/routes';
 import { userActions, userSelector } from '~/redux';
 import { productServices } from '~/services';
-// import logger from '~/utils/logger';
 
 import { cx, context } from './constant';
 
@@ -24,8 +23,6 @@ function Home() {
     const toolersId = '6377c803e5faa15251783677';
 
     useEffect(() => {
-        // logger({ groupName: 'home', values: [user] });
-
         if (user?.id && user.isToast) {
             dispatch(userActions.showedToast());
             toast.success(context.loginSuccess);

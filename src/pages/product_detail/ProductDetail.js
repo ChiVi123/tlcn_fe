@@ -5,13 +5,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import parser from 'html-react-parser';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
-import { ProductCard, Title } from '~/components';
+import { Button, ProductCard, Title } from '~/components';
 import { cartServices, productServices, reviewServices } from '~/services';
-import { userSelector } from '~/redux';
+import { cartActions, userSelector } from '~/redux';
 import { pathNames } from '~/routes';
+// import logger from '~/utils/logger';
 
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
@@ -33,6 +34,7 @@ function ProductDetail() {
         },
     });
     const { id } = useParams();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const userId = useSelector(userSelector.getUserId);
 
@@ -79,8 +81,18 @@ function ProductDetail() {
         if (!userId) {
             navigate(pathNames.login);
         }
-
         const { quantity, option } = data;
+
+        if (
+            (option?.stock && quantity > option.stock) ||
+            quantity > product.quantity
+        ) {
+            toast.error(
+                `Số lượng không vượt quá ${option?.stock || product.quantity}`,
+            );
+            return;
+        }
+
         const result = await cartServices.addCart({
             producId: id,
             productOptionId: option?.id,
@@ -90,15 +102,11 @@ function ProductDetail() {
 
         if (result.isSuccess === 'true') {
             toast.success('Đã thêm vào giỏ hàng');
+            dispatch(cartActions.increaseQuantity());
         } else {
             toast.error('Không thể thêm vào giỏ hàng');
         }
     };
-
-    // logger({
-    //     groupName: `${pathname}`,
-    //     values: ['re-render', productsRelation],
-    // });
 
     return (
         <div className={cx('wrapper')}>
@@ -117,7 +125,7 @@ function ProductDetail() {
 
                         {/* Rating */}
                         <div className={cx('section-right__group', 'rating')}>
-                            <Rating rating={rating} setIsReview={setIsReview} />
+                            <Rating rating={rating} />
                         </div>
 
                         {/* Price */}
@@ -238,22 +246,28 @@ function ProductDetail() {
                     </div>
                 </div>
 
-                {isReview && <div id={'review'}></div>}
-
                 {/* Comment */}
                 <div className={cx('section')}>
                     <div className={cx('section__wrapper')}>
                         <Title as='h2' line>
                             {context.review(reviews.totalQuantity)}
                         </Title>
+
+                        {isReview || (
+                            <Button onClick={() => setIsReview(true)}>
+                                {context.reviewButton}
+                            </Button>
+                        )}
                     </div>
 
-                    <Comments
-                        reviews={reviews.list}
-                        setIsReview={setIsReview}
-                        isReview={isReview}
-                        productId={id}
-                    />
+                    <div className={cx('section__wrapper')}>
+                        <Comments
+                            reviews={reviews.list}
+                            setIsReview={setIsReview}
+                            isReview={isReview}
+                            productId={id}
+                        />
+                    </div>
                 </div>
 
                 {/* Relation */}

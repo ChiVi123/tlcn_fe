@@ -111,6 +111,15 @@ function Comments({ reviews, setIsReview, isReview, productId }) {
                     <Button className={cx('button')}>
                         {context.addReviewButton}
                     </Button>
+                    <Button
+                        className={cx('button')}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            setIsReview(false);
+                        }}
+                    >
+                        {context.cancelReviewButton}
+                    </Button>
                 </Form>
             )}
             <ul className={cx('comments')}>

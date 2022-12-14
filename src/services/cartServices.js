@@ -5,8 +5,12 @@ const cartServices = {
         try {
             const response = await request.get('cart');
             return response;
-        } catch (error) {
-            console.log(error);
+        } catch ({
+            response: {
+                data: { message },
+            },
+        }) {
+            throw message;
         }
     },
     addCart: async (data) => {

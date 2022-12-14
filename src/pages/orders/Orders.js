@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ButtonPagination, Section, Title, Wrapper } from '~/components';
 import { orderServices } from '~/services';
+import logger from '~/utils/logger';
 import { cx, context } from './constant';
 import Order from './order/Order';
 
@@ -13,19 +14,23 @@ function Orders() {
 
     useEffect(() => {
         const fetchApi = async ({ currentPage }) => {
-            const result = await orderServices.userGetAllOrder(currentPage);
+            try {
+                const result = await orderServices.userGetAllOrder(currentPage);
 
-            if (result?.list?.length) {
-                setOrders(result.list);
-            }
-            setTotalPage(result.totalPage);
-            setRangeDisplay(() => {
-                if (result.totalPage > 5) {
-                    return 5;
-                } else {
-                    return result.totalPage;
+                if (result?.list?.length) {
+                    setOrders(result.list);
                 }
-            });
+                setTotalPage(result.totalPage);
+                setRangeDisplay(() => {
+                    if (result.totalPage > 5) {
+                        return 5;
+                    } else {
+                        return result.totalPage;
+                    }
+                });
+            } catch (error) {
+                logger({ groupName: 'Orders', values: [error] });
+            }
         };
 
         fetchApi({ currentPage: page - 1 });

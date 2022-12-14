@@ -1,5 +1,5 @@
 // Library
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -23,7 +23,7 @@ import { pathNames } from '~/routes';
 import { currencyVN } from '~/utils/funcs';
 import { servicesGHN } from '~/services';
 import { paymentServices, cartServices } from '~/services';
-import { userSelector } from '~/redux';
+import { cartAsync, userSelector } from '~/redux';
 
 // Local
 import { context, cx, schema } from './constant';
@@ -33,6 +33,7 @@ function Checkout() {
     // Hooks
     const user = useSelector(userSelector.getUser);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // - useState
     const [provinces, setProvinces] = useState([]);
@@ -145,6 +146,9 @@ function Checkout() {
                                 navigate(pathNames.cart);
                                 break;
                         }
+
+                        dispatch(cartAsync.getCartByToken());
+
                         Swal.close();
                     },
                 });

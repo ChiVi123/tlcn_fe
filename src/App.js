@@ -6,7 +6,7 @@ import { adminRoutes, pathNames, privateRoutes, publicRoutes } from './routes';
 import { DefaultLayout } from './layouts';
 import PrivateRoutes from './hoc/PrivateRoutes';
 import AdminRoutes from './hoc/AdminRoutes';
-import { getAllCategory } from './redux/async_thunk/categoriesAsync';
+import { categoriesAsync, cartAsync } from './redux';
 import { Modal } from './components';
 import logger from './utils/logger';
 
@@ -14,7 +14,8 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllCategory());
+        dispatch(categoriesAsync.getAllCategory());
+        dispatch(cartAsync.getCartByToken());
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

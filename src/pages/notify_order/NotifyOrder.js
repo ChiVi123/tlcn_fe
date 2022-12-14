@@ -10,10 +10,6 @@ function NotifyOrder() {
     const success = searchParams.get('success') === 'true';
     const cancel = searchParams.get('cancel') === 'true';
 
-    // success -> response code 200 (true) -> other code false
-    // cancel -> true -> hủy đơn hàng
-    // cancel -> false -> không hủy đơn hàng
-
     Swal.fire({
         icon: success ? 'success' : 'error',
         title: cancel ? 'Hủy đơn hàng' : 'Thanh toán thành công',

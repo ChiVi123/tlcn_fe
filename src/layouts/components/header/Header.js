@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
@@ -18,7 +18,6 @@ import {
     modalActions,
 } from '~/redux';
 import logger from '~/utils/logger';
-import { cartServices } from '~/services';
 
 import { cx, actions, navItems, topbarsLeft, context } from './constant';
 import Menu from './components/menu/Menu';
@@ -26,28 +25,15 @@ import { TopbarRightLogin, TopbarRightLogout } from './components/topbar_right';
 
 function Header() {
     const [dropDown, setDropDown] = useState(false);
-    const [totalProduct, setTotalProduct] = useState(0);
     const [inputSearch, setInputSearch] = useState('');
 
     let TopbarRight = TopbarRightLogout;
     const dispatch = useDispatch();
     const user = useSelector(userSelector.getUser);
+    const { totalProduct } = useSelector(cartSelector.getCart);
     const productQuantity = useSelector(cartSelector.getProductQuantity);
     const categories = useSelector(categoriesSelector.getAllcategory);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await cartServices.getCartByToken();
-            const expectMessage = 'Get cart success';
-
-            if (result?.message === expectMessage) {
-                setTotalProduct(result.data.totalProduct);
-            }
-        };
-
-        fetchApi();
-    }, []);
 
     // Handle event
     // - Handle menu
