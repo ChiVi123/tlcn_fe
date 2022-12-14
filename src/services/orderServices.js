@@ -37,6 +37,14 @@ const orderServices = {
             throw error;
         }
     },
+    userGetOrdersComplete: async () => {
+        try {
+            const response = await request.get(`orders/getallordercomplete`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
     adminCancelOrderById: async ({ id }) => {
         try {
             const response = await request.put(

@@ -13,8 +13,12 @@ const reviewSerview = {
         try {
             const response = await request.get(`comment/${id}`);
             return response.data;
-        } catch (error) {
-            throw error;
+        } catch ({
+            response: {
+                data: { message },
+            },
+        }) {
+            throw message;
         }
     },
     addReview: async (data) => {

@@ -28,7 +28,10 @@ const userSlice = createSlice({
         },
         updateUser(state, { payload }) {
             state.name = payload.name;
-            state.avatar = payload.avatar && state.avatar;
+
+            if (payload.avatar) {
+                state.avatar = payload.avatar;
+            }
         },
         showedToast(state) {
             state.isToast = false;

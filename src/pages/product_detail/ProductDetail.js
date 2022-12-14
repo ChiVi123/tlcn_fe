@@ -9,10 +9,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { currencyVN, priceSaleVN } from '~/utils/funcs';
 import { Button, ProductCard, Title } from '~/components';
-import { cartServices, productServices, reviewServices } from '~/services';
+import {
+    cartServices,
+    orderServices,
+    productServices,
+    reviewServices,
+} from '~/services';
 import { cartActions, userSelector } from '~/redux';
 import { pathNames } from '~/routes';
-// import logger from '~/utils/logger';
+import logger from '~/utils/logger';
 
 import { cx, context, form } from './constant';
 import { Images, Rating, CheckBox, Comments } from './components';
@@ -22,6 +27,7 @@ import { InputQuantity, Slick } from '../components';
 function ProductDetail() {
     const [productsRelation, setProductsRelation] = useState([]);
     const [isReview, setIsReview] = useState(false);
+    const [isAllowReview, setAllowIsReview] = useState(false);
     const [product, setProduct] = useState({});
     const [reviews, setReviews] = useState({
         totalQuantity: 0,
@@ -54,8 +60,44 @@ function ProductDetail() {
             );
             setProductsRelation(newRelationProducst);
 
-            const resultReviews = await reviewServices.getReviewByProductId(id);
-            setReviews(resultReviews);
+            try {
+                const resultReviews = await reviewServices.getReviewByProductId(
+                    id,
+                );
+                setReviews(resultReviews);
+            } catch (error) {
+                const errorMessage = 'Can not found any comment';
+
+                if (error === errorMessage) {
+                    setReviews({
+                        totalQuantity: 0,
+                        totalPage: 0,
+                        list: [],
+                    });
+                }
+            }
+
+            const resultAllOrder = await orderServices.userGetOrdersComplete();
+            logger({
+                groupName: 'Product detail all order by user',
+                values: [resultAllOrder],
+            });
+
+            const resultIsReview = resultAllOrder.list.some((order) => {
+                const result = order.items.some((item) => {
+                    const result = item.productid === id;
+                    logger({
+                        groupName: 'some item',
+                        values: [item.productid],
+                    });
+                    return result;
+                });
+                logger({ groupName: 'some order', values: [result] });
+
+                return result;
+            });
+
+            setAllowIsReview(resultIsReview);
         };
 
         fetchApi(id);
@@ -253,11 +295,17 @@ function ProductDetail() {
                             {context.review(reviews.totalQuantity)}
                         </Title>
 
-                        {isReview || (
+                        {isAllowReview || (
+                            <Title as='h3'>{context.notifyReview}</Title>
+                        )}
+
+                        {!isAllowReview || isReview || (
                             <Button onClick={() => setIsReview(true)}>
                                 {context.reviewButton}
                             </Button>
                         )}
+
+                        {/* true nut khong hien - false nut hien */}
                     </div>
 
                     <div className={cx('section__wrapper')}>

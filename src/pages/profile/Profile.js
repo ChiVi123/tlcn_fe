@@ -14,15 +14,14 @@ import { userActions } from '~/redux';
 import { pathNames } from '~/routes';
 
 import { context, cx, schema } from './constant';
+import logger from '~/utils/logger';
 
 function Profile() {
     const user = useSelector(userSelector.getUser);
     const [file, setFile] = useState({
         preview: user?.avatar || avatarDefault,
     });
-
     const dispatch = useDispatch();
-
     const {
         register,
         handleSubmit,
@@ -77,18 +76,18 @@ function Profile() {
         }
 
         Swal.fire({
-            title: 'Đang chỉnh sửa thông tin người dùng',
+            title: 'Cập nhật thông tin người dùng',
             didOpen: async () => {
                 Swal.showLoading();
-
                 if (name !== user.name) {
                     const result = await userServices.updateUser(user.id, {
                         name,
                         email,
                     });
+                    const expectMessage = 'Update info user successfully';
 
-                    if (result.isSuccess === 'ok') {
-                        toast.success('Chỉnh sửa thành công');
+                    if (result?.message === expectMessage) {
+                        toast.success('Cập nhật thành công');
                         dispatch(
                             userActions.updateUser({
                                 name,
@@ -96,38 +95,31 @@ function Profile() {
                             }),
                         );
                     } else {
-                        toast.error('Chỉnh sửa thất bại');
-                        dispatch(
-                            userActions.updateUser({
-                                name: user.name,
-                                avatar: user.avatar,
-                            }),
-                        );
+                        toast.error('Cập nhật thất bại');
                     }
                 }
 
-                if (avatar) {
-                    const resultImage = await userServices.uploadAvatar(
+                if (avatar.length) {
+                    const result = await userServices.uploadAvatar(
                         user.id,
                         formData,
                     );
+                    const expectMessage = 'Update user success';
+                    logger({
+                        groupName: 'avatar update',
+                        values: [result],
+                    });
 
-                    if (resultImage.isSuccess === 'true') {
-                        toast.success('Chỉnh sửa ảnh thành công');
+                    if (result?.message === expectMessage) {
+                        toast.success('Thay đổi ảnh thành công');
                         dispatch(
                             userActions.updateUser({
                                 name: user.name,
-                                avatar: resultImage.data.avatar,
+                                avatar: result.data.avatar,
                             }),
                         );
                     } else {
-                        toast.error('Chỉnh sửa ảnh thất bại');
-                        dispatch(
-                            userActions.updateUser({
-                                name: user.name,
-                                avatar: user.avatar,
-                            }),
-                        );
+                        toast.error('Thay đổi ảnh thất bại');
                     }
                 }
 

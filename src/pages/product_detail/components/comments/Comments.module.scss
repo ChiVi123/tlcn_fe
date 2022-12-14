@@ -15,6 +15,7 @@
 
 .comments {
     padding: 0 2rem 1rem;
+    margin-top: 1.4rem;
 }
 
 .comment {
@@ -50,7 +51,28 @@
 }
 
 .button {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
     margin-left: 1.2rem;
     margin-bottom: 2rem;
     text-transform: none;
+
+    & ~ & {
+        margin-top: 0;
+    }
+
+    &--edit {
+        color: var(--white);
+        border-color: var(--second-primary);
+        background-color: var(--second-primary);
+
+        &:hover {
+            box-shadow: 1px 0px 6px 2px rgb(14 165 229 / 25%);
+        }
+    }
+
+    &--text {
+        padding: 0;
+        border: none;
+    }
 }

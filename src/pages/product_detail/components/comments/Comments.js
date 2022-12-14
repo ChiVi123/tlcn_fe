@@ -38,7 +38,6 @@ function Comments({ reviews, setIsReview, isReview, productId }) {
         if (!userId) {
             navigate(pathNames.login);
         }
-
         const toastMessage = 'Đánh giá sản sản phẩm';
 
         try {
@@ -108,11 +107,12 @@ function Comments({ reviews, setIsReview, isReview, productId }) {
                         <FormQuill name='content' control={control} />
                     </FormGroup>
 
-                    <Button className={cx('button')}>
+                    <Button className={cx('button', 'button--edit')}>
                         {context.addReviewButton}
                     </Button>
+
                     <Button
-                        className={cx('button')}
+                        className={cx('button', 'button--text')}
                         onClick={(event) => {
                             event.preventDefault();
                             setIsReview(false);

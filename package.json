@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
     "react-jwt": "^1.1.7",
+    "react-loader-spinner": "^5.3.4",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
