@@ -21,10 +21,10 @@ function padTo2Digits(num) {
 
 export function formatDate(date) {
     return [
-        padTo2Digits(date.getDate()),
         padTo2Digits(date.getMonth() + 1),
+        padTo2Digits(date.getDate()),
         date.getFullYear(),
-    ].join('/');
+    ].join('-');
 }
 
 export function getArray(array, code, name) {

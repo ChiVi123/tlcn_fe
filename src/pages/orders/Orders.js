@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { ButtonPagination, Section, Title, Wrapper } from '~/components';
+import { userSelector } from '~/redux';
 import { orderServices } from '~/services';
 import logger from '~/utils/logger';
 import { cx, context } from './constant';
 import Order from './order/Order';
 
 function Orders() {
+    const user = useSelector(userSelector.getUser);
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
@@ -46,7 +49,7 @@ function Orders() {
                         </div>
 
                         <div className={cx('col', 'l-12')}>
-                            <Title as='h3'>{context.hello}</Title>
+                            <Title as='h3'>{context.hello(user.name)}</Title>
                         </div>
 
                         <div className={cx('col', 'l-12')}>

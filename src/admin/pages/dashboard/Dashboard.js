@@ -16,6 +16,7 @@ import { statisticalServices } from '~/services';
 import logger from '~/utils/logger';
 import { enumStateOrder } from '~/utils/constant';
 import { cx } from './constant';
+import { formatDate } from '~/utils/funcs';
 
 const randomColor = () => {
     let result = '';
@@ -67,10 +68,15 @@ function Dashboard() {
 
     useEffect(() => {
         const fetchApi = async () => {
+            const date = formatDate(new Date());
+            logger({
+                groupName: 'Order',
+                values: [date],
+            });
             try {
                 const result = await statisticalServices.getStats({
                     from: '12-01-2022',
-                    to: '12-12-2022',
+                    to: date,
                 });
                 const expectMessage = 'Get orders sale successful';
                 if (result?.message === expectMessage) {

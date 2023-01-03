@@ -5,7 +5,7 @@ export const cx = classNames.bind(styles);
 
 export const context = {
     title: 'Thông tin đơn hàng',
-    hello: 'Xin chào nhat sang',
+    hello: (name) => `Xin chào ${name}`,
     titleTable: 'Đơn hàng gần nhất',
     id: 'Mã đơn hàng',
     date: 'Ngày đặt hàng',
